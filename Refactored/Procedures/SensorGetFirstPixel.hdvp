@@ -10,24 +10,21 @@
 <c>* SensorGetFirstPixel</c>
 <c>* --------------------------------------</c>
 <c></c>
+<l>global tuple App</l>
+<c></c>
 <l>App.Clock := dict{}</l>
 <c></c>
-<l>Row := 0 // first entry Row</l>
-<l>Col := 0 // first entry Col</l>
-<l>select_obj (Image, Image, 1) // necessary if there are concated images</l>
+<l>Row := 0</l>
+<l>Col := 0</l>
+<l>select_obj (Image, Image, 1)</l>
+<l>get_grayval (Image, Row, Col, ClockTuple)</l>
+<l>TupleString := ['RollClock', 'ImageTrigger', 'GrabNo']</l>
 <c></c>
-<l>get_grayval (Image, Row, Col, ClockTuple) // get first pixel val</l>
-<l>TupleString := ['RollClock', 'ImageTrigger', 'GrabNo'] // value names</l>
+<l>App.Clock.RollClock    := [ClockTuple[3]]</l>
+<l>App.Clock.ImageTrigger := [ClockTuple[4]]</l>
+<l>App.Clock.GrabNo       := [ClockTuple[4]]</l>
 <c></c>
-<c></c>
-<c></c>
-<l>Clock.RollClock    := [ClockTuple[3]]</l>
-<l>Clock.ImageTrigger := [ClockTuple[4]]</l>
-<l>Clock.GrabNo       := [ClockTuple[4]]</l>
-<c></c>
-<c></c>
-<c>* activate if gDebug_Aquisition_ReplaceGrabbedImagesWithBufferedImagesLoadedFromDisk = 1</c>
-<c></c>
+<c>* Aktivierung für gDebug_Aquisition_ReplaceGrabbedImagesWithBufferedImagesLoadedFromDisk.</c>
 <l>* Clock.at(0) := [TupleString[0],ClockTuple[0]]</l>
 <l>* Clock.at(1) := [TupleString[1],ClockTuple[1]]</l>
 <l>* Clock.at(2) := [TupleString[1],ClockTuple[2]]</l>
@@ -37,8 +34,7 @@
 <l>* global tuple gGrabNo</l>
 <l>* gGrabNo := ClockTuple[1]</l>
 <c></c>
-<c></c>
-<l>return () </l>
+<l>return ()</l>
 </body>
 <docu id="SensorGetFirstPixel">
 <parameters>
