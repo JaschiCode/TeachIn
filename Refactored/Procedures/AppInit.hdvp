@@ -12,6 +12,9 @@
 <l>global def tuple App</l>
 <l>App := dict{}</l>
 <c></c>
+<l>global def tuple gQueuePLCResults</l>
+<l>gQueuePLCResults := []</l>
+<c></c>
 <c></c>
 <c>* Set some general parameters</c>
 <l>StatusInit ()</l>
