@@ -8,6 +8,8 @@
 <c>* Define the number of lanes in processing threads per camera  </c>
 <c></c>
 <l>global tuple App</l>
+<l>global tuple gThread_Middle_Active</l>
+<l>global def tuple gThread_RGB_Threshold_Active</l>
 <c></c>
 <l>App.ThreadManagement := dict{}</l>
 <l>App.ThreadManagement.Thread_Middle_Active        := 1</l>
@@ -18,9 +20,13 @@
 <c></c>
 <c></c>
 <l>if (App.Status.Debug.Level == 1 or App.Status.Debug.Level == 2)</l>
-<l>    gThread_Middle_Active := 0</l>
-<l>    gThread_RGB_Threshold_Active := 0</l>
+<l>    App.ThreadManagement.Thread_Middle_Active        := 0</l>
+<l>    App.ThreadManagement.Thread_RGB_Threshold_Active := 0</l>
 <l>endif</l>
+<c></c>
+<c>* App ist führend; globale Flags bleiben vorerst als Brücke zur Altbibliothek erhalten.</c>
+<l>gThread_Middle_Active        := App.ThreadManagement.Thread_Middle_Active</l>
+<l>gThread_RGB_Threshold_Active := App.ThreadManagement.Thread_RGB_Threshold_Active</l>
 <c></c>
 <c></c>
 <c>* Set the lanes executed in a thread based on the number of threads per camera</c>
