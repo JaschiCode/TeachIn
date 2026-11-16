@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="25.11.0.0">
+<procedure name="SegmentationFilterRegionsTabletsCuttingBasedOnProjection">
+<interface>
+<io>
+<par name="RegionTabletsOnBorder" base_type="iconic" dimension="0"/>
+</io>
+</interface>
+<body>
+<c>* SegmentationFilterRegionsTabletsCuttingBasedOnProjection</c>
+<c>* ------------------------------------------------------------------</c>
+<c></c>
+<l>global tuple App</l>
+<c></c>
+<c>* Get variables from dictionary</c>
+<l>TabletLength := App.Format.TabletInspection.TeachIn.V_ProductLength_InMovementDirection.Value</l>
+<c></c>
+<l>gen_empty_obj (RemainingObject)</l>
+<l>gen_empty_obj (PartToRemove)</l>
+<c></c>
+<l>count_obj (RegionTabletsOnBorder, NumRegionTabletsOnBorder)</l>
+<l>if (NumRegionTabletsOnBorder &gt; 0)</l>
+<c>    </c>
+<l>    for IdxTablet := 0 to NumRegionTabletsOnBorder-1 by 1</l>
+<l>        select_obj (RegionTabletsOnBorder, ObjectsOnBorder_Selected, IdxTablet)</l>
+<c>        </c>
+<l>        union1 (ObjectsOnBorder_Selected, ObjectsOnBorder_Union)</l>
+<l>        smallest_rectangle1 (ObjectsOnBorder_Union, ObjectSmallestRectangle_Row1, ObjectSmallestRectangle_Col1, ObjectSmallestRectangle_Row2, ObjectSmallestRectangle_Col2)</l>
+<l>        Object_Width := ObjectSmallestRectangle_Col2-ObjectSmallestRectangle_Col1</l>
+<l>        Object_Height := ObjectSmallestRectangle_Row2-ObjectSmallestRectangle_Row1</l>
+<c>        </c>
+<l>*         smallest_rectangle1 (ObjectsOnBorder_Union, ObjectSmallestRectangle_Row1, ObjectSmallestRectangle_Col1, ObjectSmallestRectangle_Row2, ObjectSmallestRectangle_Col2)</l>
+<l>*         gen_rectangle1 (RectangleForProjection, ObjectSmallestRectangle_Row1, ObjectSmallestRectangle_Col1, ObjectSmallestRectangle_Row2, ObjectSmallestRectangle_Col2)</l>
+<l>*         smallest_rectangle2 (ObjectsOnBorder_Union, Row, Column, Phi, Length1, Length2)</l>
+<l>*         gen_rectangle2 (Rectangle, Row, Column, Phi, Length1, Length2)</l>
+<c>        </c>
+<l>*         dev_display (ImageOrig)</l>
+<l>*         dev_display (Rectangle)</l>
+<l>*         dev_display (RectangleForProjection)</l>
+<c>        </c>
+<c>        * Set the region to 0,0 position</c>
+<l>        gen_rectangle1 (RectangleForProjection, ObjectSmallestRectangle_Row1, ObjectSmallestRectangle_Col1, ObjectSmallestRectangle_Row2, ObjectSmallestRectangle_Col2)</l>
+<l>        move_region (ObjectsOnBorder_Selected, RegionToProject, -ObjectSmallestRectangle_Row1, -ObjectSmallestRectangle_Col1)</l>
+<l>        region_to_bin (RegionToProject, BinImage, 255, 0, Object_Width, Object_Height)</l>
+<l>        gray_projections (BinImage, BinImage, 'simple', HorProjection, VertProjection)</l>
+<l>*         gray_projections (RectangleForProjection, BinImage, 'simple', HorProjection, VertProjection)</l>
+<l>        create_funct_1d_array (HorProjection, Function)</l>
+<c>        * Show the horizontal projections in a graphical mode</c>
+<l>*         gen_empty_obj (HistoRectangles)</l>
+<l>*         for i := 0 to |HorProjection| - 1 by 1</l>
+<l>*         gen_rectangle1 (Rectangle, Row1 + i, HorProjection[i], Row1 + i +1, HorProjection[i] +1)</l>
+<l>*         concat_obj (HistoRectangles, Rectangle, HistoRectangles)</l>
+<l>*         endfor</l>
+<l>*         dev_display (HistoRectangles)</l>
+<c>        </c>
+<l>*         dev_clear_window ()</l>
+<l>*         dev_display (ImageOrig)</l>
+<l>*         dev_set_draw ('margin')</l>
+<l>        funct_1d_to_pairs (Function, XValues_Original, YValues_Original)</l>
+<c>        </c>
+<l>        smooth_funct_1d_gauss (Function, 3, SmoothedFunction)</l>
+<c>        * Show_FunctionHistogram (SmoothedFunction, 'blue')</c>
+<l>        derivate_funct_1d (SmoothedFunction, 'first', FirstDerivative)</l>
+<c>        * Show_FunctionHistogram (FirstDerivative, 'red')</c>
+<l>        derivate_funct_1d (SmoothedFunction, 'second', SecondDerivative)</l>
+<c>        * Show_FunctionHistogram (SecondDerivative, 'green')</c>
+<c>        * Determine the positions of the zero crossings of the first derivative, i.e.,</c>
+<c>        * the positions at which the (smoothed) gray value profile has minima and maxima.</c>
+<l>        zero_crossings_funct_1d (FirstDerivative, ZeroCrossings)</l>
+<c>      </c>
+<c>        * Select the positions of those minima (i.e., positions at which the second derivative is positive)</c>
+<c>        * where the smoothed gray value profile has a high curvature, i.e., where the second derivative</c>
+<c>        * has a large absolute value. This criterion ensures that only salient lines are selected.</c>
+<l>        MinimumMagnitudeOfSecondDerivative := 0.5</l>
+<l>        PositionOfSalientLine := []</l>
+<l>        CutpositionStart := 0</l>
+<l>        gen_empty_obj (PartitioningRectangles)</l>
+<c>        </c>
+<c>        </c>
+<l>        if (ZeroCrossings # [])</l>
+<l>            get_y_value_funct_1d (SecondDerivative, ZeroCrossings, 'constant', Y)</l>
+<l>            tuple_greater_elem (Y, MinimumMagnitudeOfSecondDerivative, Greater)</l>
+<l>            tuple_sum (Greater, NumberOfIndicesToSelect)</l>
+<l>            tuple_sort_index (-Greater, Indices)</l>
+<l>            tuple_select_range (Indices, 0, NumberOfIndicesToSelect-1, Selected)</l>
+<c>            * sort due to precise access in next loop</c>
+<l>            tuple_sort (Selected, Selected)</l>
+<l>            for i := 0 to |Selected| - 1 by 1</l>
+<l>                CutpositionEnd := ZeroCrossings[Selected[i]]</l>
+<l>                gen_rectangle1 (PartitioningObject, CutpositionStart, 0, CutpositionEnd, 1920)</l>
+<l>                concat_obj (PartitioningRectangles, PartitioningObject, PartitioningRectangles)</l>
+<l>                CutpositionStart := CutpositionEnd</l>
+<l>            endfor</l>
+<c>            </c>
+<l>            intersection (ObjectsOnBorder_Selected, PartitioningRectangles, PartToRemove)</l>
+<l>            select_shape (PartToRemove, SelectedRegions, 'height', 'and', (TabletLength*0.7), 1e6)</l>
+<l>        else</l>
+<l>            copy_obj (ObjectsOnBorder_Selected, PartToRemove, 1, -1)</l>
+<l>        endif</l>
+<c>        </c>
+<l>        difference (RegionTabletsOnBorder, PartToRemove, RemainingObject)</l>
+<l>    endfor</l>
+<c>    </c>
+<l>endif</l>
+<c></c>
+<l>return ()</l>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="SegmentationFilterRegionsTabletsCuttingBasedOnProjection">
+<parameters>
+<parameter id="RegionTabletsOnBorder"/>
+</parameters>
+</docu>
+</procedure>
+</hdevelop>

@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="25.11.0.0">
+<procedure name="TeachInShowLineProfile">
+<interface>
+<io>
+<par name="Image" base_type="iconic" dimension="0"/>
+</io>
+<ic>
+<par name="ChannelSelector" base_type="ctrl" dimension="0"/>
+<par name="Row1" base_type="ctrl" dimension="0"/>
+<par name="Col1" base_type="ctrl" dimension="0"/>
+<par name="Row2" base_type="ctrl" dimension="0"/>
+<par name="Col2" base_type="ctrl" dimension="0"/>
+<par name="WindowHandle" base_type="ctrl" dimension="0"/>
+</ic>
+</interface>
+<body>
+<c>* TeachInShowLineProfile</c>
+<c>* --------------------------------------------------------------</c>
+<c>* Show a line profile with the monochrome segmentation threshold</c>
+<c>* Alternativley show the colour support segmentation via yuv</c>
+<c>* Thread -&gt; load file -&gt; take threshold</c>
+<c></c>
+<l>global tuple App</l>
+<c></c>
+<c>* Get values from format</c>
+<l>ColorSupportIsActive := App.Format.TabletInspection.Segmentation.V_Segmentation_ColourSupport_Active.Value</l>
+<l>Threshold            := App.Format.TabletInspection.Segmentation.V_SegmentationThreshold.Value</l>
+<l>ThresholdMin         := App.Format.TabletInspection.Segmentation.V_Segmentation_ColourSupport_Threshold_Min.Value</l>
+<l>ThresholdMax         := App.Format.TabletInspection.Segmentation.V_Segmentation_ColourSupport_Threshold_Max.Value</l>
+<c></c>
+<l>Height := Row2 - Row1</l>
+<l>Width  := Col2 - Col1</l>
+<l>gen_rectangle1 (LineProfile, Row1 + Height/2, Col1, Row1 + Height/2, Col2)</l>
+<l>reduce_domain (Image, LineProfile, ImageLineProfile)</l>
+<l>decompose3 (ImageLineProfile, ImageRed, ImageGreen, ImageBlue)</l>
+<c></c>
+<c>* Get HSV image</c>
+<l>trans_from_rgb (ImageRed, ImageGreen, ImageBlue, ImageHue, ImageSaturation, ImageValue, 'hsv')</l>
+<l>compose3 (ImageHue, ImageSaturation, ImageValue, Image_LineProfile_HSV)</l>
+<c></c>
+<c>* Get YUV image to support visu for colorsupport threshold</c>
+<l>trans_from_rgb (ImageRed, ImageGreen, ImageBlue, ImageY, ImageU, ImageV, 'yuv')</l>
+<l>compose3 (ImageY, ImageU, ImageV, Image_LineProfile_YUV)</l>
+<c></c>
+<c></c>
+<c>* Loop through column values and get grayval</c>
+<l>LineProfile_Hue        := []</l>
+<l>LineProfile_Saturation := []</l>
+<l>LineProfile_Value      := []</l>
+<l>LineProfile_YUV_Y      := []</l>
+<l>LineProfile_YUV_U      := []</l>
+<l>LineProfile_YUV_V      := []</l>
+<l>for IdxCol := Col1 to Col1 + Width-1 by 1</l>
+<l>    get_grayval (Image_LineProfile_HSV, Row1 + Height/2, IdxCol, Grayval)</l>
+<l>    LineProfile_Hue        := [LineProfile_Hue, Grayval[0]]</l>
+<l>    LineProfile_Saturation := [LineProfile_Saturation, Grayval[1]]</l>
+<l>    LineProfile_Value      := [LineProfile_Value, Grayval[2]]</l>
+<c>    </c>
+<c>    * Support visu for colorsupport threshold</c>
+<l>    get_grayval (Image_LineProfile_YUV, Row1+ Height/2, IdxCol, Grayval)</l>
+<l>    LineProfile_YUV_Y := [LineProfile_YUV_Y, Grayval[0]]</l>
+<l>    LineProfile_YUV_U := [LineProfile_YUV_U, Grayval[1]]</l>
+<l>    LineProfile_YUV_V := [LineProfile_YUV_V, Grayval[2]]</l>
+<l>endfor</l>
+<c></c>
+<c></c>
+<l>X := [0 : Width-1]</l>
+<c></c>
+<c>* Add values for segmentation line</c>
+<l>Line_SegmentationValue := []</l>
+<l>Line_ProfileValueLine  := []</l>
+<l>Line_Segmentation_ColourSupport_Threshold_Min := []</l>
+<l>Line_Segmentation_ColourSupport_Threshold_Max := []</l>
+<c></c>
+<l>for Index_CNT := 0 to Width-1 by 1</l>
+<l>    if (Index_CNT % 10 == 1)</l>
+<l>        Line_SegmentationValue := [Line_SegmentationValue, Threshold]</l>
+<l>        Line_ProfileValueLine  := [Line_ProfileValueLine, Row1 + Height/2]</l>
+<l>        Line_Segmentation_ColourSupport_Threshold_Min := [Line_Segmentation_ColourSupport_Threshold_Min, ThresholdMin]</l>
+<l>        Line_Segmentation_ColourSupport_Threshold_Max := [Line_Segmentation_ColourSupport_Threshold_Max, ThresholdMax]</l>
+<l>    else</l>
+<l>        Line_SegmentationValue := [Line_SegmentationValue, -10]</l>
+<l>        Line_ProfileValueLine := [Line_ProfileValueLine, -10]</l>
+<l>        Line_Segmentation_ColourSupport_Threshold_Min := [Line_Segmentation_ColourSupport_Threshold_Min, -10]</l>
+<l>        Line_Segmentation_ColourSupport_Threshold_Max := [Line_Segmentation_ColourSupport_Threshold_Max, -10]</l>
+<l>    endif</l>
+<l>endfor</l>
+<c></c>
+<c></c>
+<l>Legend_Text  := []</l>
+<l>Legend_Color := []</l>
+<l>XLabel       := ''</l>
+<l>YLabel       := 'GrayVal'</l>
+<c></c>
+<c>* Add tick marks and grid lines to the coordinate system</c>
+<l>GridY := round(Width/5)</l>
+<l>* GridX := round(255/5)</l>
+<l>GridX := 25</l>
+<c></c>
+<l>GenParamName := ['ticks_x', 'ticks_y', 'grid_x', 'grid_y']</l>
+<l>GenParamValue := [GridY, 25, GridY, GridX]</l>
+<c></c>
+<l>GenParamName := [GenParamName, 'start_y', 'end_y', 'margin', 'origin_x', 'axes_color']</l>
+<l>GenParamValue := [GenParamValue, 0, 255, 0, GridY*5-3, 'yellow']</l>
+<c></c>
+<l>Title := 'Add tick marks and grid'</l>
+<c></c>
+<l>TeachInSelectAndDisplayMultiChannelImage (App.TeachIn.ImageOrig, ImageSelectedChannel, Image, ChannelSelector, 1, 1, 0)</l>
+<c></c>
+<c>* GrayValue Line</c>
+<l>Color := ['green']</l>
+<l>TeachInShowLineProfilePlotTuple (WindowHandle, X, [LineProfile_Value], XLabel, YLabel, Color, GenParamName, GenParamValue) </l>
+<l>Legend_Text  := [Legend_Text, 'Gray values / segmentation' + ' = ' + Threshold]</l>
+<l>Legend_Color := [Legend_Color,Color]</l>
+<c></c>
+<c>* Color support lines</c>
+<l>if (ColorSupportIsActive)</l>
+<c>    * colour support 1 value line (YUV-U)</c>
+<l>    Color := 'yellow'</l>
+<l>    TeachInShowLineProfilePlotTuple (WindowHandle, X, [LineProfile_YUV_U], XLabel, YLabel, Color, GenParamName, GenParamValue)</l>
+<l>    Legend_Text := [Legend_Text, 'ColourSupport1 min = ' + ThresholdMin]</l>
+<l>    Legend_Color := [Legend_Color,Color]</l>
+<c>    * colour support 2 value line (YUV-V)</c>
+<l>    Color := 'pink'</l>
+<l>    TeachInShowLineProfilePlotTuple (WindowHandle, X, [LineProfile_YUV_V], XLabel, YLabel, Color, GenParamName, GenParamValue)</l>
+<l>    Legend_Text := [Legend_Text, 'ColourSupport2 max =' + ThresholdMax ]</l>
+<l>    Legend_Color := [Legend_Color,Color]</l>
+<l>endif</l>
+<c></c>
+<c></c>
+<l>GenParamName := ['ticks_x', 'ticks_y', 'grid_x', 'grid_y']</l>
+<l>GenParamValue := [GridY, 25, GridY, GridX]</l>
+<c></c>
+<l>GenParamName := [GenParamName, 'start_y', 'end_y', 'margin', 'origin_x', 'axes_color', 'style']</l>
+<l>GenParamValue := [GenParamValue,0, 255, 0, GridY*5-3, 'yellow', 'cross']</l>
+<c></c>
+<c>* SegmentationValue Line</c>
+<l>Color := ['green']</l>
+<l>TeachInShowLineProfilePlotTuple (WindowHandle, X, [Line_SegmentationValue], XLabel, YLabel, Color, GenParamName, GenParamValue) //show threshold value as green dotted line</l>
+<l>Sequence := [0 : |Line_ProfileValueLine|-1]</l>
+<c></c>
+<l>if (ColorSupportIsActive)</l>
+<c>    * Line_Segmentation_ColourSupport_Threshold_Min</c>
+<l>    Color := ['yellow']</l>
+<l>    TeachInShowLineProfilePlotTuple (WindowHandle, X, [Line_Segmentation_ColourSupport_Threshold_Min], XLabel, YLabel, Color, GenParamName, GenParamValue)</l>
+<c>    * Line_Segmentation_ColourSupport_Threshold_Max</c>
+<l>    Color := ['pink']</l>
+<l>    TeachInShowLineProfilePlotTuple (WindowHandle, X, [Line_Segmentation_ColourSupport_Threshold_Max], XLabel, YLabel, Color, GenParamName, GenParamValue)</l>
+<l>endif</l>
+<c></c>
+<c>* LineProfile Line</c>
+<l>Color := ['red']</l>
+<l>set_color (WindowHandle, Color)</l>
+<l>disp_cross (WindowHandle, Line_ProfileValueLine, Sequence + Col1, 4, 0.785398)</l>
+<l>Legend_Text := [Legend_Text, 'Line profile']</l>
+<l>Legend_Color := [Legend_Color,Color]</l>
+<c></c>
+<c>* Show segmented area</c>
+<l>get_part (WindowHandle, Row1, Col1, Row2, Col2)</l>
+<l>gen_rectangle1 (RegionLanesROIs, Row1, Col1, Row2, Col2)</l>
+<l>reduce_domain (Image, RegionLanesROIs, ImageReduced)</l>
+<l>decompose3 (ImageReduced, Image_Red, Image_Green, Image_Blue)</l>
+<l>trans_from_rgb (Image_Red, Image_Green, Image_Blue, ImageResult_HSV_H, ImageResult_HSV_S, ImageResult_HSV_V, 'hsv')</l>
+<l>threshold (ImageResult_HSV_V, RegionSegmented, Threshold, 255)</l>
+<c></c>
+<l>Color := ['blue']</l>
+<l>set_color (WindowHandle, Color)</l>
+<l>Legend_Text := [Legend_Text, 'Segmented Region']</l>
+<l>Legend_Color := [Legend_Color,Color]</l>
+<l>disp_obj (RegionSegmented, WindowHandle)</l>
+<c></c>
+<c>* Show segmented area through color support</c>
+<l>Color := ['cornflower blue']</l>
+<l>set_color (WindowHandle, Color)</l>
+<l>Legend_Text := [Legend_Text, 'Segmentation_ColourSupport_Active = ' + ColorSupportIsActive]</l>
+<l>Legend_Color := [Legend_Color,Color]</l>
+<c></c>
+<c>* Display legend text</c>
+<l>disp_text (WindowHandle, Legend_Text, 'window', 'top', 'left', Legend_Color, ['box_color','box_padding'], ['#ffffff77',5])</l>
+<c></c>
+<l>if (ColorSupportIsActive)</l>
+<l>    gen_empty_obj (ImageYUV)</l>
+<l>    SegmentationColorSupport (ImageReduced, ImageRed, ImageGreen, ImageBlue, RegionLanesROIs, RegionSegmented, RegionSegmented, RegionColorSupport)</l>
+<l>    disp_obj (RegionColorSupport, WindowHandle)</l>
+<l>endif</l>
+<c></c>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="TeachInShowLineProfile">
+<parameters>
+<parameter id="ChannelSelector"/>
+<parameter id="Col1"/>
+<parameter id="Col2"/>
+<parameter id="Image"/>
+<parameter id="Row1"/>
+<parameter id="Row2"/>
+<parameter id="WindowHandle"/>
+</parameters>
+</docu>
+</procedure>
+</hdevelop>

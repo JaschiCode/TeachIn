@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="25.11.0.0">
+<procedure name="SensorGetFirstPixel">
+<interface>
+<io>
+<par name="Image" base_type="iconic" dimension="0"/>
+</io>
+</interface>
+<body>
+<c>* SensorGetFirstPixel</c>
+<c>* --------------------------------------</c>
+<c></c>
+<l>App.Clock := dict{}</l>
+<c></c>
+<l>Row := 0 // first entry Row</l>
+<l>Col := 0 // first entry Col</l>
+<l>select_obj (Image, Image, 1) // necessary if there are concated images</l>
+<c></c>
+<l>get_grayval (Image, Row, Col, ClockTuple) // get first pixel val</l>
+<l>TupleString := ['RollClock', 'ImageTrigger', 'GrabNo'] // value names</l>
+<c></c>
+<c></c>
+<c></c>
+<l>Clock.RollClock    := [ClockTuple[3]]</l>
+<l>Clock.ImageTrigger := [ClockTuple[4]]</l>
+<l>Clock.GrabNo       := [ClockTuple[4]]</l>
+<c></c>
+<c></c>
+<c>* activate if gDebug_Aquisition_ReplaceGrabbedImagesWithBufferedImagesLoadedFromDisk = 1</c>
+<c></c>
+<l>* Clock.at(0) := [TupleString[0],ClockTuple[0]]</l>
+<l>* Clock.at(1) := [TupleString[1],ClockTuple[1]]</l>
+<l>* Clock.at(2) := [TupleString[1],ClockTuple[2]]</l>
+<c></c>
+<l>* global tuple gRollClock</l>
+<l>* gRollClock := ClockTuple[0]</l>
+<l>* global tuple gGrabNo</l>
+<l>* gGrabNo := ClockTuple[1]</l>
+<c></c>
+<c></c>
+<l>return () </l>
+</body>
+<docu id="SensorGetFirstPixel">
+<parameters>
+<parameter id="Image"/>
+</parameters>
+</docu>
+</procedure>
+</hdevelop>

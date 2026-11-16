@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="25.11.0.0">
+<procedure name="NumberOfDetectionsLeadToEjectGet">
+<interface>
+<oc>
+<par name="NumberOfDetectionsLeadToEject_PerLinePerFeature" base_type="ctrl" dimension="0"/>
+<par name="CriticalDefectActive_PerLinePerFeature" base_type="ctrl" dimension="0"/>
+</oc>
+</interface>
+<body>
+<c>* NumberOfDetectionsLeadToEjectGet</c>
+<c>* ---------------------------------------------------------------------------------------</c>
+<c>* Create tuple for number of detections that lead to eject for each active feature </c>
+<c>* and another tuple for critical defect active for each active feature</c>
+<c></c>
+<c>* todo: </c>
+<c>* 1. gewählte feature prüfen</c>
+<c>* 2. In Konfigurationen eine Eingabe der möglichen Feature einfügen, damit diese beim Einfügen/Entfernen von Features nicht jedes Mal an mehreren Stellen von Hand geändert werden müssen</c>
+<c></c>
+<l>global tuple App</l>
+<c></c>
+<c></c>
+<c>* Initialize output variables</c>
+<l>NumberOfDetectionsLeadToEject_PerLinePerFeature := []</l>
+<l>CriticalDefectActive_PerLinePerFeature          := []</l>
+<c></c>
+<l>NumberOfDetectionsLeadToEjectAdd (App.Format.TabletInspection.Measure_ProductLength, NumberOfDetectionsLeadToEject_PerLinePerFeature, CriticalDefectActive_PerLinePerFeature, NumberOfDetectionsLeadToEject_PerLinePerFeature, CriticalDefectActive_PerLinePerFeature)</l>
+<l>NumberOfDetectionsLeadToEjectAdd (App.Format.TabletInspection.Measure_ProductWidth, NumberOfDetectionsLeadToEject_PerLinePerFeature, CriticalDefectActive_PerLinePerFeature, NumberOfDetectionsLeadToEject_PerLinePerFeature, CriticalDefectActive_PerLinePerFeature)</l>
+<l>NumberOfDetectionsLeadToEjectAdd (App.Format.TabletInspection.Measure_ProductArea, NumberOfDetectionsLeadToEject_PerLinePerFeature, CriticalDefectActive_PerLinePerFeature, NumberOfDetectionsLeadToEject_PerLinePerFeature, CriticalDefectActive_PerLinePerFeature)</l>
+<l>NumberOfDetectionsLeadToEjectAdd (App.Format.TabletInspection.Measure_ProductColour1, NumberOfDetectionsLeadToEject_PerLinePerFeature, CriticalDefectActive_PerLinePerFeature, NumberOfDetectionsLeadToEject_PerLinePerFeature, CriticalDefectActive_PerLinePerFeature)</l>
+<l>NumberOfDetectionsLeadToEjectAdd (App.Format.TabletInspection.Measure_ProductColour2, NumberOfDetectionsLeadToEject_PerLinePerFeature, CriticalDefectActive_PerLinePerFeature, NumberOfDetectionsLeadToEject_PerLinePerFeature, CriticalDefectActive_PerLinePerFeature)</l>
+<l>NumberOfDetectionsLeadToEjectAdd (App.Format.TabletInspection.Measure_ProductColour3, NumberOfDetectionsLeadToEject_PerLinePerFeature, CriticalDefectActive_PerLinePerFeature, NumberOfDetectionsLeadToEject_PerLinePerFeature, CriticalDefectActive_PerLinePerFeature)</l>
+<l>NumberOfDetectionsLeadToEjectAdd (App.Format.TabletInspection.Measure_ProductSpot, NumberOfDetectionsLeadToEject_PerLinePerFeature, CriticalDefectActive_PerLinePerFeature, NumberOfDetectionsLeadToEject_PerLinePerFeature, CriticalDefectActive_PerLinePerFeature)</l>
+<l>NumberOfDetectionsLeadToEjectAdd (App.Format.TabletInspection.Measure_ProductPRV, NumberOfDetectionsLeadToEject_PerLinePerFeature, CriticalDefectActive_PerLinePerFeature, NumberOfDetectionsLeadToEject_PerLinePerFeature, CriticalDefectActive_PerLinePerFeature)</l>
+<l>NumberOfDetectionsLeadToEjectAdd (App.Format.TabletInspection.Measure_ProductPCC, NumberOfDetectionsLeadToEject_PerLinePerFeature, CriticalDefectActive_PerLinePerFeature, NumberOfDetectionsLeadToEject_PerLinePerFeature, CriticalDefectActive_PerLinePerFeature)</l>
+<l>NumberOfDetectionsLeadToEjectAdd (App.Format.TabletInspection.Measure_ProductOCR, NumberOfDetectionsLeadToEject_PerLinePerFeature, CriticalDefectActive_PerLinePerFeature, NumberOfDetectionsLeadToEject_PerLinePerFeature, CriticalDefectActive_PerLinePerFeature)</l>
+<c> </c>
+<l>return ()</l>
+</body>
+<docu id="NumberOfDetectionsLeadToEjectGet">
+<parameters>
+<parameter id="CriticalDefectActive_PerLinePerFeature"/>
+<parameter id="NumberOfDetectionsLeadToEject_PerLinePerFeature"/>
+</parameters>
+</docu>
+</procedure>
+</hdevelop>

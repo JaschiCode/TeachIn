@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="25.11.0.0">
+<procedure name="SensorGrabImageConvertLongToMultiChannelImageAndCapImage">
+<interface>
+<io>
+<par name="Image" base_type="iconic" dimension="0"/>
+</io>
+<oo>
+<par name="ImageMultiChannel" base_type="iconic" dimension="0"/>
+<par name="ImageCap" base_type="iconic" dimension="0"/>
+</oo>
+</interface>
+<body>
+<c>* SensorGrabImageConvertLongToMultiChannelImageAndCapImage</c>
+<c>* -------------------------------------------------------------------------------------------------</c>
+<c>* Read image from format and separate them into 5-channel image of first camera (ImageOrig)</c>
+<c>* and 3-channel image of side cameras (CapImage)</c>
+<c></c>
+<l>global tuple App</l>
+<c></c>
+<c>* Get values from format</c>
+<l>Cam0_ImageHeight := App.Format.Camera.Cameras.Camera_0.V_ImageGrabResolution_Height.Value</l>
+<c></c>
+<c>* Size of input image</c>
+<l>get_image_size (Image, Image_Width, Image_Height)</l>
+<l>crop_part (Image, ImagePart, [0, Cam0_ImageHeight], [0,0], [Image_Width,Image_Width], [Cam0_ImageHeight,Image_Height-Cam0_ImageHeight])</l>
+<c></c>
+<c>* 5-channel image from camera 1</c>
+<l>select_obj (ImagePart, ImageMultiChannel, 1)</l>
+<c></c>
+<c>* 3-channel image from camera 2 and 3</c>
+<l>select_obj (ImagePart, ImageBottom, 2)</l>
+<l>access_channel (ImageBottom, ImageCap, [1, 2, 3])</l>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="SensorGrabImageConvertLongToMultiChannelImageAndCapImage">
+<parameters>
+<parameter id="Image"/>
+<parameter id="ImageCap"/>
+<parameter id="ImageMultiChannel"/>
+</parameters>
+</docu>
+</procedure>
+</hdevelop>

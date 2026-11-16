@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="25.11.0.0">
+<procedure name="TeachInUserIORectangleRegionVisualization">
+<interface>
+<io>
+<par name="Image" base_type="iconic" dimension="0"/>
+</io>
+<oo>
+<par name="RectLeftUpper" base_type="iconic" dimension="0"/>
+<par name="RectLeftLower" base_type="iconic" dimension="0"/>
+<par name="RectRightUpper" base_type="iconic" dimension="0"/>
+<par name="RectRightLower" base_type="iconic" dimension="0"/>
+<par name="RectMain" base_type="iconic" dimension="0"/>
+</oo>
+<ic>
+<par name="Message" base_type="ctrl" dimension="0"/>
+<par name="Row1" base_type="ctrl" dimension="0"/>
+<par name="Col1" base_type="ctrl" dimension="0"/>
+<par name="Row2" base_type="ctrl" dimension="0"/>
+<par name="Col2" base_type="ctrl" dimension="0"/>
+<par name="MarkerSize" base_type="ctrl" dimension="0"/>
+<par name="ScaleVertical" base_type="ctrl" dimension="0"/>
+<par name="ScaleHorizontal" base_type="ctrl" dimension="0"/>
+<par name="InvertImage" base_type="ctrl" dimension="0"/>
+<par name="WindowHandle" base_type="ctrl" dimension="0"/>
+<par name="ChannelSelector" base_type="ctrl" dimension="0"/>
+</ic>
+</interface>
+<body>
+<c>* TeachInUserIORectangleRegionVisualization</c>
+<c>* ------------------------------------------------------------</c>
+<c></c>
+<l>global tuple App</l>
+<c></c>
+<l>WindowHandle := App.Visualization.Windows.[App.Status.Camera.ID]</l>
+<c></c>
+<l>gen_rectangle1 (RectMain, Row1, Col1, Row2, Col2)</l>
+<c></c>
+<c>* Calculate middle cross for visualization</c>
+<l>SizeMiddleCross := 3</l>
+<l>Width  := Col2 - Col1</l>
+<l>Height := Row2 - Row1</l>
+<c></c>
+<l>gen_rectangle1 (RectCrossVertical, Row1 + Height/2 - SizeMiddleCross, Col1 + Width/2 - Width/5, Row1 + Height/2 + SizeMiddleCross , Col1 + Width/2 + Width/5 )</l>
+<l>gen_rectangle1 (RectCrossHorizontal, Row1 + Height/2 - Height/5, Col1 + Width/2 - SizeMiddleCross, Row1 + Height/2 + Height/5, Col1 + Width/2 + SizeMiddleCross)</l>
+<c></c>
+<c>* Create the marker to be shown on the edges of the rectangle to move it or change size</c>
+<c>* Switch left upper rectangle to left lower. </c>
+<c>* It is more comfortable for touch screen users to see while interacting, otherwise hand will cover image </c>
+<l>gen_rectangle1 (RectLeftUpper, Row1-MarkerSize * ScaleVertical/2, Col1-MarkerSize * ScaleHorizontal/2, Row1+MarkerSize * ScaleVertical/2, Col1+MarkerSize * ScaleHorizontal/2)</l>
+<l>gen_rectangle1 (RectLeftLower, Row2-MarkerSize * ScaleVertical/2, Col1-MarkerSize * ScaleHorizontal/2, Row2+MarkerSize * ScaleVertical/2, Col1+MarkerSize * ScaleHorizontal/2)</l>
+<l>gen_rectangle1 (RectRightUpper, Row1-MarkerSize * ScaleVertical/2, Col2-MarkerSize * ScaleHorizontal/2, Row1+MarkerSize * ScaleVertical/2, Col2+MarkerSize * ScaleHorizontal/2)</l>
+<l>gen_rectangle1 (RectRightLower, Row2-MarkerSize * ScaleVertical/2, Col2-MarkerSize * ScaleHorizontal/2, Row2+MarkerSize * ScaleVertical/2, Col2+MarkerSize * ScaleHorizontal/2)</l>
+<c></c>
+<l>concat_obj (RectLeftUpper, RectLeftLower, Rects)</l>
+<l>concat_obj (Rects, RectRightUpper, Rects)</l>
+<l>concat_obj (Rects, RectRightLower, Rects)</l>
+<c>* if the internal rectangle pieces inside handling boxes could not be visualized comment in</c>
+<l>* difference (RectangleOutput, Rects, RectMain)</l>
+<c></c>
+<l>set_window_param (WindowHandle, 'flush', 'false') </l>
+<c></c>
+<l>TeachInSelectAndDisplayMultiChannelImage (App.TeachIn.ImageOrig, ImageSelectedChannel, ImageDisplay, ChannelSelector, 1, 1, 0)</l>
+<l>set_color (WindowHandle, 'light gray')</l>
+<l>disp_obj (RectMain, WindowHandle)</l>
+<l>set_color (WindowHandle, 'spring green')</l>
+<l>disp_obj (Rects, WindowHandle)</l>
+<c></c>
+<c></c>
+<l>if (InvertImage)</l>
+<l>    reduce_domain (Image, RectCrossHorizontal, ImageReduced)</l>
+<l>    invert_image (ImageReduced, ImageInvert)</l>
+<l>    disp_obj (ImageInvert, WindowHandle)</l>
+<l>    reduce_domain (Image, RectCrossVertical, ImageReduced)</l>
+<l>    invert_image (ImageReduced, ImageInvert)</l>
+<l>    disp_obj (ImageInvert, WindowHandle)</l>
+<l>else</l>
+<l>    set_color (WindowHandle, 'dim gray')</l>
+<l>    set_draw (WindowHandle, 'fill')</l>
+<l>    disp_obj (RectCrossVertical, WindowHandle)</l>
+<l>    disp_obj (RectCrossHorizontal, WindowHandle)</l>
+<l>    set_draw (WindowHandle, 'margin')</l>
+<l>endif</l>
+<c></c>
+<c>* Display message if it is available</c>
+<l>if (|Message| == [] and App.System.DebugInHalcon)</l>
+<l>    disp_text (WindowHandle, Message, 'window', 'top', 'left', 'blue', ['box_color','box_padding'], ['#ffffff77',5])</l>
+<l>endif</l>
+<l>flush_buffer (WindowHandle)</l>
+<l>set_window_param (WindowHandle, 'flush', 'true')</l>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="TeachInUserIORectangleRegionVisualization">
+<parameters>
+<parameter id="ChannelSelector"/>
+<parameter id="Col1"/>
+<parameter id="Col2"/>
+<parameter id="Image"/>
+<parameter id="InvertImage"/>
+<parameter id="MarkerSize"/>
+<parameter id="Message"/>
+<parameter id="RectLeftLower"/>
+<parameter id="RectLeftUpper"/>
+<parameter id="RectMain"/>
+<parameter id="RectRightLower"/>
+<parameter id="RectRightUpper"/>
+<parameter id="Row1"/>
+<parameter id="Row2"/>
+<parameter id="ScaleHorizontal"/>
+<parameter id="ScaleVertical"/>
+<parameter id="WindowHandle"/>
+</parameters>
+</docu>
+</procedure>
+</hdevelop>

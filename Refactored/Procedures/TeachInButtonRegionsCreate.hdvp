@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="25.11.0.0">
+<procedure name="TeachInButtonRegionsCreate">
+<interface>
+<io>
+<par name="Image" base_type="iconic" dimension="0"/>
+</io>
+<oo>
+<par name="ButtonRectangles" base_type="iconic" dimension="0"/>
+</oo>
+<ic>
+<par name="NumberOfButtonsToCreate" base_type="ctrl" dimension="0"/>
+</ic>
+</interface>
+<body>
+<c>* TeachInButtonRegionsCreate</c>
+<c>* -------------------------------------------------------</c>
+<c></c>
+<l>global tuple App</l>
+<c></c>
+<c>* Initialize output variables</c>
+<l>gen_empty_obj (EmptyObject)</l>
+<l>ButtonRectangles := EmptyObject</l>
+<c></c>
+<l>SpacingToOuterFrame             := 24</l>
+<l>SpacingBetweenRegionsHorizontal := 24</l>
+<l>RegionHeightOnVisu              := 1500</l>
+<c></c>
+<l>WindowHandle := App.Visualization.Windows.[App.Status.Camera.ID]</l>
+<c></c>
+<l>get_window_extents (WindowHandle, _, _, WindowWidth, WindowHeight)</l>
+<c></c>
+<c>* Write string in middle of given region</c>
+<l>get_image_size (Image, ImageWidth, ImageHeight)</l>
+<l>ScaleHorizontal := (WindowWidth * 1.0) / ImageWidth</l>
+<l>ScaleVertical   := (WindowHeight * 1.0) / ImageHeight</l>
+<c></c>
+<l>RegionHeightOnVisu := round(RegionHeightOnVisu * ScaleVertical)</l>
+<l>VerticalStartRow1 := ImageHeight - SpacingToOuterFrame - RegionHeightOnVisu</l>
+<c></c>
+<l>Width_WithoutBorders := ImageWidth - (2 * SpacingToOuterFrame)</l>
+<l>RegionWidth := round((Width_WithoutBorders - (2 * SpacingBetweenRegionsHorizontal)) /NumberOfButtonsToCreate)</l>
+<c></c>
+<l>ColStart := 0</l>
+<l>ColEnd   := 0</l>
+<l>for Index := 0 to NumberOfButtonsToCreate -1 by 1</l>
+<l>    ColStart := ColEnd + SpacingBetweenRegionsHorizontal</l>
+<l>    ColEnd   := ColStart + RegionWidth</l>
+<l>    gen_rectangle1 (Rectangle0, VerticalStartRow1, ColStart, VerticalStartRow1 + RegionHeightOnVisu, ColEnd)</l>
+<l>    concat_obj (ButtonRectangles, Rectangle0, ButtonRectangles)</l>
+<l>endfor</l>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="TeachInButtonRegionsCreate">
+<parameters>
+<parameter id="ButtonRectangles"/>
+<parameter id="Image"/>
+<parameter id="NumberOfButtonsToCreate"/>
+</parameters>
+</docu>
+</procedure>
+</hdevelop>

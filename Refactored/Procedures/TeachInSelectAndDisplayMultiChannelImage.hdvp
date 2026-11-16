@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="25.11.0.0">
+<procedure name="TeachInSelectAndDisplayMultiChannelImage">
+<interface>
+<io>
+<par name="ImageMultiChannel" base_type="iconic" dimension="0"/>
+</io>
+<oo>
+<par name="ImageSelectedChannel" base_type="iconic" dimension="0"/>
+<par name="ImageDisplay" base_type="iconic" dimension="0"/>
+</oo>
+<ic>
+<par name="ChannelSelector" base_type="ctrl" dimension="0"/>
+<par name="DisplayImageActive" base_type="ctrl" dimension="0"/>
+<par name="DisplayImageTransformHSVToRGB" base_type="ctrl" dimension="0"/>
+<par name="SetPartActive" base_type="ctrl" dimension="0"/>
+</ic>
+</interface>
+<body>
+<c>* TeachInSelectAndDisplayMultiChannelImage</c>
+<c>* -----------------------------------------------------</c>
+<c></c>
+<l>global tuple App</l>
+<c></c>
+<c></c>
+<c>* Initialize output variable</c>
+<l>ImageSelectedChannel := ImageMultiChannel</l>
+<c></c>
+<l>SensorGrabImageConvertLongToMultiChannelImageAndCapImage (ImageMultiChannel, ImageMultiChannel, ImageCap)</l>
+<c></c>
+<c>* In a input image image two images with different illuminations are stored by added channels. </c>
+<c>* Can be 5 channels or 6 channels - depending on system configuration.</c>
+<c>* This function will select and optional display.</c>
+<c></c>
+<l>count_channels (ImageMultiChannel, Channels)</l>
+<l>if (Channels == 5)</l>
+<c>    * SiSo interface</c>
+<c>    * Setting for FPGA preprocessed image. </c>
+<c>    * 1 : HSV Hue               and RGB Red</c>
+<c>    * 2 : HSV Saturation        and RGB Green</c>
+<c>    * 3 : HSV Value             and RGB Blue</c>
+<c>    * 4 : Backlight Monochrome  and Side-Camera</c>
+<c>    * 5 : UV or LineLight</c>
+<l>    decompose5 (ImageMultiChannel, Image1, Image2, Image3, Image4, Image5)</l>
+<l>    switch (ChannelSelector)</l>
+<l>    case 0:</l>
+<c>        * HSV_Sequencer_V</c>
+<c>        * Bottom-Light</c>
+<l>        Out_Image_SelectedChannel := Image4 //</l>
+<l>        break</l>
+<l>    case 1:</l>
+<c>        * Top-Light</c>
+<l>        compose3 (Image1, Image2, Image3, ImageSelectedChannel)</l>
+<l>        break</l>
+<l>    case 2:</l>
+<c>        * UV-Light</c>
+<l>        ImageSelectedChannel := Image5</l>
+<l>        break</l>
+<l>    endswitch</l>
+<l>endif</l>
+<c></c>
+<c></c>
+<c>* Show the image if display is active</c>
+<l>WindowHandle := App.Visualization.Windows.[App.Status.Camera.ID]</l>
+<c></c>
+<l>if (DisplayImageActive)</l>
+<c>   </c>
+<l>    if (Channels == 5) </l>
+<c>        * SiSo interface</c>
+<l>        switch (ChannelSelector)        </l>
+<l>        case 0:    </l>
+<c>            * HSV_Sequencer_V</c>
+<c>            * Bottom-Light</c>
+<l>             ImageDisplay := ImageSelectedChannel</l>
+<l>            break</l>
+<l>        case 1:</l>
+<l>            if (DisplayImageTransformHSVToRGB)</l>
+<c>                * Silicon Software uses HSL - so channels are switched accordingly for halcon HLS</c>
+<l>                trans_to_rgb (Image1, Image3, Image2, ImageRed, ImageGreen, ImageBlue, 'hls')   </l>
+<l>                compose3 (ImageRed, ImageGreen, ImageBlue, ImageRgb) </l>
+<l>                ImageDisplay := ImageRgb</l>
+<l>            endif </l>
+<l>            break</l>
+<l>        case 2:</l>
+<c>            *  UV-Image</c>
+<l>             ImageDisplay := ImageSelectedChannel</l>
+<l>            break</l>
+<l>        endswitch</l>
+<l>    else</l>
+<c>        * No SiSo interface</c>
+<l>         ImageDisplay := ImageSelectedChannel</l>
+<l>    endif</l>
+<c>    </c>
+<l>    if (SetPartActive)</l>
+<l>        get_image_size (ImageDisplay, ImageWidth, ImageHeight)</l>
+<l>        set_part (WindowHandle, 0, 0, ImageHeight-1, ImageWidth-1)</l>
+<l>    endif</l>
+<l>    disp_obj (ImageDisplay, WindowHandle)</l>
+<c>    </c>
+<l>endif</l>
+<c></c>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="TeachInSelectAndDisplayMultiChannelImage">
+<parameters>
+<parameter id="ChannelSelector"/>
+<parameter id="DisplayImageActive"/>
+<parameter id="DisplayImageTransformHSVToRGB"/>
+<parameter id="ImageDisplay"/>
+<parameter id="ImageMultiChannel"/>
+<parameter id="ImageSelectedChannel"/>
+<parameter id="SetPartActive"/>
+</parameters>
+</docu>
+</procedure>
+</hdevelop>

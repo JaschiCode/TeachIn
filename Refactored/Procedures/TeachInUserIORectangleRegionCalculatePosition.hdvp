@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="25.11.0.0">
+<procedure name="TeachInUserIORectangleRegionCalculatePosition">
+<interface>
+<io>
+<par name="RectLeftUpper" base_type="iconic" dimension="0"/>
+<par name="RectLeftLower" base_type="iconic" dimension="0"/>
+<par name="RectRightUpper" base_type="iconic" dimension="0"/>
+<par name="RectRightLower" base_type="iconic" dimension="0"/>
+<par name="RectMainRegion" base_type="iconic" dimension="0"/>
+</io>
+<ic>
+<par name="Row1In" base_type="ctrl" dimension="0"/>
+<par name="Col1In" base_type="ctrl" dimension="0"/>
+<par name="Row2In" base_type="ctrl" dimension="0"/>
+<par name="Col2In" base_type="ctrl" dimension="0"/>
+<par name="MouseRow" base_type="ctrl" dimension="0"/>
+<par name="MouseCol" base_type="ctrl" dimension="0"/>
+<par name="ImageWidth" base_type="ctrl" dimension="0"/>
+<par name="ImageHeight" base_type="ctrl" dimension="0"/>
+<par name="CurRectIn" base_type="ctrl" dimension="0"/>
+</ic>
+<oc>
+<par name="Row1" base_type="ctrl" dimension="0"/>
+<par name="Col1" base_type="ctrl" dimension="0"/>
+<par name="Row2" base_type="ctrl" dimension="0"/>
+<par name="Col2" base_type="ctrl" dimension="0"/>
+<par name="CurRectOut" base_type="ctrl" dimension="0"/>
+</oc>
+</interface>
+<body>
+<c>* TeachInUserIORectangleRegionCalculatePosition</c>
+<c>* -----------------------------------------------------------</c>
+<c></c>
+<l>global tuple App</l>
+<c></c>
+<c>* Initalize output variables</c>
+<l>Row1 := Row1In</l>
+<l>Col1 := Col1In</l>
+<l>Row2 := Row2In</l>
+<l>Col2 := Col2In</l>
+<c></c>
+<l>SizeMin := 50</l>
+<l>App.TeachIn.UserIO.IsInsideHandlingRegion := 0</l>
+<c></c>
+<c>* Comment in for debugging</c>
+<l>Debugmode := 0</l>
+<l>if(Debugmode)</l>
+<l>    dev_get_window (WindowHandle)  </l>
+<l>    dev_set_color ('red')</l>
+<l>    disp_cross (WindowHandle, MouseRow, MouseCol, 60, 0)</l>
+<l>endif</l>
+<c></c>
+<c></c>
+<c>* Set flag that handling rectangle was found </c>
+<c>* Needed if handling rectangles overlap in small region scenarios</c>
+<l>HandlingRectangleUsed := 0</l>
+<c></c>
+<c>* Left upper rectangle</c>
+<l>test_region_point (RectLeftUpper, MouseRow, MouseCol, IsInsideLeftUpper)</l>
+<l>if (IsInsideLeftUpper and not HandlingRectangleUsed)</l>
+<l>    Row1 := MouseRow</l>
+<l>    Col1 := MouseCol</l>
+<l>    HandlingRectangleUsed := 1</l>
+<l>    CurRectOut := 'LU'</l>
+<l>endif</l>
+<c></c>
+<c>* Left lower rectangle</c>
+<l>test_region_point (RectLeftLower, MouseRow, MouseCol, IsInsideLeftLower)</l>
+<l>if (IsInsideLeftLower and not HandlingRectangleUsed)</l>
+<l>    Row2 := MouseRow</l>
+<l>    Col1 := MouseCol</l>
+<l>    HandlingRectangleUsed := 1</l>
+<l>    CurRectOut := 'LL'</l>
+<l>endif</l>
+<c></c>
+<c>* Right upper rectangle</c>
+<l>test_region_point (RectRightUpper, MouseRow, MouseCol, IsInsideRightUpper)</l>
+<l>if (IsInsideRightUpper and not HandlingRectangleUsed)</l>
+<l>    Row1 := MouseRow</l>
+<l>    Col2 := MouseCol</l>
+<l>    HandlingRectangleUsed := 1</l>
+<l>    CurRectOut := 'RU'</l>
+<l>endif</l>
+<c></c>
+<c>* Right lower rectangle</c>
+<l>test_region_point (RectRightLower, MouseRow, MouseCol, IsInsideRightLower)</l>
+<l>if (IsInsideRightLower and not HandlingRectangleUsed)</l>
+<l>    Row2 := MouseRow</l>
+<l>    Col2 := MouseCol</l>
+<l>    HandlingRectangleUsed := 1</l>
+<l>    CurRectOut := 'RL'</l>
+<l>endif</l>
+<c></c>
+<c></c>
+<c></c>
+<c>* Move rectangles fast</c>
+<c>**********************</c>
+<c>* Upper Left Rectangle</c>
+<l>if (CurRectIn == 'LU')</l>
+<c>    * if rectangle pos is to slow, rect pos will be set to mouse pos</c>
+<l>    if(not IsInsideLeftUpper)</l>
+<l>        Row1 := MouseRow</l>
+<l>        Col1 := MouseCol</l>
+<l>        HandlingRectangleUsed := 1</l>
+<l>        CurRectOut := 'LU'</l>
+<l>    endif</l>
+<c>    * POS SWITCH </c>
+<l>    if (IsInsideLeftUpper and IsInsideRightUpper)</l>
+<l>       HandlingRectangleUsed := 1</l>
+<l>       CurRectOut := 'RU'</l>
+<l>    elseif (IsInsideLeftUpper and IsInsideLeftLower)  </l>
+<l>        HandlingRectangleUsed := 1</l>
+<l>        CurRectOut := 'LL' </l>
+<l>    endif</l>
+<c>* Lower Left Rect</c>
+<l>elseif (CurRectIn == 'LL')</l>
+<l>    if(not IsInsideLeftLower)</l>
+<l>        Row2 := MouseRow</l>
+<l>        Col1 := MouseCol     </l>
+<l>        HandlingRectangleUsed := 1</l>
+<l>        CurRectOut := 'LL'        </l>
+<l>    endif</l>
+<c>    * POS SWITCH </c>
+<l>    if(IsInsideLeftLower and IsInsideLeftUpper)</l>
+<l>        HandlingRectangleUsed := 1</l>
+<l>        CurRectOut := 'LU'</l>
+<l>    elseif(IsInsideLeftLower and IsInsideRightLower)</l>
+<l>        HandlingRectangleUsed := 1</l>
+<l>        CurRectOut := 'RL' </l>
+<l>    endif</l>
+<c>* Upper Right Rect</c>
+<l>elseif (CurRectIn == 'RU')</l>
+<l>    if(not IsInsideRightUpper)</l>
+<l>        Row1 := MouseRow</l>
+<l>        Col2 := MouseCol</l>
+<l>        HandlingRectangleUsed := 1</l>
+<l>        CurRectOut := 'RU'</l>
+<l>    endif   </l>
+<c>    * POS SWITCH </c>
+<l>    if(IsInsideRightUpper and IsInsideRightLower)</l>
+<l>        HandlingRectangleUsed := 1</l>
+<l>        CurRectOut := 'RL' </l>
+<l>    elseif(IsInsideRightUpper and IsInsideLeftUpper)</l>
+<l>        HandlingRectangleUsed := 1</l>
+<l>        CurRectOut := 'LU'</l>
+<l>    endif</l>
+<c>    * right upper rect switch pos</c>
+<c>* Lower Right Rect</c>
+<l>elseif (CurRectIn == 'RL')</l>
+<l>    if(not IsInsideRightLower)</l>
+<l>        Row2 := MouseRow</l>
+<l>        Col2 := MouseCol</l>
+<l>        HandlingRectangleUsed := 1</l>
+<l>        CurRectOut := 'RL'</l>
+<l>    endif</l>
+<c>    * POS SWITCH </c>
+<l>    if(IsInsideRightLower and IsInsideRightUpper)</l>
+<l>        HandlingRectangleUsed := 1</l>
+<l>        CurRectOut := 'RU'</l>
+<l>    elseif(IsInsideRightLower and IsInsideLeftLower)</l>
+<l>        HandlingRectangleUsed := 1</l>
+<l>        CurRectOut := 'LL' </l>
+<l>    endif</l>
+<l>endif</l>
+<c></c>
+<c></c>
+<c>* Main rectangle</c>
+<l>concat_obj (RectRightLower, RectRightUpper, Rects)</l>
+<l>concat_obj (Rects, RectLeftLower, Rects)</l>
+<l>concat_obj (Rects, RectLeftUpper, Rects)</l>
+<l>difference (RectMainRegion, Rects, RectMainRegion)</l>
+<c></c>
+<l>test_region_point (RectMainRegion, MouseRow, MouseCol, IsInsideRectangleMainRegion)</l>
+<l>if (IsInsideRectangleMainRegion and not HandlingRectangleUsed)</l>
+<l>    smallest_rectangle1 (RectMainRegion, MouseRow1, MouseCol1, MouseRow2, MouseCol2)</l>
+<l>    TempWidth  := (MouseCol2 - MouseCol1)/2</l>
+<l>    TempHeight := (MouseRow2 - MouseRow1)/2</l>
+<l>    Row1 := MouseRow - TempHeight</l>
+<l>    Col1 := MouseCol - TempWidth</l>
+<l>    Row2 := MouseRow + TempHeight</l>
+<l>    Col2 := MouseCol + TempWidth</l>
+<l>    HandlingRectangleUsed := 1</l>
+<l>    CurRectOut := 'MAIN'</l>
+<l>endif</l>
+<c></c>
+<c>* if mouse is outside of main rectangle</c>
+<l>if (CurRectIn == 'MAIN')</l>
+<l>    if(not IsInsideRectangleMainRegion)</l>
+<l>        smallest_rectangle1 (RectMainRegion, MouseRow1, MouseCol1, MouseRow2, MouseCol2)</l>
+<l>        Temp_Width := (MouseCol2 - MouseCol1)/2</l>
+<l>        Temp_Height := (MouseRow2 - MouseRow1)/2</l>
+<l>        Row1 := MouseRow - Temp_Height</l>
+<l>        Col1 := MouseCol - Temp_Width</l>
+<l>        Row2 := MouseRow + Temp_Height</l>
+<l>        Col2 := MouseCol + Temp_Width</l>
+<l>        HandlingRectangleUsed := 1</l>
+<l>        CurRectOut := 'MAIN'</l>
+<l>    endif</l>
+<l>endif</l>
+<c></c>
+<c></c>
+<c>* Ensure minimal size of rectangle</c>
+<l>if(Row1 + SizeMin &gt; Row2)</l>
+<l>    Row1 := Row2 - SizeMin</l>
+<l>endif</l>
+<l>if(Col1 + SizeMin &gt; Col2)</l>
+<l>    Col1 := Col2 - SizeMin</l>
+<l>endif</l>
+<c></c>
+<c></c>
+<c>* Check if the new Temp Values are inside the Vizu, otherwise the old Values will be returned</c>
+<l>* if (not HandlingRectangleUsed or Row1 &lt; 0 or Col1 &lt; 0 or Row2 &gt; ImageHeight or Col2 &gt; ImageWidth)</l>
+<l>*     Row1 := Row1In</l>
+<l>*     Col1 := Col1In</l>
+<l>*     Row2 := Row2In</l>
+<l>*     Col2 := Col2In</l>
+<l>* endif</l>
+<c></c>
+<c></c>
+<l>App.TeachIn.UserIO.IsInsideHandlingRegion := HandlingRectangleUsed</l>
+<c></c>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="TeachInUserIORectangleRegionCalculatePosition">
+<parameters>
+<parameter id="Col1"/>
+<parameter id="Col1In"/>
+<parameter id="Col2"/>
+<parameter id="Col2In"/>
+<parameter id="CurRectIn"/>
+<parameter id="CurRectOut"/>
+<parameter id="ImageHeight"/>
+<parameter id="ImageWidth"/>
+<parameter id="MouseCol"/>
+<parameter id="MouseRow"/>
+<parameter id="RectLeftLower"/>
+<parameter id="RectLeftUpper"/>
+<parameter id="RectMainRegion"/>
+<parameter id="RectRightLower"/>
+<parameter id="RectRightUpper"/>
+<parameter id="Row1"/>
+<parameter id="Row1In"/>
+<parameter id="Row2"/>
+<parameter id="Row2In"/>
+</parameters>
+</docu>
+</procedure>
+</hdevelop>

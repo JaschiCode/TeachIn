@@ -1,0 +1,969 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="25.11.0.0">
+<library>
+<docu>
+<short lang="en_US">Json read/write</short>
+</docu>
+</library>
+<procedure name="gAddJsonVariableToVector">
+<interface>
+<ic>
+<par name="VTFiledefinitions_In" base_type="ctrl" dimension="1"/>
+<par name="PathOfFile" base_type="ctrl" dimension="0"/>
+<par name="NameOfFile" base_type="ctrl" dimension="0"/>
+<par name="HumanReadableToAdd" base_type="ctrl" dimension="0"/>
+</ic>
+<oc>
+<par name="VTFiledefinitions_Out" base_type="ctrl" dimension="1"/>
+</oc>
+</interface>
+<body>
+<l>VTFiledefinitions_Out := VTFiledefinitions_In</l>
+<c>* </c>
+<l>VectorElementToWriteTo := 0</l>
+<c>* </c>
+<l>LengthOfVector := VTFiledefinitions_In.length()</l>
+<c>* </c>
+<l>if (LengthOfVector = 1)</l>
+<l>    if (VTFiledefinitions_In.at(0) = [])</l>
+<l>        VectorElementToWriteTo := 0</l>
+<l>    else</l>
+<l>        VectorElementToWriteTo := LengthOfVector</l>
+<l>    endif</l>
+<l>else</l>
+<l>    VectorElementToWriteTo := LengthOfVector</l>
+<l>endif</l>
+<l>VTFiledefinitions_Out.at(VectorElementToWriteTo) := [HumanReadableToAdd , PathOfFile + NameOfFile]</l>
+<l>return ()</l>
+</body>
+<docu id="gAddJsonVariableToVector">
+<parameters>
+<parameter id="HumanReadableToAdd"/>
+<parameter id="NameOfFile"/>
+<parameter id="PathOfFile"/>
+<parameter id="VTFiledefinitions_In"/>
+<parameter id="VTFiledefinitions_Out"/>
+</parameters>
+</docu>
+</procedure>
+<procedure name="gJson_bool_return_false">
+<interface>
+<ic>
+<par name="FileHandle" base_type="ctrl" dimension="0"/>
+<par name="ap" base_type="ctrl" dimension="0"/>
+<par name="sl" base_type="ctrl" dimension="0"/>
+</ic>
+<oc>
+<par name="value" base_type="ctrl" dimension="0"/>
+<par name="char" base_type="ctrl" dimension="0"/>
+<par name="apOut" base_type="ctrl" dimension="0"/>
+<par name="slOut" base_type="ctrl" dimension="0"/>
+</oc>
+</interface>
+<body>
+<l>apOut := ap</l>
+<l>slOut := sl</l>
+<l>value := false</l>
+<l>bfs := 0</l>
+<l>while (bfs#4)</l>
+<l>    fread_char (FileHandle, char)</l>
+<l>    apOut := apOut +1</l>
+<l>    slOut := slOut +1</l>
+<l>    bfs := bfs +1</l>
+<l>endwhile</l>
+<l>return ()</l>
+</body>
+<docu id="gJson_bool_return_false">
+<parameters>
+<parameter id="FileHandle"/>
+<parameter id="ap"/>
+<parameter id="apOut"/>
+<parameter id="char"/>
+<parameter id="sl"/>
+<parameter id="slOut"/>
+<parameter id="value"/>
+</parameters>
+</docu>
+</procedure>
+<procedure name="gJson_bool_return_true">
+<interface>
+<ic>
+<par name="FileHandle" base_type="ctrl" dimension="0"/>
+<par name="ap" base_type="ctrl" dimension="0"/>
+<par name="sl" base_type="ctrl" dimension="0"/>
+</ic>
+<oc>
+<par name="value" base_type="ctrl" dimension="0"/>
+<par name="char" base_type="ctrl" dimension="0"/>
+<par name="apOut" base_type="ctrl" dimension="0"/>
+<par name="slOut" base_type="ctrl" dimension="0"/>
+</oc>
+</interface>
+<body>
+<l>apOut := ap</l>
+<l>slOut := sl</l>
+<l>value := true</l>
+<l>bts := 0</l>
+<l>while (bts#3)</l>
+<l>    fread_char (FileHandle, char)</l>
+<l>    apOut := apOut +1</l>
+<l>    slOut := slOut +1</l>
+<l>    bts := bts +1</l>
+<l>endwhile</l>
+<l>return ()</l>
+</body>
+<docu id="gJson_bool_return_true">
+<parameters>
+<parameter id="FileHandle"/>
+<parameter id="ap"/>
+<parameter id="apOut"/>
+<parameter id="char"/>
+<parameter id="sl"/>
+<parameter id="slOut"/>
+<parameter id="value"/>
+</parameters>
+</docu>
+</procedure>
+<procedure name="gJSON_Get_Value_from_Vector">
+<interface>
+<ic>
+<par name="SearchWord" base_type="ctrl" dimension="0"/>
+<par name="ParameterVector" base_type="ctrl" dimension="10"/>
+</ic>
+<oc>
+<par name="Value" base_type="ctrl" dimension="0"/>
+</oc>
+</interface>
+<body>
+<c>* --------------------------------------------------</c>
+<c>* JSON_Get_Value_from_Vector (::SearchWord,ParameterVector:Value)</c>
+<c>* Author:        Lars Oberhauser</c>
+<c>* Company:       Meliscout GmbH</c>
+<c>* Create Date:   31.03.2017</c>
+<c>* Last Change:   *</c>
+<c>* --------------------------------------------------</c>
+<c>* </c>
+<c>* Variables</c>
+<l>ResultPositionTuple := [0,0,0,0,0,0,0,0,0,0]</l>
+<c>* </c>
+<c>* Prepare seach in Vector</c>
+<l>SearchWordSub := []</l>
+<l>tuple_split (SearchWord, '/', SearchWordSub)</l>
+<l>tuple_length (SearchWordSub, SearchWordSubLength)</l>
+<c>* </c>
+<l>for IndexSearchWord := 0 to SearchWordSubLength - 1 by 1</l>
+<l>    switch (IndexSearchWord + 1)</l>
+<l>    case 1:</l>
+<l>        ParameterVectorLength := ParameterVector.length()</l>
+<l>        for IndexParameterVector := 0 to ParameterVectorLength -1 by 1</l>
+<l>            Identifier := ParameterVector.at(IndexParameterVector).at(0).at(0).at(0).at(0).at(0).at(0).at(0).at(0).at(0)</l>
+<l>            if (SearchWordSub[IndexSearchWord] == Identifier)</l>
+<l>                tuple_replace (ResultPositionTuple, IndexSearchWord, IndexParameterVector, ResultPositionTuple)</l>
+<l>                break</l>
+<l>            endif</l>
+<l>        endfor</l>
+<l>        continue</l>
+<l>    case 2:</l>
+<l>        ParameterVectorLength := ParameterVector.at(ResultPositionTuple[0]).length()</l>
+<l>        for IndexParameterVector := 0 to ParameterVectorLength -1 by 1</l>
+<l>            Identifier := ParameterVector.at(ResultPositionTuple[0]).at(IndexParameterVector).at(0).at(0).at(0).at(0).at(0).at(0).at(0).at(0)</l>
+<l>            if (SearchWordSub[IndexSearchWord] == Identifier)</l>
+<l>                tuple_replace (ResultPositionTuple, IndexSearchWord, IndexParameterVector, ResultPositionTuple)</l>
+<l>                break</l>
+<l>            endif</l>
+<l>        endfor</l>
+<l>        continue</l>
+<l>    case 3:</l>
+<l>        ParameterVectorLength := ParameterVector.at(ResultPositionTuple[0]).at(ResultPositionTuple[1]).length()</l>
+<l>        for IndexParameterVector := 0 to ParameterVectorLength -1 by 1</l>
+<l>            Identifier := ParameterVector.at(ResultPositionTuple[0]).at(ResultPositionTuple[1]).at(IndexParameterVector).at(0).at(0).at(0).at(0).at(0).at(0).at(0)</l>
+<l>            if (SearchWordSub[IndexSearchWord] == Identifier)</l>
+<l>                tuple_replace (ResultPositionTuple, IndexSearchWord, IndexParameterVector, ResultPositionTuple)</l>
+<l>                break</l>
+<l>            endif</l>
+<l>        endfor</l>
+<l>        continue</l>
+<l>    case 4:</l>
+<l>        ParameterVectorLength := ParameterVector.at(ResultPositionTuple[0]).at(ResultPositionTuple[1]).at(ResultPositionTuple[2]).length()</l>
+<l>        for IndexParameterVector := 0 to ParameterVectorLength -1 by 1</l>
+<l>            Identifier := ParameterVector.at(ResultPositionTuple[0]).at(ResultPositionTuple[1]).at(ResultPositionTuple[2]).at(IndexParameterVector).at(0).at(0).at(0).at(0).at(0).at(0)</l>
+<l>            if (SearchWordSub[IndexSearchWord] == Identifier)</l>
+<l>                tuple_replace (ResultPositionTuple, IndexSearchWord, IndexParameterVector, ResultPositionTuple)</l>
+<l>                break</l>
+<l>            endif</l>
+<l>        endfor</l>
+<l>        continue</l>
+<l>    case 5:</l>
+<l>        ParameterVectorLength := ParameterVector.at(ResultPositionTuple[0]).at(ResultPositionTuple[1]).at(ResultPositionTuple[2]).at(ResultPositionTuple[3]).length()</l>
+<l>        for IndexParameterVector := 0 to ParameterVectorLength -1 by 1</l>
+<l>            Identifier := ParameterVector.at(ResultPositionTuple[0]).at(ResultPositionTuple[1]).at(ResultPositionTuple[2]).at(ResultPositionTuple[3]).at(IndexParameterVector).at(0).at(0).at(0).at(0).at(0)</l>
+<l>            if (SearchWordSub[IndexSearchWord] == Identifier)</l>
+<l>                tuple_replace (ResultPositionTuple, IndexSearchWord, IndexParameterVector, ResultPositionTuple)</l>
+<l>                break</l>
+<l>            endif</l>
+<l>        endfor</l>
+<l>        continue</l>
+<l>    case 6:</l>
+<l>        ParameterVectorLength := ParameterVector.at(ResultPositionTuple[0]).at(ResultPositionTuple[1]).at(ResultPositionTuple[2]).at(ResultPositionTuple[3]).at(ResultPositionTuple[4]).length()</l>
+<l>        for IndexParameterVector := 0 to ParameterVectorLength -1 by 1</l>
+<l>            Identifier := ParameterVector.at(ResultPositionTuple[0]).at(ResultPositionTuple[1]).at(ResultPositionTuple[2]).at(ResultPositionTuple[3]).at(ResultPositionTuple[4]).at(IndexParameterVector).at(0).at(0).at(0).at(0)</l>
+<l>            if (SearchWordSub[IndexSearchWord] == Identifier)</l>
+<l>                tuple_replace (ResultPositionTuple, IndexSearchWord, IndexParameterVector, ResultPositionTuple)</l>
+<l>                break</l>
+<l>            endif</l>
+<l>        endfor</l>
+<l>        continue</l>
+<l>    case 7:</l>
+<l>        ParameterVectorLength := ParameterVector.at(ResultPositionTuple[0]).at(ResultPositionTuple[1]).at(ResultPositionTuple[2]).at(ResultPositionTuple[3]).at(ResultPositionTuple[4]).at(ResultPositionTuple[5]).length()</l>
+<l>        for IndexParameterVector := 0 to ParameterVectorLength -1 by 1</l>
+<l>            Identifier := ParameterVector.at(ResultPositionTuple[0]).at(ResultPositionTuple[1]).at(ResultPositionTuple[2]).at(ResultPositionTuple[3]).at(ResultPositionTuple[4]).at(ResultPositionTuple[5]).at(IndexParameterVector).at(0).at(0).at(0)</l>
+<l>            if (SearchWordSub[IndexSearchWord] == Identifier)</l>
+<l>                tuple_replace (ResultPositionTuple, IndexSearchWord, IndexParameterVector, ResultPositionTuple)</l>
+<l>                break</l>
+<l>            endif</l>
+<l>        endfor</l>
+<l>        continue</l>
+<l>    case 8:</l>
+<l>        ParameterVectorLength := ParameterVector.at(ResultPositionTuple[0]).at(ResultPositionTuple[1]).at(ResultPositionTuple[2]).at(ResultPositionTuple[3]).at(ResultPositionTuple[4]).at(ResultPositionTuple[5]).at(ResultPositionTuple[6]).length()</l>
+<l>        for IndexParameterVector := 0 to ParameterVectorLength -1 by 1</l>
+<l>            Identifier := ParameterVector.at(ResultPositionTuple[0]).at(ResultPositionTuple[1]).at(ResultPositionTuple[2]).at(ResultPositionTuple[3]).at(ResultPositionTuple[4]).at(ResultPositionTuple[5]).at(ResultPositionTuple[6]).at(IndexParameterVector).at(0).at(0)</l>
+<l>            if (SearchWordSub[IndexSearchWord] == Identifier)</l>
+<l>                tuple_replace (ResultPositionTuple, IndexSearchWord, IndexParameterVector, ResultPositionTuple)</l>
+<l>                break</l>
+<l>            endif</l>
+<l>        endfor</l>
+<l>        continue</l>
+<l>    case 9:</l>
+<l>        ParameterVectorLength := ParameterVector.at(ResultPositionTuple[0]).at(ResultPositionTuple[1]).at(ResultPositionTuple[2]).at(ResultPositionTuple[3]).at(ResultPositionTuple[4]).at(ResultPositionTuple[5]).at(ResultPositionTuple[6]).at(ResultPositionTuple[7]).length()</l>
+<l>        for IndexParameterVector := 0 to ParameterVectorLength -1 by 1</l>
+<l>            Identifier := ParameterVector.at(ResultPositionTuple[0]).at(ResultPositionTuple[1]).at(ResultPositionTuple[2]).at(ResultPositionTuple[3]).at(ResultPositionTuple[4]).at(ResultPositionTuple[5]).at(ResultPositionTuple[6]).at(ResultPositionTuple[7]).at(IndexParameterVector).at(0)</l>
+<l>            if (SearchWordSub[IndexSearchWord] == Identifier)</l>
+<l>                tuple_replace (ResultPositionTuple, IndexSearchWord, IndexParameterVector, ResultPositionTuple)</l>
+<l>                break</l>
+<l>            endif</l>
+<l>        endfor</l>
+<l>        continue</l>
+<l>    endswitch</l>
+<l>endfor</l>
+<c>* </c>
+<l>Value := ParameterVector.at(ResultPositionTuple[0]).at(ResultPositionTuple[1]).at(ResultPositionTuple[2]).at(ResultPositionTuple[3]).at(ResultPositionTuple[4]).at(ResultPositionTuple[5]).at(ResultPositionTuple[6]).at(ResultPositionTuple[7]).at(ResultPositionTuple[8]).at(1)</l>
+<l>return ()</l>
+</body>
+<docu id="gJSON_Get_Value_from_Vector">
+<parameters>
+<parameter id="ParameterVector"/>
+<parameter id="SearchWord">
+<default_type>string</default_type>
+<default_value>''</default_value>
+<mixed_type>false</mixed_type>
+<sem_type>string</sem_type>
+<type_list>
+<item>string</item>
+</type_list>
+</parameter>
+<parameter id="Value"/>
+</parameters>
+</docu>
+</procedure>
+<procedure name="gJSON_LoadValuesFromArrayLike">
+<interface>
+<ic>
+<par name="ParameterVector_In" base_type="ctrl" dimension="10"/>
+<par name="VTDataVector_In" base_type="ctrl" dimension="1"/>
+<par name="Prefix_StaticWhileLoading" base_type="ctrl" dimension="0"/>
+<par name="Suffix_StaticWhileLoading" base_type="ctrl" dimension="0"/>
+<par name="IteratingWhileLoading" base_type="ctrl" dimension="0"/>
+</ic>
+<oc>
+<par name="VTDataVector_Out" base_type="ctrl" dimension="1"/>
+</oc>
+</interface>
+<body>
+<l>VTDataVector_Out := VTDataVector_In</l>
+<l>tuple_length (IteratingWhileLoading, Length_IteratingWhileLoading)</l>
+<l>for Index_Iterating := 0 to Length_IteratingWhileLoading-1 by 1</l>
+<l>    StringToGetVariableFrom := Prefix_StaticWhileLoading + IteratingWhileLoading[Index_Iterating] + Suffix_StaticWhileLoading</l>
+<l>    gJSON_Get_Value_from_Vector (StringToGetVariableFrom, ParameterVector_In, FoundValue)</l>
+<l>    if (VTDataVector_Out.at(0) = [])</l>
+<l>        LengthIndexToWriteTo := 0</l>
+<l>    else</l>
+<l>        LengthIndexToWriteTo := VTDataVector_Out.length()</l>
+<l>    endif</l>
+<l>    VTDataVector_Out.at(LengthIndexToWriteTo) := [StringToGetVariableFrom,FoundValue]</l>
+<l>endfor</l>
+<l>return ()</l>
+</body>
+<docu id="gJSON_LoadValuesFromArrayLike">
+<parameters>
+<parameter id="IteratingWhileLoading"/>
+<parameter id="ParameterVector_In"/>
+<parameter id="Prefix_StaticWhileLoading"/>
+<parameter id="Suffix_StaticWhileLoading"/>
+<parameter id="VTDataVector_In"/>
+<parameter id="VTDataVector_Out"/>
+</parameters>
+</docu>
+</procedure>
+<procedure name="gJSON_Parser_Get_Dimension">
+<interface>
+<ic>
+<par name="FileName" base_type="ctrl" dimension="0"/>
+</ic>
+<oc>
+<par name="Dimension" base_type="ctrl" dimension="0"/>
+</oc>
+</interface>
+<body>
+<c>* --------------------------------------------------</c>
+<c>* JSON_Parser_Get_Dimension (::FileName:Dimension)</c>
+<c>* Author:        Lars Oberhauser</c>
+<c>* Company:       Meliscout GmbH</c>
+<c>* Create Date:   29.03.2017</c>
+<c>* Last Change:   *</c>
+<c>* --------------------------------------------------</c>
+<c>* </c>
+<c>* Variables</c>
+<l>DimCount := 0</l>
+<l>DimMax := 0</l>
+<c>* </c>
+<c>* Function</c>
+<l>open_file (FileName, 'input', FileHandleDim)</l>
+<l>repeat</l>
+<l>    fread_char (FileHandleDim, Char)</l>
+<l>    if (Char == '{' or Char == '[')</l>
+<l>        DimCount := DimCount + 1</l>
+<l>        if (DimCount &gt; DimMax)</l>
+<l>            DimMax := DimCount</l>
+<l>        endif</l>
+<l>        continue</l>
+<l>    elseif (Char == '}' or Char == ']')</l>
+<l>        DimCount := DimCount - 1</l>
+<l>        continue</l>
+<l>    endif</l>
+<l>until (DimCount = 0)</l>
+<l>close_file (FileHandleDim)</l>
+<c>* </c>
+<c>* Return Values</c>
+<l>Dimension := DimMax</l>
+<l>return ()</l>
+</body>
+<docu id="gJSON_Parser_Get_Dimension">
+<parameters>
+<parameter id="Dimension">
+<default_type>integer</default_type>
+<mixed_type>false</mixed_type>
+<multivalue>false</multivalue>
+<sem_type>number</sem_type>
+<type_list>
+<item>integer</item>
+</type_list>
+</parameter>
+<parameter id="FileName">
+<default_type>string</default_type>
+<default_value>''</default_value>
+<file_ext>
+<item>'*.json'</item>
+</file_ext>
+<mixed_type>false</mixed_type>
+<multivalue>false</multivalue>
+<sem_type>filename.read</sem_type>
+<type_list>
+<item>string</item>
+</type_list>
+</parameter>
+</parameters>
+</docu>
+</procedure>
+<procedure name="gJSON_Read_File_to_Vector">
+<interface>
+<ic>
+<par name="FileName" base_type="ctrl" dimension="0"/>
+</ic>
+<oc>
+<par name="ParameterVector" base_type="ctrl" dimension="10"/>
+</oc>
+</interface>
+<body>
+<c>* --------------------------------------------------</c>
+<c>* JSON_Read_File_to_Vector (::FileName:ParameterVector)</c>
+<c>* Author:        LO</c>
+<c>* Company:       Meliscout GmbH</c>
+<c>* Create Date:   30.03.2017</c>
+<c>* Last Change:   17.07.2017</c>
+<c>* --------------------------------------------------</c>
+<c>* </c>
+<c>* Variables</c>
+<l>DimensionSize := -1</l>
+<l>ParameterVector := {{{{{{{{{{[]}}}}}}}}}}</l>
+<l>Char := -1</l>
+<l>StringObject := false</l>
+<l>NextValueBool := false</l>
+<l>DimActual := -1</l>
+<l>Dimension := [0,0,0,0,0,0,0,0,0,0]</l>
+<l>Value := -1</l>
+<l>ValueBool := false</l>
+<l>Name := -1</l>
+<l>LastValueType := []</l>
+<l>Data := []</l>
+<l>EndOf := -1</l>
+<l>EndOfIntBool := false</l>
+<l>Type := -1</l>
+<l>TypeLocation := 2</l>
+<c>* </c>
+<l>tuple_regexp_test (FileName, '.json', NumMatches)</l>
+<c>* </c>
+<l>if (NumMatches &gt; 0)</l>
+<l>    gJSON_Parser_Get_Dimension (FileName, DimensionSize)</l>
+<l>    if (DimensionSize &lt; 10)</l>
+<l>        open_file (FileName, 'input', FileHandle)</l>
+<c>        * initialisieren der Variablen:</c>
+<l>        ap := 1</l>
+<c>        * </c>
+<l>        repeat</l>
+<c>            * Read Character Sign for Sign</c>
+<l>            if (EndOfIntBool # true)</l>
+<l>                fread_char (FileHandle, Char)</l>
+<l>            else</l>
+<c>                * REWORK</c>
+<c>                * Is needed, because Integer function returns last Char</c>
+<l>                EndOfIntBool := false</l>
+<l>            endif</l>
+<c>            * </c>
+<c>            * Ignore Spaces and Line Breaks</c>
+<l>            while (Char == ' ' or Char == '\n')</l>
+<l>                fread_char (FileHandle, Char)</l>
+<l>                continue</l>
+<l>            endwhile</l>
+<c>            * </c>
+<c>            * Check for new Object Layer or set back Object Layer</c>
+<l>            if (Char == '{')</l>
+<l>                DimActual := DimActual + 1</l>
+<c>                * Create new Object or Layer on next Level</c>
+<l>                if (LastValueType == ':')</l>
+<l>                    Dimension[DimActual] := Dimension[DimActual] + 1</l>
+<l>                    Type := 'newobject'</l>
+<l>                    ParameterVector.at(Dimension[0]).at(Dimension[1]).at(Dimension[2]).at(Dimension[3]).at(Dimension[4]).at(Dimension[5]).at(Dimension[6]).at(Dimension[7]).at(Dimension[8]).at(TypeLocation) := Type</l>
+<l>                    Dimension[DimActual] := Dimension[DimActual] + 1</l>
+<l>                elseif (LastValueType == ',')</l>
+<l>                    Dimension[DimActual] := Dimension[DimActual] + 1</l>
+<l>                    Type := 'newobject'</l>
+<l>                    ParameterVector.at(Dimension[0]).at(Dimension[1]).at(Dimension[2]).at(Dimension[3]).at(Dimension[4]).at(Dimension[5]).at(Dimension[6]).at(Dimension[7]).at(Dimension[8]).at(TypeLocation) := Type</l>
+<l>                    Dimension[DimActual] := Dimension[DimActual] + 1</l>
+<l>                else</l>
+<l>                    Type := 'newobject'</l>
+<l>                    ParameterVector.at(Dimension[0]).at(Dimension[1]).at(Dimension[2]).at(Dimension[3]).at(Dimension[4]).at(Dimension[5]).at(Dimension[6]).at(Dimension[7]).at(Dimension[8]).at(TypeLocation) := Type</l>
+<l>                    Dimension[DimActual] := Dimension[DimActual] + 1</l>
+<l>                endif</l>
+<c>                * </c>
+<l>                LastValueType := '{'</l>
+<l>                continue</l>
+<l>            elseif (Char == '}')</l>
+<l>                if (LastValueType == 'integer' or LastValueType == 'string' or LastValueType == 'bool')</l>
+<l>                    Dimension[DimActual] := Dimension[DimActual] + 1</l>
+<l>                    Type := 'endofobject'</l>
+<l>                    ParameterVector.at(Dimension[0]).at(Dimension[1]).at(Dimension[2]).at(Dimension[3]).at(Dimension[4]).at(Dimension[5]).at(Dimension[6]).at(Dimension[7]).at(Dimension[8]).at(TypeLocation) := Type</l>
+<l>                endif</l>
+<c>                * </c>
+<l>                Dimension[DimActual] := 0</l>
+<l>                DimActual := DimActual - 1</l>
+<l>*                 LastValueType := '}'</l>
+<l>                continue</l>
+<l>            endif</l>
+<c>            * </c>
+<c>            * Check if next Value has an Array or not</c>
+<l>            if (Char == '[')</l>
+<l>                DimActual := DimActual + 1</l>
+<c>                * Create new Object or Layer on next Level</c>
+<l>                if (LastValueType == ':')</l>
+<l>                    Dimension[DimActual] := Dimension[DimActual] + 1</l>
+<l>                    Type := 'newarray'</l>
+<l>                    ParameterVector.at(Dimension[0]).at(Dimension[1]).at(Dimension[2]).at(Dimension[3]).at(Dimension[4]).at(Dimension[5]).at(Dimension[6]).at(Dimension[7]).at(Dimension[8]).at(TypeLocation) := Type</l>
+<l>                    Dimension[DimActual] := Dimension[DimActual] + 1</l>
+<l>                elseif (LastValueType == ',')</l>
+<l>                    Dimension[DimActual] := Dimension[DimActual] + 1</l>
+<l>                else</l>
+<l>                    Type := 'newobject'</l>
+<l>                    ParameterVector.at(Dimension[0]).at(Dimension[1]).at(Dimension[2]).at(Dimension[3]).at(Dimension[4]).at(Dimension[5]).at(Dimension[6]).at(Dimension[7]).at(Dimension[8]).at(TypeLocation) := Type</l>
+<l>                    Dimension[DimActual] := Dimension[DimActual] + 1</l>
+<l>                endif</l>
+<c>                * </c>
+<l>                LastValueType := '['</l>
+<l>                continue</l>
+<l>            elseif (Char == ']')</l>
+<l>                if (LastValueType == 'integer' or LastValueType == 'string' or LastValueType == 'bool')</l>
+<l>                    Dimension[DimActual] := Dimension[DimActual] + 1</l>
+<l>                    Type := 'endofarray'</l>
+<l>                    ParameterVector.at(Dimension[0]).at(Dimension[1]).at(Dimension[2]).at(Dimension[3]).at(Dimension[4]).at(Dimension[5]).at(Dimension[6]).at(Dimension[7]).at(Dimension[8]).at(TypeLocation) := Type</l>
+<l>                endif</l>
+<c>                * </c>
+<l>                Dimension[DimActual] := 0</l>
+<l>                DimActual := DimActual - 1</l>
+<l>*                 LastValueType := ']'</l>
+<l>                continue</l>
+<l>            endif</l>
+<c>            * </c>
+<c>            * Check for start of Value</c>
+<l>            if (Char == ':')</l>
+<c>                * TODO: Work with :</c>
+<l>                LastValueType := ':'</l>
+<l>                continue</l>
+<l>            endif</l>
+<c>            * </c>
+<c>            * Check for end of Value Pair</c>
+<l>            if (Char == ',')</l>
+<c>                * TODO: Work with ,</c>
+<l>                if (LastValueType # '}')</l>
+<c>                    * Set up Object or Layer on actual Level</c>
+<l>                    Dimension[DimActual] := Dimension[DimActual] + 1</l>
+<l>                else</l>
+<c>                    * Set down Object or Layer on upper Level</c>
+<l>                    Dimension[DimActual - 1] := Dimension[DimActual - 1] - 1</l>
+<l>                endif</l>
+<l>                LastValueType := ','</l>
+<l>                continue</l>
+<l>            endif</l>
+<c>            * </c>
+<c>            * </c>
+<c>            * Check for String</c>
+<l>            if (Char == '"')</l>
+<l>                gJson_return_string (FileHandle, ap, string, sl, char, ap)</l>
+<l>                Data := string</l>
+<l>                if (LastValueType == ',' or LastValueType == '{')</l>
+<c>                    * Save Data as Keyword in Vector</c>
+<l>                    ValueBool := false</l>
+<l>                    ParameterVector.at(Dimension[0]).at(Dimension[1]).at(Dimension[2]).at(Dimension[3]).at(Dimension[4]).at(Dimension[5]).at(Dimension[6]).at(Dimension[7]).at(Dimension[8]).at(ValueBool) := Data</l>
+<l>                    Type := 'object'</l>
+<l>                    ParameterVector.at(Dimension[0]).at(Dimension[1]).at(Dimension[2]).at(Dimension[3]).at(Dimension[4]).at(Dimension[5]).at(Dimension[6]).at(Dimension[7]).at(Dimension[8]).at(TypeLocation) := Type</l>
+<l>                elseif (LastValueType == '[')</l>
+<c>                    * Save Data as Array in Vector</c>
+<l>                    ValueBool := false</l>
+<l>                    ParameterVector.at(Dimension[0]).at(Dimension[1]).at(Dimension[2]).at(Dimension[3]).at(Dimension[4]).at(Dimension[5]).at(Dimension[6]).at(Dimension[7]).at(Dimension[8]).at(ValueBool) := Data</l>
+<l>                elseif (LastValueType == ':')</l>
+<c>                    * Save Data as Value in Vector</c>
+<l>                    ValueBool := true</l>
+<l>                    ParameterVector.at(Dimension[0]).at(Dimension[1]).at(Dimension[2]).at(Dimension[3]).at(Dimension[4]).at(Dimension[5]).at(Dimension[6]).at(Dimension[7]).at(Dimension[8]).at(ValueBool) := Data</l>
+<l>                    Type := 'stringpair'</l>
+<l>                    ParameterVector.at(Dimension[0]).at(Dimension[1]).at(Dimension[2]).at(Dimension[3]).at(Dimension[4]).at(Dimension[5]).at(Dimension[6]).at(Dimension[7]).at(Dimension[8]).at(TypeLocation) := Type</l>
+<l>                endif</l>
+<l>                LastValueType := 'string'</l>
+<l>                continue</l>
+<l>            endif</l>
+<c>            * </c>
+<c>            * Check for Integer</c>
+<l>            if (Char == '-' or Char == '0' or Char == '1' or Char == '2' or Char == '3' or Char == '4' or Char == '5' or Char == '6' or Char == '7' or Char == '8' or Char == '9')</l>
+<l>                StrValue := []</l>
+<l>                while (Char == '-' or Char == '.' or Char == '0' or Char == '1' or Char == '2' or Char == '3' or Char == '4' or Char == '5' or Char == '6' or Char == '7' or Char == '8' or Char == '9')</l>
+<l>                    tuple_concat (StrValue, Char, StrValue)</l>
+<l>                    fread_char (FileHandle, Char)</l>
+<l>                endwhile</l>
+<l>                tuple_length (StrValue, StrValueLength)</l>
+<l>                StrConcat := ''</l>
+<l>                for Index := 0 to StrValueLength - 1 by 1</l>
+<l>                    StrConcat := StrConcat + StrValue[Index]</l>
+<l>                endfor</l>
+<l>                tuple_number (StrConcat, Value)</l>
+<l>                if (LastValueType == ':')</l>
+<c>                    * Save Data as Value in Vector</c>
+<l>                    Data := Value</l>
+<l>                    ValueBool := true</l>
+<l>                    ParameterVector.at(Dimension[0]).at(Dimension[1]).at(Dimension[2]).at(Dimension[3]).at(Dimension[4]).at(Dimension[5]).at(Dimension[6]).at(Dimension[7]).at(Dimension[8]).at(ValueBool) := Data</l>
+<l>                    Type := 'integerpair'</l>
+<l>                    ParameterVector.at(Dimension[0]).at(Dimension[1]).at(Dimension[2]).at(Dimension[3]).at(Dimension[4]).at(Dimension[5]).at(Dimension[6]).at(Dimension[7]).at(Dimension[8]).at(TypeLocation) := Type</l>
+<l>                endif</l>
+<c>                * TODO rework LastValueType here</c>
+<l>                LastValueType := 'integer'</l>
+<l>                EndOfIntBool := true</l>
+<l>                continue</l>
+<l>            endif</l>
+<c>            * </c>
+<c>            * Check for Boolean</c>
+<l>            if (Char == 'f')</l>
+<l>                gJson_bool_return_false (FileHandle, ap, sl, Value, char, ap, sl)</l>
+<l>                if (LastValueType == ':')</l>
+<c>                    * Save Data as Value in Vector</c>
+<l>                    Data := Value</l>
+<l>                    ValueBool := true</l>
+<l>                    ParameterVector.at(Dimension[0]).at(Dimension[1]).at(Dimension[2]).at(Dimension[3]).at(Dimension[4]).at(Dimension[5]).at(Dimension[6]).at(Dimension[7]).at(Dimension[8]).at(ValueBool) := Data</l>
+<l>                    Type := 'boolpair'</l>
+<l>                    ParameterVector.at(Dimension[0]).at(Dimension[1]).at(Dimension[2]).at(Dimension[3]).at(Dimension[4]).at(Dimension[5]).at(Dimension[6]).at(Dimension[7]).at(Dimension[8]).at(TypeLocation) := Type</l>
+<l>                endif</l>
+<l>                LastValueType := 'bool'</l>
+<l>            elseif (Char == 't')</l>
+<l>                gJson_bool_return_true (FileHandle, ap, sl, Value, char, ap, sl)</l>
+<l>                if (LastValueType == ':')</l>
+<c>                    * Save Data as Value in Vector</c>
+<l>                    Data := Value</l>
+<l>                    ValueBool := true</l>
+<l>                    ParameterVector.at(Dimension[0]).at(Dimension[1]).at(Dimension[2]).at(Dimension[3]).at(Dimension[4]).at(Dimension[5]).at(Dimension[6]).at(Dimension[7]).at(Dimension[8]).at(ValueBool) := Data</l>
+<l>                    Type := 'boolpair'</l>
+<l>                    ParameterVector.at(Dimension[0]).at(Dimension[1]).at(Dimension[2]).at(Dimension[3]).at(Dimension[4]).at(Dimension[5]).at(Dimension[6]).at(Dimension[7]).at(Dimension[8]).at(TypeLocation) := Type</l>
+<l>                endif</l>
+<l>                LastValueType := 'bool'</l>
+<l>            endif</l>
+<l>        until (DimActual == -1)</l>
+<l>        close_file (FileHandle)</l>
+<c>        * </c>
+<l>    else</l>
+<l>        throw (['To many Object Layer in this JSON-File. Please contact author of this function!'])</l>
+<l>    endif</l>
+<c>    * </c>
+<l>else</l>
+<l>    throw (['Wrong file, please check format. Must be .JSON'])</l>
+<l>endif</l>
+<l>return ()</l>
+</body>
+<docu id="gJSON_Read_File_to_Vector">
+<parameters>
+<parameter id="FileName">
+<default_type>string</default_type>
+<default_value>''</default_value>
+<mixed_type>false</mixed_type>
+<sem_type>string</sem_type>
+<type_list>
+<item>integer</item>
+<item>string</item>
+</type_list>
+<value_min>0</value_min>
+</parameter>
+<parameter id="ParameterVector"/>
+</parameters>
+</docu>
+</procedure>
+<procedure name="gJson_return_string">
+<interface>
+<ic>
+<par name="FileHandle" base_type="ctrl" dimension="0"/>
+<par name="ap" base_type="ctrl" dimension="0"/>
+</ic>
+<oc>
+<par name="string" base_type="ctrl" dimension="0"/>
+<par name="sl" base_type="ctrl" dimension="0"/>
+<par name="char" base_type="ctrl" dimension="0"/>
+<par name="apOut" base_type="ctrl" dimension="0"/>
+</oc>
+</interface>
+<body>
+<l>apOut := ap</l>
+<l>string := ''</l>
+<l>sl := 0</l>
+<l>fread_char (FileHandle, char)</l>
+<l>apOut := apOut +1</l>
+<l>sl := sl +1</l>
+<l>sz := 0</l>
+<l>while (sz#sl)</l>
+<c>    * Wenn String zu ende beende die Schleife</c>
+<l>    if (char =='"')</l>
+<l>        sz := sl</l>
+<l>        break</l>
+<l>    endif</l>
+<l>    string := string+char</l>
+<l>    fread_char (FileHandle, char)</l>
+<l>    apOut := apOut +1</l>
+<l>    sl := sl +1</l>
+<l>    sz := sz +1</l>
+<l>endwhile</l>
+<l>return ()</l>
+</body>
+<docu id="gJson_return_string">
+<parameters>
+<parameter id="FileHandle"/>
+<parameter id="ap"/>
+<parameter id="apOut"/>
+<parameter id="char"/>
+<parameter id="sl"/>
+<parameter id="string"/>
+</parameters>
+</docu>
+</procedure>
+<procedure name="gJSON_Save_Vector_as_File">
+<interface>
+<ic>
+<par name="FileName" base_type="ctrl" dimension="0"/>
+<par name="ParameterVector" base_type="ctrl" dimension="10"/>
+</ic>
+</interface>
+<body>
+<c>* --------------------------------------------------</c>
+<c>* JSON_Save_Vector_as_File (::FileName,ParameterVector:)</c>
+<c>* Author:        Lars Oberhauser</c>
+<c>* Company:       Meliscout GmbH</c>
+<c>* Create Date:   05.04.2017</c>
+<c>* Last Change:   06.04.2017</c>
+<c>* --------------------------------------------------</c>
+<c>* </c>
+<c>* Variables</c>
+<l>FinalFile := FileName</l>
+<l>FileName := 'TempFile.json'</l>
+<l>Name := []</l>
+<l>LastName := []</l>
+<l>Value := []</l>
+<l>LastValue := []</l>
+<l>Type := []</l>
+<l>LastType := []</l>
+<l>ValueLocation := 1</l>
+<l>TypeLocation := 2</l>
+<l>CountBraces := [0,0,0,0,0,0,0,0,0,0]</l>
+<c>* </c>
+<c>* </c>
+<l>tuple_regexp_test (FileName, '.json', NumMatches)</l>
+<l>if (NumMatches &gt; 0)</l>
+<c>    * </c>
+<l>    open_file (FileName, 'output', FileHandle)</l>
+<c>    * </c>
+<l>    ParameterVectorLength := [0,0,0,0,0,0,0,0,0,0]</l>
+<l>    ParameterVectorLength[0] := ParameterVector.length()</l>
+<c>    * </c>
+<l>    for IndexParameterVectorDim01 := 0 to ParameterVectorLength[0] - 1 by 1</l>
+<l>        ParameterVectorLength[1] := ParameterVector.at(IndexParameterVectorDim01).length()</l>
+<l>        for IndexParameterVectorDim02 := 0 to ParameterVectorLength[1] - 1 by 1</l>
+<l>            ParameterVectorLength[2] := ParameterVector.at(IndexParameterVectorDim01).at(IndexParameterVectorDim02).length()</l>
+<l>            for IndexParameterVectorDim03 := 0 to ParameterVectorLength[2] - 1 by 1</l>
+<l>                ParameterVectorLength[3] := ParameterVector.at(IndexParameterVectorDim01).at(IndexParameterVectorDim02).at(IndexParameterVectorDim03).length()</l>
+<l>                for IndexParameterVectorDim04 := 0 to ParameterVectorLength[3] - 1 by 1</l>
+<l>                    ParameterVectorLength[4] := ParameterVector.at(IndexParameterVectorDim01).at(IndexParameterVectorDim02).at(IndexParameterVectorDim03).at(IndexParameterVectorDim04).length()</l>
+<l>                    for IndexParameterVectorDim05 := 0 to ParameterVectorLength[4] - 1 by 1</l>
+<l>                        ParameterVectorLength[5] := ParameterVector.at(IndexParameterVectorDim01).at(IndexParameterVectorDim02).at(IndexParameterVectorDim03).at(IndexParameterVectorDim04).at(IndexParameterVectorDim05).length()</l>
+<l>                        for IndexParameterVectorDim06 := 0 to ParameterVectorLength[5] - 1 by 1</l>
+<l>                            ParameterVectorLength[6] := ParameterVector.at(IndexParameterVectorDim01).at(IndexParameterVectorDim02).at(IndexParameterVectorDim03).at(IndexParameterVectorDim04).at(IndexParameterVectorDim05).at(IndexParameterVectorDim06).length()</l>
+<l>                            for IndexParameterVectorDim07 := 0 to ParameterVectorLength[6] - 1 by 1</l>
+<l>                                ParameterVectorLength[7] := ParameterVector.at(IndexParameterVectorDim01).at(IndexParameterVectorDim02).at(IndexParameterVectorDim03).at(IndexParameterVectorDim04).at(IndexParameterVectorDim05).at(IndexParameterVectorDim06).at(IndexParameterVectorDim07).length()</l>
+<l>                                for IndexParameterVectorDim08 := 0 to ParameterVectorLength[7] - 1 by 1</l>
+<l>                                    ParameterVectorLength[8] := ParameterVector.at(IndexParameterVectorDim01).at(IndexParameterVectorDim02).at(IndexParameterVectorDim03).at(IndexParameterVectorDim04).at(IndexParameterVectorDim05).at(IndexParameterVectorDim06).at(IndexParameterVectorDim07).at(IndexParameterVectorDim08).length()</l>
+<l>                                    for IndexParameterVectorDim09 := 0 to ParameterVectorLength[8] - 1 by 1</l>
+<c>                                        * </c>
+<l>                                        LastName := Name</l>
+<l>                                        LastValue := Value</l>
+<l>                                        LastType := Type</l>
+<c>                                        * </c>
+<l>                                        Name := ParameterVector.at(IndexParameterVectorDim01).at(IndexParameterVectorDim02).at(IndexParameterVectorDim03).at(IndexParameterVectorDim04).at(IndexParameterVectorDim05).at(IndexParameterVectorDim06).at(IndexParameterVectorDim07).at(IndexParameterVectorDim08).at(IndexParameterVectorDim09).at(0)</l>
+<l>                                        Value := ParameterVector.at(IndexParameterVectorDim01).at(IndexParameterVectorDim02).at(IndexParameterVectorDim03).at(IndexParameterVectorDim04).at(IndexParameterVectorDim05).at(IndexParameterVectorDim06).at(IndexParameterVectorDim07).at(IndexParameterVectorDim08).at(IndexParameterVectorDim09).at(ValueLocation)</l>
+<l>                                        Type := ParameterVector.at(IndexParameterVectorDim01).at(IndexParameterVectorDim02).at(IndexParameterVectorDim03).at(IndexParameterVectorDim04).at(IndexParameterVectorDim05).at(IndexParameterVectorDim06).at(IndexParameterVectorDim07).at(IndexParameterVectorDim08).at(IndexParameterVectorDim09).at(TypeLocation)</l>
+<c>                                        * </c>
+<l>*                                         if (Type == 'endofobject')</l>
+<l>                                            if (Type == 'newobject')</l>
+<l>                                                fwrite_string (FileHandle, '{\n')</l>
+<l>                                            elseif (Type == 'object')</l>
+<l>                                                fwrite_string (FileHandle, '"' + Name + '" : ')</l>
+<l>                                            elseif (Type == 'endofobject')</l>
+<l>                                                fwrite_string (FileHandle, '},\n')</l>
+<l>                                            elseif (Type == 'newarray')</l>
+<l>                                                fwrite_string (FileHandle, '[\n')</l>
+<l>                                            elseif (Type == 'endofarray')</l>
+<l>                                                fwrite_string (FileHandle, '],\n')</l>
+<l>                                            elseif (Type == 'stringpair')</l>
+<l>                                                fwrite_string (FileHandle, '"' + Name + '" : "' + Value + '",\n')</l>
+<l>                                            elseif (Type[0] == 'integerpair')</l>
+<l>                                                fwrite_string (FileHandle, '"' + Name + '" : ' + Value + ',\n')</l>
+<l>                                            elseif (Type[0] == 'boolpair')</l>
+<l>                                                if (Value == 1)</l>
+<l>                                                    Value := 'true'</l>
+<l>                                                elseif (Value == 0)</l>
+<l>                                                    Value := 'false'</l>
+<l>                                                endif</l>
+<l>                                                fwrite_string (FileHandle, '"' + Name + '" : ' + Value + ',\n')</l>
+<l>                                            endif</l>
+<l>*                                         endif</l>
+<c>                                        * </c>
+<l>                                    endfor</l>
+<l>                                endfor</l>
+<l>                            endfor</l>
+<l>                        endfor</l>
+<l>                    endfor</l>
+<l>                endfor</l>
+<l>            endfor</l>
+<l>        endfor</l>
+<l>    endfor</l>
+<c>    * </c>
+<l>    close_file (FileHandle)</l>
+<l>endif</l>
+<c>* </c>
+<c>* Filter File</c>
+<l>LastChar := []</l>
+<l>ForeLastChar := []</l>
+<c>* </c>
+<l>open_file (FinalFile, 'output', FileHandleOut)</l>
+<l>open_file (FileName, 'input', FileHandleIn)</l>
+<c>* </c>
+<l>repeat</l>
+<l>    fread_char (FileHandleIn, Char)</l>
+<l>    if (ForeLastChar == ',' and Char == '}')</l>
+<l>        ForeLastChar := LastChar</l>
+<l>        LastChar := Char</l>
+<l>    elseif (ForeLastChar == ',' and Char == ']')</l>
+<l>        ForeLastChar := LastChar</l>
+<l>        LastChar := Char</l>
+<l>    elseif (ForeLastChar == ',' and Char == 'eof')</l>
+<l>        ForeLastChar := LastChar</l>
+<l>        LastChar := Char</l>
+<l>    else</l>
+<l>        fwrite_string (FileHandleOut, ForeLastChar)</l>
+<l>        ForeLastChar := LastChar</l>
+<l>        LastChar := Char</l>
+<l>    endif</l>
+<l>until (Char == 'eof')</l>
+<c>* </c>
+<l>close_file (FileHandleIn)</l>
+<l>close_file (FileHandleOut)</l>
+<c>* </c>
+<l>return ()</l>
+</body>
+<docu id="gJSON_Save_Vector_as_File">
+<parameters>
+<parameter id="FileName">
+<default_type>string</default_type>
+<default_value>''</default_value>
+<mixed_type>false</mixed_type>
+<sem_type>string</sem_type>
+<type_list>
+<item>string</item>
+</type_list>
+</parameter>
+<parameter id="ParameterVector"/>
+</parameters>
+</docu>
+</procedure>
+<procedure name="gJSON_Set_Value_in_Vector">
+<interface>
+<ic>
+<par name="SearchWord" base_type="ctrl" dimension="0"/>
+<par name="ParameterVector" base_type="ctrl" dimension="10"/>
+<par name="Value" base_type="ctrl" dimension="0"/>
+</ic>
+<oc>
+<par name="ChangedParameterVector" base_type="ctrl" dimension="10"/>
+</oc>
+</interface>
+<body>
+<c>* --------------------------------------------------</c>
+<c>* JSON_Set_Value_in_Vector (::SearchWord,ParameterVector,Value:ChangedParameterVector)</c>
+<c>* Author:        Lars Oberhauser</c>
+<c>* Company:       Meliscout GmbH</c>
+<c>* Create Date:   07.04.2017</c>
+<c>* Last Change:   *</c>
+<c>* --------------------------------------------------</c>
+<c>* </c>
+<c>* Variables</c>
+<l>ResultPositionTuple := [0,0,0,0,0,0,0,0,0,0]</l>
+<c>* </c>
+<c>* Prepare seach in Vector</c>
+<l>SearchWordSub := []</l>
+<l>tuple_split (SearchWord, '/', SearchWordSub)</l>
+<l>tuple_length (SearchWordSub, SearchWordSubLength)</l>
+<c>* </c>
+<l>for IndexSearchWord := 0 to SearchWordSubLength - 1 by 1</l>
+<l>    switch (IndexSearchWord + 1)</l>
+<l>    case 1:</l>
+<l>        ParameterVectorLength := ParameterVector.length()</l>
+<l>        for IndexParameterVector := 0 to ParameterVectorLength -1 by 1</l>
+<l>            Identifier := ParameterVector.at(IndexParameterVector).at(0).at(0).at(0).at(0).at(0).at(0).at(0).at(0).at(0)</l>
+<l>            if (SearchWordSub[IndexSearchWord] == Identifier)</l>
+<l>                tuple_replace (ResultPositionTuple, IndexSearchWord, IndexParameterVector, ResultPositionTuple)</l>
+<l>                break</l>
+<l>            endif</l>
+<l>        endfor</l>
+<l>        continue</l>
+<l>    case 2:</l>
+<l>        ParameterVectorLength := ParameterVector.at(ResultPositionTuple[0]).length()</l>
+<l>        for IndexParameterVector := 0 to ParameterVectorLength -1 by 1</l>
+<l>            Identifier := ParameterVector.at(ResultPositionTuple[0]).at(IndexParameterVector).at(0).at(0).at(0).at(0).at(0).at(0).at(0).at(0)</l>
+<l>            if (SearchWordSub[IndexSearchWord] == Identifier)</l>
+<l>                tuple_replace (ResultPositionTuple, IndexSearchWord, IndexParameterVector, ResultPositionTuple)</l>
+<l>                break</l>
+<l>            endif</l>
+<l>        endfor</l>
+<l>        continue</l>
+<l>    case 3:</l>
+<l>        ParameterVectorLength := ParameterVector.at(ResultPositionTuple[0]).at(ResultPositionTuple[1]).length()</l>
+<l>        for IndexParameterVector := 0 to ParameterVectorLength -1 by 1</l>
+<l>            Identifier := ParameterVector.at(ResultPositionTuple[0]).at(ResultPositionTuple[1]).at(IndexParameterVector).at(0).at(0).at(0).at(0).at(0).at(0).at(0)</l>
+<l>            if (SearchWordSub[IndexSearchWord] == Identifier)</l>
+<l>                tuple_replace (ResultPositionTuple, IndexSearchWord, IndexParameterVector, ResultPositionTuple)</l>
+<l>                break</l>
+<l>            endif</l>
+<l>        endfor</l>
+<l>        continue</l>
+<l>    case 4:</l>
+<l>        ParameterVectorLength := ParameterVector.at(ResultPositionTuple[0]).at(ResultPositionTuple[1]).at(ResultPositionTuple[2]).length()</l>
+<l>        for IndexParameterVector := 0 to ParameterVectorLength -1 by 1</l>
+<l>            Identifier := ParameterVector.at(ResultPositionTuple[0]).at(ResultPositionTuple[1]).at(ResultPositionTuple[2]).at(IndexParameterVector).at(0).at(0).at(0).at(0).at(0).at(0)</l>
+<l>            if (SearchWordSub[IndexSearchWord] == Identifier)</l>
+<l>                tuple_replace (ResultPositionTuple, IndexSearchWord, IndexParameterVector, ResultPositionTuple)</l>
+<l>                break</l>
+<l>            endif</l>
+<l>        endfor</l>
+<l>        continue</l>
+<l>    case 5:</l>
+<l>        ParameterVectorLength := ParameterVector.at(ResultPositionTuple[0]).at(ResultPositionTuple[1]).at(ResultPositionTuple[2]).at(ResultPositionTuple[3]).length()</l>
+<l>        for IndexParameterVector := 0 to ParameterVectorLength -1 by 1</l>
+<l>            Identifier := ParameterVector.at(ResultPositionTuple[0]).at(ResultPositionTuple[1]).at(ResultPositionTuple[2]).at(ResultPositionTuple[3]).at(IndexParameterVector).at(0).at(0).at(0).at(0).at(0)</l>
+<l>            if (SearchWordSub[IndexSearchWord] == Identifier)</l>
+<l>                tuple_replace (ResultPositionTuple, IndexSearchWord, IndexParameterVector, ResultPositionTuple)</l>
+<l>                break</l>
+<l>            endif</l>
+<l>        endfor</l>
+<l>        continue</l>
+<l>    case 6:</l>
+<l>        ParameterVectorLength := ParameterVector.at(ResultPositionTuple[0]).at(ResultPositionTuple[1]).at(ResultPositionTuple[2]).at(ResultPositionTuple[3]).at(ResultPositionTuple[4]).length()</l>
+<l>        for IndexParameterVector := 0 to ParameterVectorLength -1 by 1</l>
+<l>            Identifier := ParameterVector.at(ResultPositionTuple[0]).at(ResultPositionTuple[1]).at(ResultPositionTuple[2]).at(ResultPositionTuple[3]).at(ResultPositionTuple[4]).at(IndexParameterVector).at(0).at(0).at(0).at(0)</l>
+<l>            if (SearchWordSub[IndexSearchWord] == Identifier)</l>
+<l>                tuple_replace (ResultPositionTuple, IndexSearchWord, IndexParameterVector, ResultPositionTuple)</l>
+<l>                break</l>
+<l>            endif</l>
+<l>        endfor</l>
+<l>        continue</l>
+<l>    case 7:</l>
+<l>        ParameterVectorLength := ParameterVector.at(ResultPositionTuple[0]).at(ResultPositionTuple[1]).at(ResultPositionTuple[2]).at(ResultPositionTuple[3]).at(ResultPositionTuple[4]).at(ResultPositionTuple[5]).length()</l>
+<l>        for IndexParameterVector := 0 to ParameterVectorLength -1 by 1</l>
+<l>            Identifier := ParameterVector.at(ResultPositionTuple[0]).at(ResultPositionTuple[1]).at(ResultPositionTuple[2]).at(ResultPositionTuple[3]).at(ResultPositionTuple[4]).at(ResultPositionTuple[5]).at(IndexParameterVector).at(0).at(0).at(0)</l>
+<l>            if (SearchWordSub[IndexSearchWord] == Identifier)</l>
+<l>                tuple_replace (ResultPositionTuple, IndexSearchWord, IndexParameterVector, ResultPositionTuple)</l>
+<l>                break</l>
+<l>            endif</l>
+<l>        endfor</l>
+<l>        continue</l>
+<l>    case 8:</l>
+<l>        ParameterVectorLength := ParameterVector.at(ResultPositionTuple[0]).at(ResultPositionTuple[1]).at(ResultPositionTuple[2]).at(ResultPositionTuple[3]).at(ResultPositionTuple[4]).at(ResultPositionTuple[5]).at(ResultPositionTuple[6]).length()</l>
+<l>        for IndexParameterVector := 0 to ParameterVectorLength -1 by 1</l>
+<l>            Identifier := ParameterVector.at(ResultPositionTuple[0]).at(ResultPositionTuple[1]).at(ResultPositionTuple[2]).at(ResultPositionTuple[3]).at(ResultPositionTuple[4]).at(ResultPositionTuple[5]).at(ResultPositionTuple[6]).at(IndexParameterVector).at(0).at(0)</l>
+<l>            if (SearchWordSub[IndexSearchWord] == Identifier)</l>
+<l>                tuple_replace (ResultPositionTuple, IndexSearchWord, IndexParameterVector, ResultPositionTuple)</l>
+<l>                break</l>
+<l>            endif</l>
+<l>        endfor</l>
+<l>        continue</l>
+<l>    case 9:</l>
+<l>        ParameterVectorLength := ParameterVector.at(ResultPositionTuple[0]).at(ResultPositionTuple[1]).at(ResultPositionTuple[2]).at(ResultPositionTuple[3]).at(ResultPositionTuple[4]).at(ResultPositionTuple[5]).at(ResultPositionTuple[6]).at(ResultPositionTuple[7]).length()</l>
+<l>        for IndexParameterVector := 0 to ParameterVectorLength -1 by 1</l>
+<l>            Identifier := ParameterVector.at(ResultPositionTuple[0]).at(ResultPositionTuple[1]).at(ResultPositionTuple[2]).at(ResultPositionTuple[3]).at(ResultPositionTuple[4]).at(ResultPositionTuple[5]).at(ResultPositionTuple[6]).at(ResultPositionTuple[7]).at(IndexParameterVector).at(0)</l>
+<l>            if (SearchWordSub[IndexSearchWord] == Identifier)</l>
+<l>                tuple_replace (ResultPositionTuple, IndexSearchWord, IndexParameterVector, ResultPositionTuple)</l>
+<l>                break</l>
+<l>            endif</l>
+<l>        endfor</l>
+<l>        continue</l>
+<l>    endswitch</l>
+<l>endfor</l>
+<c>* </c>
+<l>ParameterVector.at(ResultPositionTuple[0]).at(ResultPositionTuple[1]).at(ResultPositionTuple[2]).at(ResultPositionTuple[3]).at(ResultPositionTuple[4]).at(ResultPositionTuple[5]).at(ResultPositionTuple[6]).at(ResultPositionTuple[7]).at(ResultPositionTuple[8]).at(1) := Value</l>
+<l>ChangedParameterVector := ParameterVector</l>
+<l>return ()</l>
+</body>
+<docu id="gJSON_Set_Value_in_Vector">
+<parameters>
+<parameter id="ChangedParameterVector"/>
+<parameter id="ParameterVector"/>
+<parameter id="SearchWord">
+<default_type>string</default_type>
+<default_value>''</default_value>
+<mixed_type>false</mixed_type>
+<sem_type>string</sem_type>
+<type_list>
+<item>string</item>
+</type_list>
+</parameter>
+<parameter id="Value"/>
+</parameters>
+</docu>
+</procedure>
+</hdevelop>

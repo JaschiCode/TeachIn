@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="25.11.0.0">
+<procedure name="ProductImageInit">
+<interface/>
+<body>
+<c>* ProductImageInit</c>
+<c>* --------------------------------------------------------------</c>
+<c></c>
+<l>global tuple App</l>
+<c></c>
+<c></c>
+<c>* Load ProductImage that contains multiple channels</c>
+<l>dev_error_var (Error, 1)</l>
+<l>dev_set_check ('~give_error')</l>
+<l>read_image (ImageOrig, App.Filesystem.Format.Files.ProductImageMultiChannel)</l>
+<l>ReadError := Error</l>
+<l>dev_set_check ('give_error')</l>
+<c></c>
+<c>* If loading failed, try to load 3-channel product image image (rgb or hsv)</c>
+<l>if (ReadError != H_MSG_TRUE)</l>
+<l>    dev_error_var (Error, 1)</l>
+<l>    dev_set_check ('~give_error')</l>
+<l>    read_image (ImageOrig, App.Filesystem.Format.Files.ProductImage)</l>
+<l>    ReadError := Error</l>
+<l>    dev_set_check ('give_error')</l>
+<c>    </c>
+<c>    * If that also failed, generate empty image for product image</c>
+<l>    if (ReadError != H_MSG_TRUE)</l>
+<l>        ImageGrabResolution_Width := App.Format.Camera.Cameras.Camera_0.V_ImageGrabResolution_Width.Value</l>
+<l>        ImageGrabResolution_Height := App.Format.Camera.Cameras.Camera_0.V_ImageGrabResolution_Height.Value    </l>
+<l>        gen_image_const (ImageOrig, 'byte', ImageGrabResolution_Width, ImageGrabResolution_Height)</l>
+<l>    endif</l>
+<c></c>
+<l>endif</l>
+<c></c>
+<l>App.Visualization.ProductImage := ImageOrig</l>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="ProductImageInit">
+<parameters/>
+</docu>
+</procedure>
+</hdevelop>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="25.11.0.0">
+<procedure name="TeachInButtonContentArrow">
+<interface>
+<io>
+<par name="RectangleToWriteInMiddle" base_type="iconic" dimension="0"/>
+</io>
+<ic>
+<par name="ArrowOrientation" base_type="ctrl" dimension="0"/>
+</ic>
+</interface>
+<body>
+<c>* TeachInButtonContentArrow</c>
+<c>* ------------------------------------------------</c>
+<c></c>
+<l>global tuple App</l>
+<c></c>
+<l>ArrowSize    := 15</l>
+<l>WindowHandle := App.Visualization.Windows.[App.Status.Camera.ID]</l>
+<c></c>
+<l>get_window_extents (WindowHandle, _, _, WindowWidth, WindowHeight)</l>
+<l>area_center (RectangleToWriteInMiddle, _, Row1, Col1)</l>
+<c></c>
+<l>Arrow_Row1 := Row1 </l>
+<l>Arrow_Col1 := Col1</l>
+<l>Arrow_Row2 := Arrow_Row1 </l>
+<l>Arrow_Col2 := Arrow_Col1</l>
+<c></c>
+<l>if (ArrowOrientation = 'left')</l>
+<l>    Arrow_Col1 := Arrow_Col1 +1</l>
+<l>endif</l>
+<l>if (ArrowOrientation = 'right')</l>
+<l>    Arrow_Col1 := Arrow_Col1 -1</l>
+<l>endif</l>
+<l>if (ArrowOrientation = 'up')</l>
+<l>    Arrow_Row1 := Arrow_Row1 +1</l>
+<l>endif</l>
+<l>if (ArrowOrientation = 'down')</l>
+<l>    Arrow_Row1 := Arrow_Row1 -1</l>
+<l>endif</l>
+<c></c>
+<l>disp_arrow (WindowHandle, Arrow_Row1, Arrow_Col1, Arrow_Row2, Arrow_Col2, ArrowSize)</l>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="TeachInButtonContentArrow">
+<parameters>
+<parameter id="ArrowOrientation"/>
+<parameter id="RectangleToWriteInMiddle"/>
+</parameters>
+</docu>
+</procedure>
+</hdevelop>

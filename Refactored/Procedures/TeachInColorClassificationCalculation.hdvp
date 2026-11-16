@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="25.11.0.0">
+<procedure name="TeachInColorClassificationCalculation">
+<interface>
+<ic>
+<par name="HelpTextString" base_type="ctrl" dimension="0"/>
+<par name="ChannelSelector" base_type="ctrl" dimension="0"/>
+<par name="FilenameImageDump" base_type="ctrl" dimension="0"/>
+<par name="SwitchConditionRestart" base_type="ctrl" dimension="0"/>
+</ic>
+</interface>
+<body>
+<c>* TeachInColorClassificationCalculation</c>
+<c>* ------------------------------------------------</c>
+<c></c>
+<l>global tuple App</l>
+<c></c>
+<c></c>
+<l>WindowHandle := App.Visualization.Windows.[App.Status.Camera.ID]</l>
+<c></c>
+<c></c>
+<l>TeachInButtonsInterfaceViaFile (0, 0, 0, 0, 0, 0, 0, 0, 1, HelpTextString, 0, 0, 0, 0)</l>
+<c></c>
+<l>switch (ChannelSelector)</l>
+<l>case 0:</l>
+<l>    Channel := 1</l>
+<l>    break</l>
+<l>case 1:</l>
+<l>    Channel := 1</l>
+<l>    break</l>
+<l>case 2:</l>
+<l>    Channel := 2</l>
+<l>    break</l>
+<l>endswitch</l>
+<l>TeachInSelectAndDisplayMultiChannelImage (App.TeachIn.ImageOrig, ImageSelectedChannel, ImageDisplay, Channel, 0, 1, 1)</l>
+<c></c>
+<l>switch (ChannelSelector)</l>
+<l>case 0:</l>
+<l>    decompose3 (App.TeachIn.ImageToLearnOn, Image1, Image2, Image3)</l>
+<l>    compose3 (Image1, Image2, Image3, ImageSelectedChannel)</l>
+<l>    break</l>
+<l>case 1:</l>
+<l>    decompose3 (App.TeachIn.ImageToLearnOn, Image1, Image2, Image3)</l>
+<l>    compose3 (Image1, Image2, Image3, ImageSelectedChannel)</l>
+<l>    break</l>
+<l>case 2:</l>
+<c>    * Color classifier expects a 3 channel image - so generate it for UV-Image</c>
+<l>    compose3 (ImageSelectedChannel, ImageSelectedChannel, ImageSelectedChannel, ImageSelectedChannel)</l>
+<l>    break</l>
+<l>endswitch</l>
+<c></c>
+<c></c>
+<l>TeachInColorClassificationCalculate (ImageSelectedChannel, 0, HelpTextString, 1, ChannelSelector)</l>
+<c></c>
+<c></c>
+<l>Btn1 := App.Language.Keys.HDEV_Cancel</l>
+<l>Btn2 := App.Language.Keys.HDEV_TeachInColourReteach</l>
+<l>Btn3 := App.Language.Keys.HDEV_OkNext</l>
+<l>TeachInButtonsInterfaceViaFile (0, Btn1, Btn2, Btn3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)</l>
+<c></c>
+<l>dump_window_image (ImageColorClassified, WindowHandle)</l>
+<l>get_image_size (ImageColorClassified, ImageWidth, ImageHeight)</l>
+<l>set_part (WindowHandle, 0, 0, ImageHeight-1, ImageWidth-1)</l>
+<l>disp_obj (ImageColorClassified, WindowHandle)</l>
+<l>TeachInButtonsDisplayExpectUserInput (ImageColorClassified, ChannelSelector, ExternalIO_BtnPressed)</l>
+<c></c>
+<l>if(ExternalIO_BtnPressed= 1)</l>
+<c>    * Cancel</c>
+<l>    App.TeachIn.SwitchCondition := 9999</l>
+<l>    App.TeachIn.ContinueFlag    := 1</l>
+<l>    return()</l>
+<l>endif</l>
+<l>if(ExternalIO_BtnPressed= 2)</l>
+<c>    * Go back and re-start color learning section</c>
+<l>    App.TeachIn.SwitchCondition := SwitchConditionRestart</l>
+<l>    App.TeachIn.ContinueFlag    := 1</l>
+<l>    return()</l>
+<l>endif</l>
+<l>if(ExternalIO_BtnPressed= 3)</l>
+<c>    * OK - move on</c>
+<l>endif</l>
+<c></c>
+<l>disp_obj (ImageColorClassified, WindowHandle)</l>
+<l>dump_window (WindowHandle, 'jpeg 100', FilenameImageDump)</l>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="TeachInColorClassificationCalculation">
+<parameters>
+<parameter id="ChannelSelector"/>
+<parameter id="FilenameImageDump"/>
+<parameter id="HelpTextString"/>
+<parameter id="SwitchConditionRestart"/>
+</parameters>
+</docu>
+</procedure>
+</hdevelop>

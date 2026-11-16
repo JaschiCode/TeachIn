@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="25.11.0.0">
+<procedure name="ThreadManagementInit">
+<interface/>
+<body>
+<c>* ThreadManagementInit</c>
+<c>* ------------------------------------------------------------</c>
+<c>* Define the number of lanes in processing threads per camera  </c>
+<c></c>
+<l>global tuple App</l>
+<c></c>
+<l>App.ThreadManagement := dict{}</l>
+<l>App.ThreadManagement.Thread_Middle_Active        := 1</l>
+<l>App.ThreadManagement.Thread_RGB_Threshold_Active := 1</l>
+<c></c>
+<l>App.ThreadManagement.Threads := dict{}</l>
+<l>App.ThreadManagement.Threads.[0] := [1:App.ROIs.NumberOfPos]</l>
+<c></c>
+<c></c>
+<l>if (App.Status.Debug.Level == 1 or App.Status.Debug.Level == 2)</l>
+<l>    gThread_Middle_Active := 0</l>
+<l>    gThread_RGB_Threshold_Active := 0</l>
+<l>endif</l>
+<c></c>
+<c></c>
+<c>* Set the lanes executed in a thread based on the number of threads per camera</c>
+<l>if (App.Status.Debug.Level == 0) // on debug initialisation values are used, also as default</l>
+<l>    switch (App.Status.Camera.NumberThreadsPerCam)</l>
+<l>    case 1:</l>
+<l>        break // done with initialisation</l>
+<l>    case 2:</l>
+<l>        App.ThreadManagement.Threads.[0] := [1,2,3]</l>
+<l>        App.ThreadManagement.Threads.[1] := [4,5,6]</l>
+<l>        break</l>
+<l>    case 3: </l>
+<l>        App.ThreadManagement.Threads.[0] := [1,2]</l>
+<l>        App.ThreadManagement.Threads.[1] := [3,4]</l>
+<l>        App.ThreadManagement.Threads.[2] := [5,6]</l>
+<l>        break</l>
+<l>    case 4:</l>
+<l>        App.ThreadManagement.Threads.[0] := [1,2]</l>
+<l>        App.ThreadManagement.Threads.[1] := [3,4]</l>
+<l>        App.ThreadManagement.Threads.[2] := [5]</l>
+<l>        App.ThreadManagement.Threads.[3] := [6]</l>
+<l>        break</l>
+<l>    case 5:</l>
+<l>        App.ThreadManagement.Threads.[0] := [1]</l>
+<l>        App.ThreadManagement.Threads.[1] := [2]</l>
+<l>        App.ThreadManagement.Threads.[2] := [3]</l>
+<l>        App.ThreadManagement.Threads.[3] := [4]</l>
+<l>        App.ThreadManagement.Threads.[4] := [5]</l>
+<l>        break</l>
+<l>    case 6:</l>
+<l>        App.ThreadManagement.Threads.[0] := [1]</l>
+<l>        App.ThreadManagement.Threads.[1] := [2]</l>
+<l>        App.ThreadManagement.Threads.[2] := [3]</l>
+<l>        App.ThreadManagement.Threads.[3] := [4]</l>
+<l>        App.ThreadManagement.Threads.[4] := [5]</l>
+<l>        App.ThreadManagement.Threads.[5] := [6]</l>
+<l>        break</l>
+<l>    endswitch</l>
+<l>endif</l>
+<c></c>
+<c>* Correct the number of threads based on number of positions in ROIs for the camera used</c>
+<l>get_dict_param (App.ThreadManagement.Threads, 'keys', [], KeysThreads)</l>
+<l>for IdxThread := |KeysThreads|-1 to 0 by -1 // negative count is used so vector order is consistent while removing elements from it</l>
+<c>    </c>
+<l>    Threads := App.ThreadManagement.Threads.[KeysThreads[IdxThread]]</l>
+<c>    </c>
+<l>    GreaterEq          := Threads [&gt;] App.ROIs.NumberOfPos[App.Status.Camera.ID]</l>
+<l>    Ind                := find (GreaterEq, 1)</l>
+<l>    ROICount_Corrected := remove (Threads, Ind)</l>
+<c>    </c>
+<l>    if(|ROICount_Corrected| == 0)</l>
+<l>        remove_dict_key (App.ThreadManagement.Threads, KeysThreads[IdxThread])</l>
+<l>    else</l>
+<l>        App.ThreadManagement.Threads.[KeysThreads[IdxThread]] := ROICount_Corrected</l>
+<l>    endif</l>
+<l>endfor</l>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="ThreadManagementInit">
+<parameters/>
+</docu>
+</procedure>
+</hdevelop>

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="25.11.0.0">
+<procedure name="TeachInImagePreprocessedGet">
+<interface>
+<oo>
+<par name="Image" base_type="iconic" dimension="0"/>
+</oo>
+<ic>
+<par name="GetNewImage" base_type="ctrl" dimension="0"/>
+</ic>
+<oc>
+<par name="StopLoop" base_type="ctrl" dimension="0"/>
+</oc>
+</interface>
+<body>
+<c>* TeachInImagePreprocessedGet</c>
+<c>* ---------------------------------------------------</c>
+<c></c>
+<l>global tuple App</l>
+<c></c>
+<c>* If the image can be grabbed from first camera then do it, </c>
+<c>* otherwise grab and use the loaded ProductImage. </c>
+<c>* If no grabber use productimage as well.</c>
+<c>* If a new image should be aquired use 1.</c>
+<c></c>
+<l>if (GetNewImage)</l>
+<c>    </c>
+<l>*     if (App.Status.Camera.ID == 1)</l>
+<c>         * Get image from framegrabber or load from disk</c>
+<l>        SensorGrabImage (Image, ImageCap, IsTeachIn, NoMore_ImageLoadedFromDisk, Framegrabber_ChunkData, Camera_DeviceNumberUsedForGrabbing, TimeNeededGrabbing)</l>
+<c></c>
+<l>*         GetImageForElaboration_COPY_1 (ImageOrig, WorkOnFramegrabberEnable, AcqHandle, ProcutionLoopCounter, gPathnameForImageFile, gFilenameProductimage, NoImageFound)</l>
+<l>*     else</l>
+<c>        * maybe we want to work in the same image all the time</c>
+<l>*         if (WorkOnFramegrabberEnable = 1)</l>
+<l>*             GetImageForElaboration_COPY_1 (ImageOrig___, WorkOnFramegrabberEnable, AcqHandle, ProcutionLoopCounter, gPathnameForImageFile, gFilenameProductimage, NoImageFound)</l>
+<c>*             GetImageForElaboration (RinnenROIs, EjectROIs, ImageOrig___, WorkOnFramegrabberEnable, AcqHandle, ProcutionLoopCounter, PathnameForImageFilesAndPrefixImage, NoImageFound1)</c>
+<l>*         else</l>
+<l>*             GetImageForElaboration_COPY_1 (ImageOrig, WorkOnFramegrabberEnable, AcqHandle, ProcutionLoopCounter, gPathnameForImageFile, gFilenameProductimage, NoImageFound)</l>
+<c>*             GetImageForElaboration (RinnenROIs, EjectROIs, ImageOrig, WorkOnFramegrabberEnable, AcqHandle, ProcutionLoopCounter, PathnameForImageFilesAndPrefixImage, NoImageFound)</c>
+<l>*         endif</l>
+<l>*     endif</l>
+<l>endif</l>
+<l>get_image_size (Image, ImageWidth, ImageHeight)</l>
+<l>if (|ImageWidth| != 0)</l>
+<l>    dev_set_part (0, 0, ImageHeight-1, ImageWidth-1)</l>
+<l>endif</l>
+<c></c>
+<l>StopLoop := NoMore_ImageLoadedFromDisk</l>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="TeachInImagePreprocessedGet">
+<parameters>
+<parameter id="GetNewImage"/>
+<parameter id="Image"/>
+<parameter id="StopLoop"/>
+</parameters>
+</docu>
+</procedure>
+</hdevelop>

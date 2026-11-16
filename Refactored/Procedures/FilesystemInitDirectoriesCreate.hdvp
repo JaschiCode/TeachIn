@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="25.11.0.0">
+<procedure name="FilesystemInitDirectoriesCreate">
+<interface>
+<ic>
+<par name="FolderName" base_type="ctrl" dimension="0"/>
+<par name="DirectoryParent" base_type="ctrl" dimension="0"/>
+<par name="CreateFolder" base_type="ctrl" dimension="0"/>
+<par name="IsSubFolder" base_type="ctrl" dimension="0"/>
+</ic>
+<oc>
+<par name="Root" base_type="ctrl" dimension="0"/>
+</oc>
+</interface>
+<body>
+<c>* FilesystemInitDirectoriesCreate</c>
+<c>* --------------------------------------------------</c>
+<c></c>
+<l>global tuple App</l>
+<c></c>
+<l>if (not IsSubFolder)</l>
+<l>    App.Filesystem.[FolderName] := dict{}</l>
+<l>    App.Filesystem.[FolderName].Path := DirectoryParent.Path + FolderName + '/'</l>
+<c>    </c>
+<l>    file_exists (App.Filesystem.[FolderName].Path, FileExists)</l>
+<l>    if (not FileExists and CreateFolder)</l>
+<l>        make_dir (App.Filesystem.[FolderName].Path)</l>
+<l>    endif</l>
+<c>    </c>
+<l>    App.Filesystem.[FolderName].Files := dict{}</l>
+<l>    Root := App.Filesystem.[FolderName]</l>
+<l>else</l>
+<l>    DirectoryParent.[FolderName] := dict{}</l>
+<l>    DirectoryParent.[FolderName].Path := DirectoryParent.Path + FolderName + '/'</l>
+<c>    </c>
+<l>    file_exists (DirectoryParent.[FolderName].Path, FileExists)</l>
+<l>    if (not FileExists and CreateFolder)</l>
+<l>        make_dir (DirectoryParent.[FolderName].Path)</l>
+<l>    endif</l>
+<c>    </c>
+<l>    DirectoryParent.[FolderName].Files := dict{}</l>
+<l>    Root := DirectoryParent.[FolderName]</l>
+<l>endif</l>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="FilesystemInitDirectoriesCreate">
+<parameters>
+<parameter id="CreateFolder"/>
+<parameter id="DirectoryParent"/>
+<parameter id="FolderName"/>
+<parameter id="IsSubFolder"/>
+<parameter id="Root"/>
+</parameters>
+</docu>
+</procedure>
+</hdevelop>

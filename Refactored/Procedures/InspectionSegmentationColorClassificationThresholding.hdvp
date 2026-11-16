@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="25.11.0.0">
+<procedure name="InspectionSegmentationColorClassificationThresholding">
+<interface>
+<ic>
+<par name="ProcessingThreadID" base_type="ctrl" dimension="0"/>
+<par name="ChannelSelector" base_type="ctrl" dimension="0"/>
+<par name="UseColorClassification" base_type="ctrl" dimension="0"/>
+</ic>
+</interface>
+<body>
+<c>* InspectionSegmentationColorClassificationThresholding</c>
+<c>* ----------------------------------------------------------------------</c>
+<c></c>
+<l>global tuple App</l>
+<c></c>
+<l>count_seconds (TimeStart)</l>
+<c></c>
+<c>* Get variables from dictionary</c>
+<l>TabletSegmentationDone := App.Inspection.Threads.[ProcessingThreadID].Status.TabletSegmentationDone</l>
+<c></c>
+<c></c>
+<c>* Get all relevant images for inspection</c>
+<l>InspectionImageDecomposeForPreprocessing (ProcessingThreadID, TimeNeeded)</l>
+<c></c>
+<c></c>
+<c>* Segment the tablets on the rolls</c>
+<l>if (not TabletSegmentationDone)</l>
+<c>    </c>
+<c>    * Calculate the segmentation of the tablets as preprocessing</c>
+<l>    InspectionSegmentationReduceToLaneROIs (ProcessingThreadID, TimeNeeded)</l>
+<l>    InspectionSegmentationRollsShift (ProcessingThreadID, TimeNeeded)</l>
+<c>    </c>
+<c>    * todo: nochmal nachvollziehen, ob ROI_Height und ROI_Pos wirklich hier auf 0 gesetzt werden können</c>
+<l>*     ROI_Height := 0</l>
+<l>*     ROI_Pos := 0</l>
+<l>    InspectionSegmentationStep (ProcessingThreadID, ChannelSelector)</l>
+<l>else</l>
+<l>    ++++ todo: JH</l>
+<l>*     SegmentedTablets := Preprocessed_SegmentedTablets</l>
+<l>*     Sequencer_MovedDistanceInBetweenGrabbedImages := GrabImageMetaData.Sequencer_MovedDistanceInBetweenGrabbedImages</l>
+<l>    * ShiftMean      := App.Sensor.GrabImageMetaData.Sequencer_MovedDistanceInBetweenGrabbedImages</l>
+<l>endif</l>
+<c></c>
+<c></c>
+<c></c>
+<c></c>
+<c></c>
+<c></c>
+<c>* Remove objects in eject box while teach in</c>
+<c>* Can be necessary due to tracks may have holes there, this results in poor measurements</c>
+<l>if (App.Format.TabletInspection.TeachIn.V_IgnoreObjectsInEjectboxesForTeachIn.Value)</l>
+<l>    TeachInSegmentationFilterRegionsCuttingROI (ProcessingThreadID)</l>
+<l>endif</l>
+<c></c>
+<c>* Remove tablets that touch the upper and lower ROI border</c>
+<l>RegionTablets := App.Inspection.Threads.[ProcessingThreadID].Regions.Tablets.Segmented</l>
+<l>SegmentationFilterRegionsCuttingROI (RegionTablets, RegionTablets, ProcessingThreadID, 1)</l>
+<l>App.Inspection.Threads.[ProcessingThreadID].Regions.Tablets.Segmented := RegionTablets</l>
+<c></c>
+<c>* Sequencer shift offset calculation inbetween images</c>
+<l>if (UseColorClassification)</l>
+<l>    SegmentationRollsShiftCalculateBetweenImages (ProcessingThreadID, ChannelSelector)</l>
+<l>endif</l>
+<c>* </c>
+<l>count_seconds (Seconds_End)</l>
+<l>TimeNeeded := (Seconds_End - TimeStart) * 1000</l>
+<c>* **********************************************</c>
+<c></c>
+<l>return ()</l>
+<c>* </c>
+</body>
+<docu id="InspectionSegmentationColorClassificationThresholding">
+<parameters>
+<parameter id="ChannelSelector"/>
+<parameter id="ProcessingThreadID"/>
+<parameter id="UseColorClassification"/>
+</parameters>
+</docu>
+</procedure>
+</hdevelop>

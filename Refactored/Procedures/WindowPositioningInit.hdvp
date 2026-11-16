@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="25.11.0.0">
+<procedure name="WindowPositioningInit">
+<interface/>
+<body>
+<c>* WindowPositioningInit</c>
+<c>* ---------------------------------------</c>
+<c></c>
+<l>global tuple App</l>
+<c></c>
+<l>App.Visualization := dict{}</l>
+<c></c>
+<l>read_dict (App.Filesystem.Temp.Files.WindowPositioning, [], [], App.Visualization.WindowPositioning)</l>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="WindowPositioningInit">
+<parameters/>
+</docu>
+</procedure>
+</hdevelop>

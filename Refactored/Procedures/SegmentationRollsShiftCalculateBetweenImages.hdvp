@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="25.11.0.0">
+<procedure name="SegmentationRollsShiftCalculateBetweenImages">
+<interface>
+<ic>
+<par name="ProcessingThreadID" base_type="ctrl" dimension="0"/>
+<par name="ChannelSelector" base_type="ctrl" dimension="0"/>
+</ic>
+</interface>
+<body>
+<c>* SegmentationRollsShiftCalculateBetweenImages</c>
+<c>* -------------------------------------------------------------</c>
+<c>* Sequencer shift offset calculation inbetween images</c>
+<c>* In case there is no color segmentation needed</c>
+<c></c>
+<l>global tuple App</l>
+<c></c>
+<c>* Get variables from dictionary</c>
+<l>ImageHSV           := App.Inspection.Threads.[ProcessingThreadID].Images.TopLight.HSV.AllChannel</l>
+<l>ImageUV            := App.Inspection.Threads.[ProcessingThreadID].Images.BackLight.Mono</l>
+<l>RegionTabletsUnion := App.Inspection.Threads.[ProcessingThreadID].Regions.Tablets.SegmentedUnion</l>
+<l>SpotFeatureActive  := App.Format.TabletInspection.Measure_ProductSpot.V_FeatureActive.Value</l>
+<c></c>
+<c></c>
+<c></c>
+<c>* If ColorClassificationHandle does not exist, read it once from harddisk</c>
+<l>get_dict_param (App.Inspection.Threads.[ProcessingThreadID], 'key_exists', 'ColorClassification', KeyExists)</l>
+<l>if (not KeyExists)</l>
+<l>    FilenameColorClassificator := App.Filesystem.Format.Config.Files.ColorClassification</l>
+<l>    read_class_mlp (FilenameColorClassificator, MLPHandle)</l>
+<l>    create_class_lut_mlp (MLPHandle, [], [], ColorClassificationHandle)</l>
+<l>    App.Inspection.Threads.[ProcessingThreadID].ColorClassification := dict{}</l>
+<l>    App.Inspection.Threads.[ProcessingThreadID].ColorClassification.Handle := ColorClassificationHandle</l>
+<l>endif</l>
+<c></c>
+<c></c>
+<c>* No classification for empty regions</c>
+<l>area_center (RegionTabletsUnion, Area, _, _)</l>
+<l>if (Area = 0 or Area = [])</l>
+<l>    gen_empty_obj (ColourClassifiedTablets_LineSpecific)</l>
+<l>else</l>
+<c>    * Sequencer shift offset calculation in between images</c>
+<c>    ****************************************************************              </c>
+<l>*     Sequencer_MovedDistanceInBetweenGrabbedImages := Sequencer_MovedDistanceInBetweenGrabbedImages</l>
+<l>*     RegionTabletsMoved := RegionTabletsUnion</l>
+<l>    * ShiftMean      := App.Sensor.GrabImageMetaData.Sequencer_MovedDistanceInBetweenGrabbedImages</l>
+<c>    </c>
+<c>    *** If UV light is used and spot feature is active then use the uv image for ColourLUT and classification</c>
+<c>    *** Attention: Classifier is trained with 3-channel images </c>
+<c>    ***            within "MiscTeachIn0.hdev" in procedure "CalculateColourClassification"</c>
+<l>    if (ChannelSelector == 2 and SpotFeatureActive )</l>
+<l>        reduce_domain (ImageUV, RegionTabletsUnion, ImageUVReduced)</l>
+<l>        compose3 (ImageUVReduced, ImageUVReduced, ImageUVReduced, ImageReducedForColourLUT)</l>
+<l>    else</l>
+<l>        reduce_domain (ImageHSV, RegionTabletsUnion, ImageReducedForColourLUT)           </l>
+<l>    endif</l>
+<c>    </c>
+<l>    SegmentationSpotAndPrint (ImageReducedForColourLUT, RegionTabletsUnion, ProcessingThreadID, TimeNeeded)</l>
+<l>endif</l>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="SegmentationRollsShiftCalculateBetweenImages">
+<parameters>
+<parameter id="ChannelSelector"/>
+<parameter id="ProcessingThreadID"/>
+</parameters>
+</docu>
+</procedure>
+</hdevelop>

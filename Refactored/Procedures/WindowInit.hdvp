@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="25.11.0.0">
+<procedure name="WindowInit">
+<interface/>
+<body>
+<c>* WindowInit</c>
+<c>* ------------------------------------------</c>
+<c></c>
+<l>global tuple App</l>
+<c></c>
+<l>App.Visualization.Windows := dict{}</l>
+<c></c>
+<c>* Set window title for halcon window used as interface to gui</c>
+<l>set_window_attr ('window_title', 'Camera' + (App.Status.Camera.ID +1))</l>
+<c></c>
+<l>if (App.Status.Debug.Level &gt;= 1 or App.Status.Mode.TeachIn == 1)</l>
+<c>    * todo muss das angepasst werden?</c>
+<l>    WindowWidth := 883</l>
+<l>    WindowHeight := 640</l>
+<l>    WindowRow := 0</l>
+<l>    WindowColumn := 0</l>
+<l>    dev_update_time ('on') </l>
+<l>else</l>
+<l>    dev_update_time ('off')</l>
+<l>    LocalWindow  := App.Visualization.WindowPositioning.Windows.['Window_' + App.Sensor.CamerNumberUsed]</l>
+<l>    WindowWidth  := LocalWindow.Width</l>
+<l>    WindowHeight := LocalWindow.Height</l>
+<l>    WindowColumn := LocalWindow.X_Offset</l>
+<l>    WindowRow    := LocalWindow.Y_Offset</l>
+<l>endif</l>
+<l>dev_update_pc ('off')</l>
+<l>dev_update_window ('off')</l>
+<l>dev_update_var ('off')</l>
+<l>dev_close_window ()</l>
+<c></c>
+<c></c>
+<l>if (App.System.DebugInHalcon) </l>
+<l>    open_window (WindowRow, WindowColumn, WindowWidth, WindowHeight, 0, 'visible', '', WindowHandle)</l>
+<l>    WindowString := 'Camera' + (App.Status.Camera.ID + 1)</l>
+<l>    set_window_param (WindowHandle, 'window_title', WindowString)</l>
+<l>else</l>
+<l>    open_window (WindowRow, WindowColumn, WindowWidth, WindowHeight, 0, 'transparent', '', WindowHandle)</l>
+<l>    WindowString := 'Camera' + (App.Status.Camera.ID + 1)</l>
+<l>    set_window_param (WindowHandle, 'window_title', WindowString)</l>
+<l>endif</l>
+<c></c>
+<l>set_draw (WindowHandle, 'margin')</l>
+<l>set_color (WindowHandle, 'red')</l>
+<l>set_line_width (WindowHandle, 2)</l>
+<l>dev_error_var (Error, 1)</l>
+<l>set_font (WindowHandle, 'Arial-Bold-' + App.Format.InspectionVisualization.V_VisuFontSize.Value)</l>
+<c></c>
+<c>* Add WindowHandle to dcitionary</c>
+<l>App.Visualization.Windows.[App.Status.Camera.ID] := WindowHandle</l>
+<c></c>
+<c></c>
+<c>* Display image and regions</c>
+<l>WindowDisplayImageAndRegions ()</l>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="WindowInit">
+<parameters/>
+</docu>
+</procedure>
+</hdevelop>

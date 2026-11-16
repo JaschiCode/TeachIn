@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="25.11.0.0">
+<procedure name="StatusInit">
+<interface/>
+<body>
+<c>* StatusInit</c>
+<c>* --------------------------------------------------------------------------------</c>
+<c>* Initialize some general parameters</c>
+<c></c>
+<l>global tuple App</l>
+<c></c>
+<l>App.Status := dict{}</l>
+<c></c>
+<l>App.Status.StopProcessingExit    := 0</l>
+<c></c>
+<l>App.Status.Counter := dict{}</l>
+<l>App.Status.Counter.ProductionLoopCounter := 0</l>
+<c></c>
+<l>App.Status.Mode := dict{}</l>
+<l>App.Status.Mode.TeachIn  := 1</l>
+<l>App.Status.Mode.Realtime := 0</l>
+<c></c>
+<l>App.Status.Debug := dict{} </l>
+<l>App.Status.Debug.Level                       := 0   // 0: DebugLevel for production or in TeachInMode</l>
+<l>App.Status.Debug.WorkOnFirstCameraOnly       := 1</l>
+<l>App.Status.Debug.WorkOnFramegrabberEnable    := 1</l>
+<l>App.Status.Debug.EndlessLoopForTestingEngine := 0</l>
+<c></c>
+<l>App.Status.Camera := dict{}</l>
+<l>App.Status.Camera.ID    := 0</l>
+<l>App.Status.Camera.Ready := 1</l>
+<l>App.Status.Camera.NumberThreadsPerCam := 1</l>
+<c></c>
+<l>App.Status.Vibrator := dict{}</l>
+<l>App.Status.Vibrator.Ready       := 1</l>
+<l>App.Status.Vibrator.PulsingMode := 0</l>
+<c></c>
+<l>App.Status.Light := dict{}</l>
+<l>App.Status.Light.On := 1</l>
+<c></c>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="StatusInit">
+<parameters/>
+</docu>
+</procedure>
+</hdevelop>

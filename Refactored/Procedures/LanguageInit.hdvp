@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="25.11.0.0">
+<procedure name="LanguageInit">
+<interface/>
+<body>
+<c>* LanguageInit</c>
+<c>* ----------------------------------------------</c>
+<c></c>
+<l>global tuple App</l>
+<c></c>
+<l>App.Language := dict{}</l>
+<c></c>
+<c></c>
+<c>* Read the current language</c>
+<l>read_dict (App.Filesystem.Config.Files.Settings, [], [], Settings)</l>
+<l>App.Language.Selected := Settings.Language</l>
+<c></c>
+<c>* Read active language dictionary with all message</c>
+<l>FilenameLanguage := App.Filesystem.Lang.Path + App.Language.Selected + '.json'</l>
+<c></c>
+<l>read_dict (FilenameLanguage, [], [], LanguageKeys)</l>
+<c></c>
+<l>App.Language.Keys := LanguageKeys</l>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="LanguageInit">
+<parameters/>
+</docu>
+</procedure>
+</hdevelop>

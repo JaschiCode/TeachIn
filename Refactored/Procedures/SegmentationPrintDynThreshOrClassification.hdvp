@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="25.11.0.0">
+<procedure name="SegmentationPrintDynThreshOrClassification">
+<interface>
+<io>
+<par name="Image" base_type="iconic" dimension="0"/>
+</io>
+<oo>
+<par name="ColorClassifiedTablets" base_type="iconic" dimension="0"/>
+</oo>
+<ic>
+<par name="ProcessingThreadID" base_type="ctrl" dimension="0"/>
+</ic>
+<oc>
+<par name="TimeNeeded" base_type="ctrl" dimension="0"/>
+</oc>
+</interface>
+<body>
+<c>* SegmentationPrintDynThreshOrClassification</c>
+<c>* --------------------------------------------------</c>
+<c></c>
+<l>global tuple App</l>
+<c></c>
+<l>count_seconds(TimeStart)</l>
+<c></c>
+<c>* Get variables from dictionary</c>
+<l>ColorClassificationHandle := App.Inspection.Threads.[ProcessingThreadID].ColorClassification.Handle</l>
+<l>SpotFeatureActive         := App.Format.TabletInspection.Measure_ProductSpot.V_FeatureActive.Value</l>
+<c></c>
+<c>* print and spots can currently not work in parallel</c>
+<c>* in case spot detection is active and color classification is needed </c>
+<l>if(|ColorClassificationHandle| &gt; 0 and SpotFeatureActive) </l>
+<l>    classify_image_class_lut (Image, ClassRegions, ColorClassificationHandle)</l>
+<l>    select_obj (ClassRegions, ColorClassifiedTablets, 1) </l>
+<c>    </c>
+<c>    * Remove the regions that were detected as background</c>
+<l>    select_obj (ClassRegions, ColorClassifiedBackground, 3)</l>
+<l>    difference (ColorClassifiedTablets, ColorClassifiedBackground, ColorClassifiedTablets)</l>
+<l>else</l>
+<l>    classify_image_class_lut (Image, ClassRegions, ColorClassificationHandle)</l>
+<l>    select_obj (ClassRegions, ColorClassifiedTablets, 1)</l>
+<l>endif</l>
+<c></c>
+<l>count_seconds(TimeEnd)</l>
+<l>TimeNeeded := (TimeEnd-TimeStart) * 1000.0</l>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="SegmentationPrintDynThreshOrClassification">
+<parameters>
+<parameter id="ColorClassifiedTablets"/>
+<parameter id="Image"/>
+<parameter id="ProcessingThreadID"/>
+<parameter id="TimeNeeded"/>
+</parameters>
+</docu>
+</procedure>
+</hdevelop>

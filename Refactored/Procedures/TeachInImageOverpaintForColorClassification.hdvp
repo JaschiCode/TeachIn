@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="25.11.0.0">
+<procedure name="TeachInImageOverpaintForColorClassification">
+<interface/>
+<body>
+<c>* TeachInImageOverpaintForColorClassification</c>
+<c>* -------------------------------------------------------------------</c>
+<c></c>
+<l>global tuple App</l>
+<c></c>
+<l>get_image_size (App.TeachIn.ImageToLearnOn, ImageWidth, ImageHeight)</l>
+<c></c>
+<l>SizeOfOverpaintedRectangle := 100</l>
+<l>gen_rectangle1 (Rectangle_ToOverpaint, ImageHeight - SizeOfOverpaintedRectangle, ImageWidth - SizeOfOverpaintedRectangle, ImageHeight, ImageWidth)</l>
+<c></c>
+<l>count_channels (App.TeachIn.ImageToLearnOn, Image_Channels)</l>
+<l>if (Image_Channels = 3)</l>
+<l>    decompose3 (App.TeachIn.ImageToLearnOn, Image_Red, Image_Green, Image_Blue)</l>
+<l>elseif (Image_Channels = 5)    </l>
+<l>    decompose5 (App.TeachIn.ImageToLearnOn, Image_Red, Image_Green, Image_Blue, Image_SequencerMonochrome, Image_SequencerMonochrome_Mean)</l>
+<l>elseif (Image_Channels = 6)</l>
+<l>    decompose6 (App.TeachIn.ImageToLearnOn, Image1, Image2, Image3, Image_Red, Image_Green, Image_Blue)</l>
+<l>endif</l>
+<c></c>
+<l>GrayValue_ToSet := 20</l>
+<l>overpaint_region (Image_Red, Rectangle_ToOverpaint, GrayValue_ToSet, 'fill')</l>
+<l>overpaint_region (Image_Green, Rectangle_ToOverpaint, GrayValue_ToSet, 'fill')</l>
+<l>overpaint_region (Image_Blue, Rectangle_ToOverpaint, GrayValue_ToSet, 'fill')</l>
+<l>gen_rectangle1 (Rectangle_ToOverpaint, ImageHeight - SizeOfOverpaintedRectangle, 0, ImageHeight, SizeOfOverpaintedRectangle)</l>
+<c></c>
+<l>GrayValue_ToSet := 235</l>
+<l>overpaint_region (Image_Red, Rectangle_ToOverpaint, GrayValue_ToSet, 'fill')</l>
+<l>overpaint_region (Image_Green, Rectangle_ToOverpaint, GrayValue_ToSet, 'fill')</l>
+<l>overpaint_region (Image_Blue, Rectangle_ToOverpaint, GrayValue_ToSet, 'fill')</l>
+<l>if (Image_Channels = 3)</l>
+<l>    compose3 (Image_Red, Image_Green, Image_Blue, App.TeachIn.ImageToLearnOn)</l>
+<l>elseif (Image_Channels = 5) </l>
+<l>    compose5 (Image_Red, Image_Green, Image_Blue, Image_SequencerMonochrome, Image_SequencerMonochrome_Mean, App.TeachIn.ImageToLearnOn)</l>
+<l>elseif (Image_Channels = 6) </l>
+<l>    compose6 (Image1, Image2, Image3, Image_Red, Image_Green, Image_Blue, App.TeachIn.ImageToLearnOn)</l>
+<l>endif</l>
+<c></c>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="TeachInImageOverpaintForColorClassification">
+<parameters/>
+</docu>
+</procedure>
+</hdevelop>

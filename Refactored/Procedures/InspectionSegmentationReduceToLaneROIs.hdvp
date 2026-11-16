@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="25.11.0.0">
+<procedure name="InspectionSegmentationReduceToLaneROIs">
+<interface>
+<ic>
+<par name="ProcessingThreadID" base_type="ctrl" dimension="0"/>
+</ic>
+<oc>
+<par name="TimeNeeded" base_type="ctrl" dimension="0"/>
+</oc>
+</interface>
+<body>
+<c>* InspectionSegmentationReduceToLaneROIs</c>
+<c>* ----------------------------------------------------------------------------</c>
+<c></c>
+<l>global tuple App</l>
+<c></c>
+<c>* Get variables from dictionary</c>
+<l>ImageHSV   := App.Inspection.Threads.[ProcessingThreadID].Images.TopLight.HSV.AllChannel</l>
+<l>ImageValue := App.Inspection.Threads.[ProcessingThreadID].Images.TopLight.HSV.Value</l>
+<l>ImageMono  := App.Inspection.Threads.[ProcessingThreadID].Images.BackLight.Mono</l>
+<c></c>
+<l>LanesROIsUnion := App.Inspection.Threads.[ProcessingThreadID].Regions.Lanes.ROIsUnion</l>
+<c></c>
+<c>* Reduce the images to lane ROIs</c>
+<l>reduce_domain (ImageHSV, LanesROIsUnion, ImageHSV)</l>
+<l>reduce_domain (ImageValue , LanesROIsUnion, ImageValue)</l>
+<l>reduce_domain (ImageMono, LanesROIsUnion, ImageMono)</l>
+<c></c>
+<c></c>
+<c>* Set variables to dictionary</c>
+<l>App.Inspection.Threads.[ProcessingThreadID].Images.TopLight.HSV.AllChannel := ImageHSV</l>
+<l>App.Inspection.Threads.[ProcessingThreadID].Images.TopLight.HSV.Value      := ImageValue</l>
+<l>App.Inspection.Threads.[ProcessingThreadID].Images.BackLight.Mono          := ImageMono</l>
+<c></c>
+<l>return()</l>
+</body>
+<docu id="InspectionSegmentationReduceToLaneROIs">
+<parameters>
+<parameter id="ProcessingThreadID"/>
+<parameter id="TimeNeeded"/>
+</parameters>
+</docu>
+</procedure>
+</hdevelop>

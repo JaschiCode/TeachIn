@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="25.11.0.0">
+<procedure name="gPlot_Histo_With_Statistics">
+<interface>
+<oo>
+<par name="hiHistogram" base_type="iconic" dimension="0"/>
+</oo>
+<ic>
+<par name="vdData" base_type="ctrl" dimension="0"/>
+<par name="csPlotTitleFirstRow" base_type="ctrl" dimension="0"/>
+<par name="csPlotTitleSecondRow" base_type="ctrl" dimension="0"/>
+<par name="lFontSize" base_type="ctrl" dimension="0"/>
+<par name="bDoAutoSelectBinNonZero" base_type="ctrl" dimension="0"/>
+<par name="bDoSetBinSizeManual" base_type="ctrl" dimension="0"/>
+<par name="dManualBinSize" base_type="ctrl" dimension="0"/>
+<par name="dTolLimitLower" base_type="ctrl" dimension="0"/>
+<par name="dTolLimitUpper" base_type="ctrl" dimension="0"/>
+</ic>
+<oc>
+<par name="dBinSizeCorrected" base_type="ctrl" dimension="0"/>
+<par name="dDataMax" base_type="ctrl" dimension="0"/>
+<par name="dDataMin" base_type="ctrl" dimension="0"/>
+<par name="dDataMed" base_type="ctrl" dimension="0"/>
+<par name="dDataMean" base_type="ctrl" dimension="0"/>
+<par name="dDataDev" base_type="ctrl" dimension="0"/>
+<par name="OSG" base_type="ctrl" dimension="0"/>
+<par name="USG" base_type="ctrl" dimension="0"/>
+</oc>
+</interface>
+<body>
+<c></c>
+<c></c>
+<c>* Remove extreme Outliers that would skew the Plot ( &gt; 4 * Sigma)</c>
+<l>dDataDev := deviation(vdData)</l>
+<l>dDataMean := mean(vdData)</l>
+<c></c>
+<l>vdPlotData := vdData[ find(vdData [&lt;] dDataMean+4*dDataDev and vdData [&gt;] dDataMean-4*dDataDev, 1) ]</l>
+<c></c>
+<c>* Get Statistical Parameters of Data</c>
+<l>dDataMin := min( vdPlotData )*0.99</l>
+<l>dDataMax := max( vdPlotData )*1.01</l>
+<l>dDataDev := deviation(vdPlotData)</l>
+<l>dDataMean := mean(vdPlotData)</l>
+<c></c>
+<c>* DK_2020_03_11_Beginn</c>
+<l>dDataMed := median(vdPlotData)</l>
+<c>* DK_2020_03_11_Ende</c>
+<c></c>
+<c>* Set BinSize by Hand or Automatically</c>
+<l>if (bDoSetBinSizeManual == true)</l>
+<l>    BinSize := dManualBinSize</l>
+<l>    lNumBins := round((dDataMax - dDataMin)/BinSize)</l>
+<l>else</l>
+<l>    lNumBins := round(pow(|vdPlotData|,1.0/3.0)*2)</l>
+<l>endif</l>
+<c></c>
+<c>* Calculate the Histogram and set the Data for Plotting</c>
+<l>tuple_histo_range (vdPlotData, dDataMin, dDataMax, lNumBins, vdHisto, vdBinSize)</l>
+<l>vdXData := [0:lNumBins-1]*vdBinSize + dDataMin</l>
+<l>vdYData := vdHisto</l>
+<c></c>
+<l>dBinSizeCorrected := -1</l>
+<c></c>
+<l>if (bDoAutoSelectBinNonZero == true)</l>
+<c>    </c>
+<c>    * Additional check for too many emty bins</c>
+<l>    lZerosDetected := find( vdHisto[ [ find_first(vdHisto [&gt;] 0, 1) : find_last (vdHisto [&gt;] 0, 1) ] ] , 0) != -1</l>
+<c>    </c>
+<c>    * Keep track of old values</c>
+<l>    lNumBinsOld := lNumBins</l>
+<l>    lNumBinsNew := lNumBins</l>
+<c>    </c>
+<l>    if (lZerosDetected == true)</l>
+<c>        * rework to more coarse Bin Sizes</c>
+<l>        while (lZerosDetected == true)</l>
+<l>            lCurBinNum := lNumBinsNew-1</l>
+<c>            </c>
+<l>            tuple_histo_range (vdPlotData, dDataMin, dDataMax, lCurBinNum, vdHisto, vdBinSize)</l>
+<c>            </c>
+<l>            lZerosDetected := find( vdHisto[ [ find_first(vdHisto [&gt;] 0, 1) : find_last (vdHisto [&gt;] 0, 1) ] ] , 0) != -1</l>
+<c>            </c>
+<l>            lNumBinsNew := lCurBinNum</l>
+<l>        endwhile</l>
+<l>    endif</l>
+<c>    </c>
+<c>    * Calculate the Histogram and set the Data for Plotting</c>
+<l>    tuple_histo_range (vdPlotData, dDataMin, dDataMax, lNumBinsNew, vdHisto, vdBinSize)</l>
+<l>    vdXData := [0:lNumBinsNew-1]*vdBinSize + dDataMin</l>
+<l>    vdYData := vdHisto</l>
+<c>    </c>
+<l>    dBinSizeCorrected := vdBinSize</l>
+<l>endif</l>
+<c></c>
+<c>* Calculate the Normal Distribution of the Data and Scale to Max-Value</c>
+<c></c>
+<l>pi := 2*asin(1)</l>
+<c></c>
+<c>* Calculate finer X-Steps for Bell-Curve to avoid sharp corners in plot, 100 Steps is default</c>
+<l>dStartX := vdXData[0]</l>
+<l>dEndX := vdXData[|vdXData|-1]</l>
+<l>dStepX := ( dEndX - dStartX ) / (100-1)</l>
+<c></c>
+<l>vdPlot_DataX := [ dStartX: dStepX : dEndX]</l>
+<c></c>
+<c>* Calculate Probability density function (PDF):</c>
+<l>pdf_Part1 := ( 1.0 / (  dDataDev * sqrt(2*pi ) ))</l>
+<l>pdf_Part2 := -1 / ( 2 * pow(dDataDev,2) )</l>
+<l>pdf_Part3 := pow( (-dDataMean + vdPlot_DataX),2)</l>
+<c></c>
+<l>vdNormYData := pdf_Part1 * exp( pdf_Part2 * pdf_Part3 )</l>
+<c></c>
+<c>* For Plot move curve in y-Direction down to zero and</c>
+<l>vdEndsMinVal := [vdNormYData[0], vdNormYData[|vdNormYData|-1]]</l>
+<l>lMaxIdx := find(vdEndsMinVal [==] max(vdEndsMinVal),1)</l>
+<c></c>
+<l>vdPlot_DataY := (vdNormYData- vdEndsMinVal[lMaxIdx])</l>
+<c></c>
+<c>* remove negative values</c>
+<l>* vdPlot_DataY[ find(vdPlot_DataY [&lt;] 0 ,1) ] := 0</l>
+<l>if(max(vdPlot_DataY) == 0)</l>
+<l>    vdPlot_DataY := ( vdPlot_DataY / mean(vdPlot_DataY)/1000 ) * max( vdHisto )</l>
+<l>else</l>
+<l>    vdPlot_DataY := ( vdPlot_DataY / max(vdPlot_DataY) ) * max( vdHisto )</l>
+<l>endif</l>
+<c></c>
+<c>* Prepare window for plot</c>
+<l>set_window_attr ('background_color', 'white')</l>
+<c>* ND change here</c>
+<l>open_window (0, 0, 1024, 768, 0, 'buffer', '', WindowHandle)</l>
+<l>* stop()  </l>
+<l>* dev_open_window (0, 0, 1024, 768, 'white', WindowHandle)</l>
+<c></c>
+<c></c>
+<l>set_line_width (WindowHandle, 2)</l>
+<c></c>
+<c></c>
+<l>get_font (WindowHandle, vcsCurFont)</l>
+<c></c>
+<l>csFontSizeNorm := 'default-Normal-' + lFontSize$'.2d'</l>
+<l>csFontSizeBig := 'default-Bold-' + (lFontSize+8)$'.2d'</l>
+<c></c>
+<l>set_font (WindowHandle, csFontSizeNorm)</l>
+<c></c>
+<c>* Set Boundaries for Plot</c>
+<l>LimitNames := ['start_x','end_x','start_y','end_y']</l>
+<l>LimitValues := [dDataMin, dDataMax, 0, max(vdHisto)*1.01]</l>
+<c></c>
+<c>* Set Axis, Tick and Grid</c>
+<l>GenParamNames := ['axes_color','ticks_x','ticks_y','grid_x','grid_y',LimitNames, 'format_x', 'format_y']</l>
+<l>GenParamValues := ['black', (dDataMax-dDataMin)/12, max(vdHisto)/4, 'none', 'none', LimitValues, '.2f', '.1f']</l>
+<c></c>
+<c>* Set Label Texts and Windows</c>
+<l>GenParamTextNames := ['box', 'box_color', 'shadow', 'shadow_color']</l>
+<l>GenParamTextValues := [true, '#F0F0F0', true, '#A0A0A0']</l>
+<c></c>
+<l>vcsTextLines[0] := '■ Histogram'</l>
+<l>vcsTextLines[1] := '■ Normal Distribution'</l>
+<l>vcsTextLines[2] := '■ Tolerance Limits'</l>
+<c></c>
+<c>* Plot the Graphs</c>
+<l>clear_window (WindowHandle)</l>
+<c>* basic grid</c>
+<l>Plot_Graph_Buffer (WindowHandle, [], [], '[px]', 'Anzahl', 'none', GenParamNames, GenParamValues)</l>
+<l>* stop()</l>
+<l>* plot_tuple (WindowHandle, [], [], [], [], [], GenParamNames, GenParamValues)</l>
+<c></c>
+<c>* histogram</c>
+<l>Plot_Graph_Buffer (WindowHandle, vdXData, vdYData, '', '', 'blue', ['axes_color', 'style', LimitNames], ['none','step', LimitValues])</l>
+<c>* normal distribution</c>
+<l>Plot_Graph_Buffer (WindowHandle, vdPlot_DataX, vdPlot_DataY, '', '', 'forest green', ['axes_color', 'style', LimitNames], ['none','line', LimitValues])</l>
+<c>* left boundary</c>
+<l>Plot_Graph_Buffer (WindowHandle, [dTolLimitLower,dTolLimitLower+vdBinSize/10.0], [max(vdHisto),max(vdHisto)], '', '', 'red', ['axes_color', 'style', LimitNames], ['none','filled', LimitValues])</l>
+<c>* right boundary</c>
+<l>Plot_Graph_Buffer (WindowHandle, [dTolLimitUpper,dTolLimitUpper+vdBinSize/10.0], [max(vdHisto),max(vdHisto)], '', '', 'red', ['axes_color', 'style', LimitNames], ['none','filled', LimitValues])</l>
+<c></c>
+<c>*Display Label</c>
+<l>disp_text (WindowHandle, vcsTextLines[0] + '\n' + vcsTextLines[1] + '\n' + vcsTextLines[2], 'window', 'top', 'right', ['blue','forest green', 'red'], GenParamTextNames, GenParamTextValues)</l>
+<c>*    </c>
+<c>*Display Title</c>
+<l>set_font( WindowHandle, csFontSizeBig)</l>
+<l>disp_text (WindowHandle, csPlotTitleFirstRow + '\n' + csPlotTitleSecondRow, 'window', 'top', 'center', 'black', ['box'], [false])</l>
+<c></c>
+<c>*Extract Image as iconic Object</c>
+<l>dump_window_image( hiHistogram, WindowHandle)</l>
+<c></c>
+<c>*reset System Font</c>
+<l>set_font( WindowHandle, vcsCurFont)</l>
+<l>set_window_attr ('background_color', 'black')</l>
+<l>close_window (WindowHandle)</l>
+<l>return ()</l>
+</body>
+<docu id="gPlot_Histo_With_Statistics">
+<parameters>
+<parameter id="OSG"/>
+<parameter id="USG"/>
+<parameter id="bDoAutoSelectBinNonZero"/>
+<parameter id="bDoSetBinSizeManual"/>
+<parameter id="csPlotTitleFirstRow"/>
+<parameter id="csPlotTitleSecondRow"/>
+<parameter id="dBinSizeCorrected"/>
+<parameter id="dDataDev"/>
+<parameter id="dDataMax"/>
+<parameter id="dDataMean"/>
+<parameter id="dDataMed"/>
+<parameter id="dDataMin"/>
+<parameter id="dManualBinSize"/>
+<parameter id="dTolLimitLower"/>
+<parameter id="dTolLimitUpper"/>
+<parameter id="hiHistogram"/>
+<parameter id="lFontSize"/>
+<parameter id="vdData"/>
+</parameters>
+</docu>
+</procedure>
+</hdevelop>

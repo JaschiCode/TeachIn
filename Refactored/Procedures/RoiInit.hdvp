@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="25.11.0.0">
+<procedure name="RoiInit">
+<interface/>
+<body>
+<c>* RoiInit</c>
+<c>* ----------------------------------------------------</c>
+<c>* Generate ROIs and EjectROIs</c>
+<c>   </c>
+<l>global tuple App</l>
+<c></c>
+<l>set_system ('clip_region', 'false')</l>
+<c></c>
+<l>gen_empty_obj (EmptyObject)</l>
+<c></c>
+<l>App.ROIs := dict{}</l>
+<l>App.ROIs.NumberOfPos := []</l>
+<l>App.ROIs.Lanes       := dict{}</l>
+<l>App.ROIs.Lanes.[0]   := EmptyObject</l>
+<l>App.ROIs.Ejects      := dict{}</l>
+<l>App.ROIs.Ejects.[0]  := EmptyObject</l>
+<c></c>
+<c></c>
+<c>* Loop through all connected cameras</c>
+<l>NumberOfConnectedCameras := App.Format.Camera.General.V_Camera_NumberOfConnectedCameras.Value</l>
+<l>for IdxROICams := 0 to NumberOfConnectedCameras-1 by 1</l>
+<c>    </c>
+<l>    RoiCam := App.Format.Roi.ROIs.['ROI_Cam_' + IdxROICams]</l>
+<c></c>
+<l>    ROI_OffsetImageTop_UpperROIPosition := RoiCam.V_Inspection_OffsetTop_UpperROIPosition.Value</l>
+<l>    ROI_OffsetImageTop_LowerROIPosition := RoiCam.V_Inspection_OffsetTop_LowerROIPosition.Value</l>
+<l>    ROI_OffsetX                         := RoiCam.V_Inspection_OffsetLeft.Value</l>
+<l>    ROI_Width                           := RoiCam.V_Inspection_Width.Value</l>
+<l>    ROIEject_OffsetImageTop             := RoiCam.V_Eject_OffsetTop.Value</l>
+<l>    ROIEject_Length                     := RoiCam.V_Eject_Length.Value</l>
+<l>    ROIEject_Width                      := RoiCam.V_Eject_Width.Value</l>
+<c>    </c>
+<c>    * load roi middle position values based on column</c>
+<l>    App.ROIs.NumberOfPos := [App.ROIs.NumberOfPos,RoiCam.V_NumberOfPos.Value]</l>
+<l>    ROI_StartColumnsTpl  := []</l>
+<c>    </c>
+<l>    for Index_ROINumberPos := 0 to App.ROIs.NumberOfPos[IdxROICams]-1 by 1</l>
+<l>        PosColumn := RoiCam.['V_Pos_Column_' + Index_ROINumberPos]</l>
+<l>        ROI_StartColumnTemp := PosColumn.Value</l>
+<l>        ROI_StartColumnsTpl := [ROI_StartColumnsTpl, ROI_StartColumnTemp]</l>
+<l>    endfor</l>
+<c>    </c>
+<l>    RoiCreate (RinnenROIs, EjectROIs, ROI_StartColumnsTpl, ROI_OffsetImageTop_UpperROIPosition, ROI_OffsetImageTop_LowerROIPosition, ROI_OffsetX, ROI_Width, ROIEject_OffsetImageTop, ROIEject_Length, ROIEject_Width)</l>
+<c></c>
+<l>    App.ROIs.Lanes.[IdxROICams]  := RinnenROIs</l>
+<l>    App.ROIs.Ejects.[IdxROICams] := EjectROIs</l>
+<l>endfor</l>
+<c></c>
+<l>set_system ('clip_region', 'true')</l>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="RoiInit">
+<parameters/>
+</docu>
+</procedure>
+</hdevelop>

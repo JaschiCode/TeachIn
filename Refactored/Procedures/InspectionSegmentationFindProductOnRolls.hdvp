@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="25.11.0.0">
+<procedure name="InspectionSegmentationFindProductOnRolls">
+<interface>
+<io>
+<par name="Image" base_type="iconic" dimension="0"/>
+<par name="LanesROI" base_type="iconic" dimension="0"/>
+</io>
+<ic>
+<par name="ProcessingThreadID" base_type="ctrl" dimension="0"/>
+<par name="IndexLane" base_type="ctrl" dimension="0"/>
+</ic>
+</interface>
+<body>
+<c>* InspectionSegmentationFindProductOnRolls</c>
+<c>* --------------------------------------------------------------------------</c>
+<c>* Measure the width of the tablet along the gap of rolls in backlight image</c>
+<c>* to define the ROI around the tablet</c>
+<c></c>
+<l>global tuple App</l>
+<c></c>
+<l>Debug := 0</l>
+<c></c>
+<c>* Get variables from dictionary</c>
+<l>ChannelSelector           := App.Inspection.Threads.[ProcessingThreadID].Segmentation.Parameters.ChannelSelector</l>
+<l>RollsGapsRow              := App.Inspection.Threads.[ProcessingThreadID].Segmentation.Parameters.RollsGapsRow  </l>
+<l>RollsGapsHeight           := App.Inspection.Threads.[ProcessingThreadID].Segmentation.Parameters.RollsGapsHeight</l>
+<l>ROI_IncreaseWithBy_Factor := App.Inspection.Threads.[ProcessingThreadID].Segmentation.Parameters.ROI_IncreaseWithBy_Factor</l>
+<l>RollsGapCenter            := App.Inspection.Threads.[ProcessingThreadID].Regions.Rolls.GapCenter</l>
+<l>CalibrationActive         := App.Format.CalibrationLocal.General.V_FeatureActive.Value</l>
+<l>get_dict_param (App.Inspection.Threads.[ProcessingThreadID].Segmentation, 'key_exists', 'TabletsAvailable', KeyExists)</l>
+<l>if (KeyExists)</l>
+<l>    TabletsAvailable := App.Inspection.Threads.[ProcessingThreadID].Segmentation.TabletsAvailable</l>
+<l>else</l>
+<l>    TabletsAvailable := 0</l>
+<l>endif</l>
+<c></c>
+<c></c>
+<c>* Parameters for 'profile'</c>
+<l>HeightFactor := 0.55     // height factor for ROI rect</l>
+<l>WidthFactor  := 0.53     // width factor for ROI rect</l>
+<c></c>
+<c></c>
+<c>* Setup measure in relation to image ilumination type</c>
+<l>switch (ChannelSelector)</l>
+<l>case 0:</l>
+<l>    MeasureThreshold     := 15 // threshold for MeasureHandle/edges</l>
+<l>    MeasureLength        := 10 // thickness of measure</l>
+<l>    MeasureSigma         := 1.5 // was set to 2 for solid products before</l>
+<l>    MeasureTransition    := 'negative_strongest'</l>
+<l>    MeasureTransitionPos := 'negative'</l>
+<l>    FindProductOnRoll_ContrastNegative := 1</l>
+<l>    break</l>
+<l>case 1:</l>
+<l>    MeasureThreshold     := 15 // threshold for MeasureHandle/edges</l>
+<l>    MeasureLength        := 10 // thickness of measure</l>
+<l>    MeasureSigma         := 1.5 // was set to 2 for solid products before</l>
+<l>    MeasureTransition    := 'negative_strongest'</l>
+<l>    MeasureTransitionPos := 'negative'</l>
+<l>    FindProductOnRoll_ContrastNegative := 1</l>
+<l>    break</l>
+<l>case 2:</l>
+<l>    MeasureThreshold     := 30 // threshold for MeasureHandle/edges</l>
+<l>    MeasureLength        := 30 // thickness of measure</l>
+<l>    MeasureSigma         := 2.0 // was set to 2 for solid products before</l>
+<l>    MeasureTransition    := 'positive_strongest'</l>
+<l>    MeasureTransitionPos := 'positive'</l>
+<l>    FindProductOnRoll_ContrastNegative := 0</l>
+<l>    break</l>
+<l>endswitch</l>
+<c></c>
+<l>reduce_domain (Image, LanesROI, ImageReduced)</l>
+<l>intersection (RollsGapCenter, LanesROI, RollsGapCenter)</l>
+<l>select_shape (RollsGapCenter, RollsGapCenter, 'area', 'and', 1, 1e6) // in case an region part is outside image due cutting with reduced roi upstream</l>
+<c></c>
+<c>* Through movement the RollsGapCenter could have been moved slightly outside the image.</c>
+<c>* in this case outside regions are filtered out, outside values RolssGapsRow have to be filteres as well</c>
+<l>smallest_rectangle1 (LanesROI, _, _, LanesROIRow2, _)</l>
+<l>Ind := find(RollsGapsRow[&gt;=]LanesROIRow2, true)</l>
+<l>if(|Ind| &gt; 0 and Ind &gt; -1)</l>
+<l>    RollsGapsRow := remove (RollsGapsRow, Ind)</l>
+<l>endif</l>
+<c></c>
+<c>* Determine the size of image</c>
+<l>get_image_size (Image, ImageWidth, ImageHeight)</l>
+<l>get_domain (Image, ImageDomain)</l>
+<l>smallest_rectangle1 (ImageDomain, __, RectCol1, __, RectCol2)</l>
+<l>RectWidth := RectCol2 - RectCol1</l>
+<l>smallest_rectangle2 (LanesROI, __, LanesROICol, __, __, LanesROILength2)</l>
+<c></c>
+<c></c>
+<c>* Loop through all gaps between rolls and measure</c>
+<l>gen_empty_region(TabletsInGapCenter)</l>
+<l>gen_empty_region(TabletsROI)</l>
+<l>ROI_Start    := []</l>
+<l>ROI_End      := []</l>
+<l>TabletsWidth := []</l>
+<l>for IdxRow := 0 to |RollsGapsRow|-1 by 1   </l>
+<l>    gen_rectangle2(TabletDetectedInGapCenter, RollsGapsRow[IdxRow]+2, LanesROICol, 0, LanesROILength2, MeasureLength / 2)</l>
+<l>    intersection (ImageDomain, TabletDetectedInGapCenter, RegIntersect)</l>
+<c>    </c>
+<c>    * Make sure that region of roll gap is in image</c>
+<l>    smallest_rectangle2 (RegIntersect, Row, Col, __, Length1, Length2)</l>
+<l>    Length1 := Length1 - 4</l>
+<c>    </c>
+<l>    gen_measure_rectangle2 (Row+2, Col, 0, Length1, Length2, ImageWidth, ImageHeight, 'nearest_neighbor', MeasureHandleRight) </l>
+<l>    gen_measure_rectangle2 (Row+2, Col, 3.14159, Length1, Length2, ImageWidth, ImageHeight, 'nearest_neighbor', MeasureHandleLeft) </l>
+<c>    </c>
+<l>    measure_pos (ImageReduced, MeasureHandleLeft, MeasureSigma, MeasureThreshold, MeasureTransitionPos, 'first', RightRowEdge, RightColEdge, _, _)</l>
+<l>    measure_pos (ImageReduced, MeasureHandleRight, MeasureSigma, MeasureThreshold, MeasureTransitionPos, 'first', LeftRowEdge, LeftColEdge, _, _)</l>
+<c>    </c>
+<l>    if (Debug)</l>
+<c>        * Problem if tablets get out of inspection region and measurement rectangle can not find both edges of tablet</c>
+<l>        dev_clear_window ()</l>
+<l>        dev_display (ImageReduced)</l>
+<l>        gen_cross_contour_xld (Cross1, RightRowEdge, RightColEdge, 31, 0.78)</l>
+<l>        gen_cross_contour_xld (Cross2, LeftRowEdge, LeftColEdge, 31, 0.78)</l>
+<l>        dev_display (Cross1)</l>
+<l>        dev_display (Cross2)</l>
+<l>        dev_get_window (WindowHandle)</l>
+<l>        flush_buffer (WindowHandle)</l>
+<l>        stop()</l>
+<l>    endif</l>
+<c>    </c>
+<l>    close_measure (MeasureHandleLeft)</l>
+<l>    close_measure (MeasureHandleRight)</l>
+<c>    </c>
+<c>    * In case multiple results were measured use most left and most right one    </c>
+<l>    if (|LeftColEdge| &gt; 1) </l>
+<l>        LeftColEdge  := sort(LeftColEdge)[0]</l>
+<l>        RightColEdge := sort(RightColEdge)[|RightColEdge|-1]</l>
+<l>    endif</l>
+<c>    </c>
+<c>    * To get accurate measurement  </c>
+<l>    if (RightColEdge &gt;= LeftColEdge)</l>
+<l>        TabletWidth :=  RightColEdge - LeftColEdge</l>
+<l>    else</l>
+<l>        TabletWidth :=  LeftColEdge - RightColEdge </l>
+<l>    endif</l>
+<c>    </c>
+<l>    ColMiddle :=  LeftColEdge + (TabletWidth /2)</l>
+<l>    if(|ColMiddle| &gt; 0 and TabletWidth &gt; 0)</l>
+<l>        gen_rectangle2(TabletDetectedInGapCenter, RollsGapsRow[IdxRow]+2, ColMiddle, 0, TabletWidth/2, 2)</l>
+<l>        concat_obj (TabletsInGapCenter, TabletDetectedInGapCenter, TabletsInGapCenter)</l>
+<l>        TabletsWidth := [TabletsWidth, TabletWidth]</l>
+<l>    endif</l>
+<l>    Measure_Failed := 0</l>
+<c>    </c>
+<c>    * Avoid error of finding min/max in empty list</c>
+<l>    if (|LeftColEdge| == 0)</l>
+<l>        LeftColEdge    := 0</l>
+<l>        Measure_Failed := 1</l>
+<l>    endif</l>
+<l>    if (|RightColEdge| == 0)</l>
+<l>        RightColEdge   := 0</l>
+<l>        Measure_Failed := 1</l>
+<l>    endif</l>
+<c>    </c>
+<c>    * First edge (Start) and last edge (End) (called left because alternative code with 2 rois left + right)</c>
+<l>    ROI_Start := [ROI_Start, min(LeftColEdge)]</l>
+<l>    ROI_End   := [ROI_End, max(RightColEdge)]</l>
+<c>    </c>
+<l>    if (not Measure_Failed)</l>
+<c>        * Create rectangle around edges</c>
+<l>        gen_rectangle1 (TabletROI, RollsGapsRow[IdxRow]-RollsGapsHeight*HeightFactor, ROI_Start[IdxRow]-(ROI_Start[IdxRow]*ROI_IncreaseWithBy_Factor), RollsGapsRow[IdxRow]+RollsGapsHeight*HeightFactor, ROI_End[IdxRow]+ROI_End[IdxRow]*ROI_IncreaseWithBy_Factor) </l>
+<l>    else</l>
+<l>        gen_rectangle1 (TabletROI, 0, 0, 0, 0)</l>
+<l>    endif</l>
+<l>    union2 (TabletsROI, TabletROI, TabletsROI)</l>
+<l>endfor</l>
+<c></c>
+<l>select_shape (TabletsInGapCenter, TabletsInGapCenter, 'area', 'and', 1, 99999999)</l>
+<l>if (Debug)</l>
+<l>    dev_display (Image)</l>
+<l>    dev_display (TabletsInGapCenter)</l>
+<l>    stop()</l>
+<l>endif</l>
+<c></c>
+<c></c>
+<c>* Use TabletsWidth in MM if calibration is active</c>
+<l>if(CalibrationActive)</l>
+<l>    Calibration_X := App.Format.CalibrationGlobal.Calibration.['Calib_Cam_' + App.Status.Camera.ID].['V_CalibX_PixToMM_' + IndexLane].Value</l>
+<l>    TabletsWidth := TabletsWidth / Calibration_X</l>
+<l>endif</l>
+<c></c>
+<c></c>
+<c>* Update values in dictionary</c>
+<l>App.Inspection.Threads.[ProcessingThreadID].Segmentation.Parameters.RollsGapsRow   := RollsGapsRow</l>
+<l>App.Inspection.Threads.[ProcessingThreadID].Segmentation.TabletsAvailable          := TabletsAvailable or |TabletsWidth| &gt; 0</l>
+<c></c>
+<l>App.Inspection.Threads.[ProcessingThreadID].Segmentation.Lanes.[IndexLane] := dict{}</l>
+<l>App.Inspection.Threads.[ProcessingThreadID].Segmentation.Lanes.[IndexLane].TabletWidth   := TabletsWidth</l>
+<c></c>
+<c></c>
+<l>App.Inspection.Threads.[ProcessingThreadID].Regions.Rolls.[IndexLane] := dict{}</l>
+<l>App.Inspection.Threads.[ProcessingThreadID].Regions.Rolls.[IndexLane].GapCenter     := RollsGapCenter</l>
+<l>App.Inspection.Threads.[ProcessingThreadID].Regions.Tablets.[IndexLane] := dict{}</l>
+<l>App.Inspection.Threads.[ProcessingThreadID].Regions.Tablets.[IndexLane].InGapCenter := TabletsInGapCenter</l>
+<l>App.Inspection.Threads.[ProcessingThreadID].Regions.Tablets.[IndexLane].ROI         := TabletsROI</l>
+<c></c>
+<l>concat_obj (App.Inspection.Threads.[ProcessingThreadID].Regions.Tablets.ROIs, TabletsROI, App.Inspection.Threads.[ProcessingThreadID].Regions.Tablets.ROIs)</l>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="InspectionSegmentationFindProductOnRolls">
+<parameters>
+<parameter id="Image"/>
+<parameter id="IndexLane"/>
+<parameter id="LanesROI"/>
+<parameter id="ProcessingThreadID"/>
+</parameters>
+</docu>
+</procedure>
+</hdevelop>

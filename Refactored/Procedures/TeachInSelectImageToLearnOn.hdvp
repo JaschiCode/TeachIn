@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="25.11.0.0">
+<procedure name="TeachInSelectImageToLearnOn">
+<interface>
+<ic>
+<par name="HelpTextString" base_type="ctrl" dimension="0"/>
+<par name="ChannelSelector" base_type="ctrl" dimension="0"/>
+</ic>
+</interface>
+<body>
+<c>* TeachInSelectImageToWorkOn</c>
+<c>* ----------------------------------------------------------------</c>
+<c></c>
+<l>global tuple App</l>
+<c></c>
+<l>WindowHandle := App.Visualization.Windows.[App.Status.Camera.ID]</l>
+<c></c>
+<l>App.TeachIn.ImageToLearnOn := App.TeachIn.ImageOrig</l>
+<c></c>
+<l>if (not App.TeachIn.ExitCondition)</l>
+<l>    TeachInSelectAndDisplayMultiChannelImage (App.TeachIn.ImageOrig, App.TeachIn.ImageToLearnOn, ImageDisplay, ChannelSelector, 1, 1, 1)</l>
+<l>    TeachInButtonRegionsCreate (App.TeachIn.ImageToLearnOn, ButtonRectangles, 4)</l>
+<l>    select_obj (ButtonRectangles, RectButtonCancel, 1)</l>
+<l>    select_obj (ButtonRectangles, RectButtonLeft, 2)</l>
+<l>    select_obj (ButtonRectangles, RectButtonOK, 3)</l>
+<l>    select_obj (ButtonRectangles, RectButtonRight, 4)</l>
+<c>    </c>
+<l>    if (App.System.DebugInHalcon)</l>
+<l>        disp_obj (RectButtonCancel, WindowHandle)</l>
+<l>        disp_obj (RectButtonRight, WindowHandle)</l>
+<l>        disp_obj (RectButtonLeft, WindowHandle)</l>
+<l>        disp_obj (RectButtonOK, WindowHandle)</l>
+<l>        TeachInButtonsContentString (App.TeachIn.ImageToLearnOn, RectButtonCancel, App.Language.Keys.HDEV_Cancel)</l>
+<l>        TeachInButtonsContentString (App.TeachIn.ImageToLearnOn, RectButtonOK, App.Language.Keys.HDEV_OkNext)</l>
+<l>        TeachInButtonContentArrow (RectButtonLeft, 'left')</l>
+<l>        TeachInButtonContentArrow (RectButtonRight, 'right')</l>
+<l>    endif</l>
+<c>    </c>
+<l>    Btn1 := App.Language.Keys.HDEV_Cancel</l>
+<l>    Btn2 := App.Language.Keys.HDEV_OkNext</l>
+<c>    </c>
+<l>    TeachInButtonsInterfaceViaFile (0, Btn1, Btn2, 0, 0, 1, 1, 0, 0, HelpTextString, 0, 0, 0, 0)</l>
+<c>    </c>
+<l>    ReDrawGraphic := 1</l>
+<l>    BtnPressed    := []</l>
+<l>    StopLoop      := 0</l>
+<l>    FirstLoop     := 1</l>
+<l>    while (1)</l>
+<c>        </c>
+<l>        if (ReDrawGraphic)</l>
+<l>            ReDrawGraphic := 0</l>
+<c>            </c>
+<l>            if (FirstLoop == 1)</l>
+<l>                FirstLoop := 0</l>
+<l>                StopLoop := 0</l>
+<l>                App.TeachIn.ImageToLearnOn := App.TeachIn.ImageOrig</l>
+<l>            else</l>
+<l>                GetNewImage := 1</l>
+<l>                TeachInImagePreprocessedGet (Image, GetNewImage, StopLoop)</l>
+<l>                App.TeachIn.ImageOrig      := Image</l>
+<l>                App.TeachIn.ImageToLearnOn := App.TeachIn.ImageOrig</l>
+<l>            endif</l>
+<c>            </c>
+<l>            if (StopLoop)</l>
+<l>                StringToWriteOnGUI := App.Language.Keys.HDEV_Cancel</l>
+<l>                TeachInGuiStringWrite (StringToWriteOnGUI, App.Language.Keys.HDEV_NoImagesAvailable, App.Language.Keys.HDEV_OkNext)</l>
+<l>                App.Status.Counter.ProductionLoopCounter := App.Status.Counter.ProductionLoopCounter - 1</l>
+<l>                ReDrawGraphic := 1</l>
+<l>                wait_seconds (0.2)</l>
+<l>                continue</l>
+<l>            endif</l>
+<c>            </c>
+<l>            TeachInSelectAndDisplayMultiChannelImage (App.TeachIn.ImageOrig, App.TeachIn.ImageToLearnOn, ImageDisplay, ChannelSelector, 1, 1, 1)</l>
+<l>            disp_obj (App.ROIs.Lanes.[App.Status.Camera.ID], WindowHandle)</l>
+<c>            </c>
+<l>            StringToWriteOnGUI := App.Language.Keys.HDEV_PictureNumber + ': ' +  (App.Status.Counter.ProductionLoopCounter + 1)</l>
+<l>            TeachInGuiStringWrite (StringToWriteOnGUI, App.Language.Keys.HDEV_Cancel, App.Language.Keys.HDEV_OkNext)</l>
+<c>            </c>
+<l>            if (App.System.DebugInHalcon)</l>
+<l>                disp_obj (RectButtonCancel, WindowHandle)</l>
+<l>                disp_obj (RectButtonRight, WindowHandle)</l>
+<l>                disp_obj (RectButtonLeft, WindowHandle)</l>
+<l>                disp_obj (RectButtonOK, WindowHandle)</l>
+<l>                TeachInButtonsContentString (App.TeachIn.ImageToLearnOn, RectButtonCancel, App.Language.Keys.HDEV_Cancel)</l>
+<l>                TeachInButtonsContentString (App.TeachIn.ImageToLearnOn, RectButtonOK, App.Language.Keys.HDEV_OkNext)</l>
+<l>                TeachInButtonContentArrow (RectButtonLeft, 'left')</l>
+<l>                TeachInButtonContentArrow (RectButtonRight, 'right')</l>
+<l>            endif</l>
+<l>        endif</l>
+<c>        </c>
+<l>        Error := []</l>
+<l>        if (App.System.DebugInHalcon)</l>
+<l>            dev_error_var (ErrorVar, 1)</l>
+<l>            dev_set_check ('~give_error')</l>
+<l>            get_mbutton (App.Visualization.Windows.[App.Status.Camera.ID], Row, Col, Button)</l>
+<l>            Error := ErrorVar</l>
+<l>            dev_set_check ('give_error')</l>
+<l>        endif</l>
+<c>        </c>
+<l>        TeachInGuiGetBtnPress (BtnPressed)</l>
+<l>        if (|BtnPressed| == 0)</l>
+<l>            wait_seconds (0.05)</l>
+<l>        else</l>
+<l>            StringToWriteOnGUI := App.Language.Keys.HDEV_PictureNumber + ': ' +  (App.Status.Counter.ProductionLoopCounter + 1)</l>
+<l>            TeachInGuiStringWrite (BtnPressed, App.Language.Keys.HDEV_Cancel, App.Language.Keys.HDEV_OkNext)</l>
+<l>        endif</l>
+<c>        </c>
+<l>        IsInside := 0</l>
+<l>        if (App.TeachIn.ExitCondition = 1)</l>
+<l>            break</l>
+<l>        endif</l>
+<c>        </c>
+<l>        if (Error == 2 or |BtnPressed| &gt; 0)</l>
+<l>            if (App.System.DebugInHalcon and |BtnPressed| == 0)</l>
+<l>                test_region_point (RectButtonCancel, Row, Col, IsInside)</l>
+<l>            endif</l>
+<l>            if (IsInside or BtnPressed == 1)</l>
+<l>                App.TeachIn.ExitCondition := 1</l>
+<l>                break</l>
+<l>            endif</l>
+<c>            </c>
+<c>            * Check if left is rectangle pressed</c>
+<l>            if (App.System.DebugInHalcon and |BtnPressed| == 0)</l>
+<l>                test_region_point (RectButtonLeft, Row, Col, IsInside)</l>
+<l>            endif</l>
+<l>            if (IsInside or BtnPressed == 5)</l>
+<l>                if (App.Status.Counter.ProductionLoopCounter &gt; 0)</l>
+<l>                    App.Status.Counter.ProductionLoopCounter := App.Status.Counter.ProductionLoopCounter -1</l>
+<l>                    ReDrawGraphic := 1</l>
+<l>                    continue</l>
+<l>                else</l>
+<l>                    StringToWriteOnGUI := App.Language.Keys.HDEV_FirstImage</l>
+<l>                    TeachInGuiStringWrite (BtnPressed, App.Language.Keys.HDEV_Cancel, App.Language.Keys.HDEV_OkNext)</l>
+<l>                    wait_seconds (1)</l>
+<l>                    ReDrawGraphic := 1</l>
+<l>                    continue</l>
+<l>                endif</l>
+<l>            endif</l>
+<c>            </c>
+<c>            * Check if right is rectangle pressed</c>
+<l>            if (App.System.DebugInHalcon and |BtnPressed| == 0)</l>
+<l>                test_region_point (RectButtonRight, Row, Col, IsInside)</l>
+<l>            endif</l>
+<l>            if (IsInside or BtnPressed == 6)</l>
+<l>                App.Status.Counter.ProductionLoopCounter := App.Status.Counter.ProductionLoopCounter +1</l>
+<l>                ReDrawGraphic := 1</l>
+<l>                continue</l>
+<l>            endif</l>
+<c>            </c>
+<c>            * Check if ok is rectangle pressed</c>
+<l>            if (App.System.DebugInHalcon and |BtnPressed| == 0)</l>
+<l>                test_region_point (RectButtonOK, Row, Col, IsInside)</l>
+<l>            endif </l>
+<l>            if (IsInside or BtnPressed == 2)</l>
+<l>                break</l>
+<l>            endif</l>
+<l>        endif</l>
+<l>    endwhile</l>
+<l>endif</l>
+<c></c>
+<l>write_image (App.TeachIn.ImageToLearnOn, 'tiff', 0, App.Filesystem.Format.Files.ProductImage)</l>
+<l>write_image (App.TeachIn.ImageOrig, 'tiff', 0, App.Filesystem.Format.Files.ProductImageMultiChannel)</l>
+<c></c>
+<c>* TeachIn interrupted</c>
+<l>if (App.TeachIn.ExitCondition)</l>
+<l>    App.TeachIn.SwitchCondition := 9999</l>
+<l>    App.TeachIn.ContinueFlag    := 1</l>
+<l>endif</l>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="TeachInSelectImageToLearnOn">
+<parameters>
+<parameter id="ChannelSelector"/>
+<parameter id="HelpTextString"/>
+</parameters>
+</docu>
+</procedure>
+</hdevelop>

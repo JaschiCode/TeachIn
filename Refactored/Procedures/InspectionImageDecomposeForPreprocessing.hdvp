@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="25.11.0.0">
+<procedure name="InspectionImageDecomposeForPreprocessing">
+<interface>
+<ic>
+<par name="ProcessingThreadID" base_type="ctrl" dimension="0"/>
+</ic>
+<oc>
+<par name="TimeNeeded" base_type="ctrl" dimension="0"/>
+</oc>
+</interface>
+<body>
+<c>* InspectionImageDecomposeForPreprocessing</c>
+<c>* ---------------------------------------------------------------------------------</c>
+<c>* Decompose input image with 5 channels </c>
+<c> * Return the images for image processing </c>
+<c> * (open help for details about images)</c>
+<c></c>
+<l>global tuple App</l>
+<c> </c>
+<l>count_seconds (TimeStart)</l>
+<c></c>
+<c>* Get variables from dictionary</c>
+<l>ImageMultiChannel := App.Inspection.Threads.[ProcessingThreadID].Images.MultiChannel</l>
+<c></c>
+<c></c>
+<c>* Decompose MultiChannel image</c>
+<l>decompose5 (ImageMultiChannel, Hue, Saturation, Value, Mono, UV)</l>
+<l>compose3 (Hue, Saturation, Value, ImageHSV)</l>
+<c></c>
+<c>* Set variables to dictionary</c>
+<l>App.Inspection.Threads.[ProcessingThreadID].Images.TopLight := dict{}</l>
+<l>App.Inspection.Threads.[ProcessingThreadID].Images.TopLight.HSV := dict{}</l>
+<l>App.Inspection.Threads.[ProcessingThreadID].Images.TopLight.HSV.AllChannel := ImageHSV</l>
+<l>App.Inspection.Threads.[ProcessingThreadID].Images.TopLight.HSV.Hue        := Hue</l>
+<l>App.Inspection.Threads.[ProcessingThreadID].Images.TopLight.HSV.Saturation := Saturation</l>
+<l>App.Inspection.Threads.[ProcessingThreadID].Images.TopLight.HSV.Value      := Value</l>
+<c></c>
+<l>App.Inspection.Threads.[ProcessingThreadID].Images.TopLight.UV := dict{}</l>
+<l>App.Inspection.Threads.[ProcessingThreadID].Images.TopLight.UV := UV</l>
+<c></c>
+<l>App.Inspection.Threads.[ProcessingThreadID].Images.BackLight := dict{}</l>
+<l>App.Inspection.Threads.[ProcessingThreadID].Images.BackLight.Mono := Mono</l>
+<c></c>
+<l>count_seconds (TimeEnd)</l>
+<l>TimeNeeded := (TimeEnd - TimeStart) * 1000.0</l>
+<c></c>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="InspectionImageDecomposeForPreprocessing">
+<parameters>
+<parameter id="ProcessingThreadID"/>
+<parameter id="TimeNeeded"/>
+</parameters>
+</docu>
+</procedure>
+</hdevelop>

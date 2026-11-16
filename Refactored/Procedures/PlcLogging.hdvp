@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="25.11.0.0">
+<procedure name="PlcLogging">
+<interface>
+<ic>
+<par name="BitStringToLog" base_type="ctrl" dimension="0"/>
+<par name="OptionalDataToLog" base_type="ctrl" dimension="0"/>
+</ic>
+</interface>
+<body>
+<c>* PlcLogging</c>
+<c>* -----------------------------------------------------</c>
+<c></c>
+<l>global tuple App</l>
+<c></c>
+<c></c>
+<l>if (App.Plc.Logging.IsActive)</l>
+<c>    </c>
+<l>    count_seconds (Seconds_Now)</l>
+<l>    TimeDiffToProgrammstart := Seconds_Now - App.Plc.Status.TimestampProgramStart</l>
+<c>    </c>
+<l>    get_dict_param (App.Plc.Message, 'keys', [], Keys)</l>
+<l>    NumMessages := |Keys|</l>
+<l>    if (NumMessages &gt; App.Plc.Logging.MaxLength) // Avoid overfilling of data - too many data will slow down process</l>
+<l>        remove_dict_key (App.Plc.Message, Keys[0])</l>
+<l>    endif</l>
+<l>    Timestamp := round(TimeDiffToProgrammstart*1000.0)/1000.0 // In sec with last 3 digits</l>
+<c></c>
+<c>    * Calculate time delta to last log entry</c>
+<l>     DeltaTimeStamp := -1</l>
+<l>    get_dict_param (App.Plc.Message, 'keys', [], Keys)</l>
+<l>    if (|Keys| == 0)</l>
+<l>        LastLog := App.Plc.Message.[Keys[|Keys|-1]]</l>
+<l>        LastTimeStamp := LastLog.Timestamp</l>
+<l>        DeltaTimeStamp := round((Timestamp - LastTimeStamp) * 1000.0) // In sec with last 3 digits</l>
+<l>    endif</l>
+<c>    </c>
+<l>    get_dict_param (App.Plc.Message, 'keys', [], Keys)</l>
+<l>    App.Plc.Message.[Keys[|Keys|-1]+1] := dict{}</l>
+<l>    App.Plc.Message.[Keys[|Keys|-1]+1].Timestamp      := Timestamp</l>
+<l>    App.Plc.Message.[Keys[|Keys|-1]+1].DeltaTimeStamp := DeltaTimeStamp</l>
+<l>    App.Plc.Message.[Keys[|Keys|-1]+1].BitString      := BitStringToLog</l>
+<l>    App.Plc.Message.[Keys[|Keys|-1]+1].Comment        := OptionalDataToLog</l>
+<c></c>
+<l>endif</l>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="PlcLogging">
+<parameters>
+<parameter id="BitStringToLog"/>
+<parameter id="OptionalDataToLog"/>
+</parameters>
+</docu>
+</procedure>
+</hdevelop>

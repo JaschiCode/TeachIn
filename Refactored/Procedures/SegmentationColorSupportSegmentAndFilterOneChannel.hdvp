@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="25.11.0.0">
+<procedure name="SegmentationColorSupportSegmentAndFilterOneChannel">
+<interface>
+<io>
+<par name="Image" base_type="iconic" dimension="0"/>
+<par name="Region" base_type="iconic" dimension="0"/>
+</io>
+<oo>
+<par name="RegionSegmented" base_type="iconic" dimension="0"/>
+</oo>
+<ic>
+<par name="Segmentation_ColorSupport_Threshold_Min" base_type="ctrl" dimension="0"/>
+<par name="Segmentation_ColorSupport_Threshold_Max" base_type="ctrl" dimension="0"/>
+<par name="Segmentation_ColorSupport_OpeningAfterSegmentation_MaskSize" base_type="ctrl" dimension="0"/>
+<par name="Segmentation_ColorSupport_AreaToSelect_MinSize" base_type="ctrl" dimension="0"/>
+</ic>
+</interface>
+<body>
+<c>* SegmentationColorSupportSegmentAndFilterOneChannel</c>
+<c>* --------------------------------------------------------------------------------------------</c>
+<c>* Select region based on threshold a threshold if activated </c>
+<c></c>
+<l>global tuple App</l>
+<c></c>
+<c>* Initialize output variables</c>
+<l>gen_empty_obj (RegionSegmented)</l>
+<c></c>
+<c></c>
+<c>* Segment regions on image and filter for stable results</c>
+<l>if (Segmentation_ColorSupport_Threshold_Max &gt; 0)</l>
+<l>    reduce_domain (Image, Region, YUV_V_Reduced)</l>
+<l>    tuple_length (Segmentation_ColorSupport_Threshold_Max, Length)</l>
+<c>    </c>
+<l>    if( Length = 1)</l>
+<l>        threshold (YUV_V_Reduced, RegionSegmented, Segmentation_ColorSupport_Threshold_Min, Segmentation_ColorSupport_Threshold_Max)</l>
+<l>    else</l>
+<l>        threshold (YUV_V_Reduced, RegionSegmented, Segmentation_ColorSupport_Threshold_Max, Segmentation_ColorSupport_Threshold_Min)</l>
+<l>    endif</l>
+<c>    </c>
+<c>    * Add some light filtering to reduce irritations from conveying plate</c>
+<l>    if (Segmentation_ColorSupport_OpeningAfterSegmentation_MaskSize &gt; 0)</l>
+<l>        opening_rectangle1 (RegionSegmented, RegionSegmented, Segmentation_ColorSupport_OpeningAfterSegmentation_MaskSize, Segmentation_ColorSupport_OpeningAfterSegmentation_MaskSize)</l>
+<l>        connection (RegionSegmented, RegionSegmented)</l>
+<l>        select_shape (RegionSegmented, RegionSegmented, 'area', 'and', Segmentation_ColorSupport_AreaToSelect_MinSize, 1e9)</l>
+<l>        union1 (RegionSegmented, RegionSegmented)</l>
+<l>    endif</l>
+<l>endif</l>
+<c></c>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="SegmentationColorSupportSegmentAndFilterOneChannel">
+<parameters>
+<parameter id="Image"/>
+<parameter id="Region"/>
+<parameter id="RegionSegmented"/>
+<parameter id="Segmentation_ColorSupport_AreaToSelect_MinSize"/>
+<parameter id="Segmentation_ColorSupport_OpeningAfterSegmentation_MaskSize"/>
+<parameter id="Segmentation_ColorSupport_Threshold_Max"/>
+<parameter id="Segmentation_ColorSupport_Threshold_Min"/>
+</parameters>
+</docu>
+</procedure>
+</hdevelop>

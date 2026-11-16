@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="25.11.0.0">
+<procedure name="ShiftregisterRebuildCalc">
+<interface>
+<ic>
+<par name="TriggerRebuild" base_type="ctrl" dimension="0"/>
+<par name="TriggerKill" base_type="ctrl" dimension="0"/>
+<par name="StepWidthNumberFramesToRebuild" base_type="ctrl" dimension="0"/>
+</ic>
+</interface>
+<body>
+<c>* ShiftregisterRebuildCalc</c>
+<c>* --------------------------------------------</c>
+<c>* Preperations for BuildingShiftregister</c>
+<c></c>
+<c>* Status or TriggerRebuild:</c>
+<c>*    -1 = Just initialized</c>
+<c>*     0 = Do nothing in shiftregister (normal operation)</c>
+<c>*     1 = Rebuild shiftregister</c>
+<c>*    &gt;1 = New request for building shiftregister</c>
+<c></c>
+<c>* TriggerKill:</c>
+<c>*     0 = Do nothing</c>
+<c>*     1 = Kill shiftregister</c>
+<c></c>
+<c>* StartIndex | EndIndex:</c>
+<c>*     Index to start and end rebuilding</c>
+<c></c>
+<l>global tuple App</l>
+<c></c>
+<l>ProcessingLoopcounter := App.Status.Counter.ProductionLoopCounter</l>
+<c></c>
+<l>if (ProcessingLoopcounter == 0)</l>
+<c>    * Iniaitlize at start-up</c>
+<l>    Shiftregister.Rebuild.Status     := 1</l>
+<l>    Shiftregister.Rebuild.Kill       := TriggerKill</l>
+<l>    Shiftregister.Rebuild.StartIndex := 0</l>
+<l>    Shiftregister.Rebuild.EndIndex   := StepWidthNumberFramesToRebuild</l>
+<l>else</l>
+<l>    if (TriggerRebuild = 2)</l>
+<c>        * If rebuild is selected, set new data</c>
+<l>        Shiftregister.Rebuild.Status     := 1</l>
+<l>        Shiftregister.Rebuild.Kill       := TriggerKill</l>
+<l>        Shiftregister.Rebuild.StartIndex := ProcessingLoopcounter</l>
+<l>        Shiftregister.Rebuild.EndIndex   := ProcessingLoopcounter + StepWidthNumberFramesToRebuild</l>
+<c>        </c>
+<l>    else</l>
+<c>        * If normal operation check if still active (count) or do nothing</c>
+<l>        if (Shiftregister.Rebuild.Status == 1)</l>
+<c></c>
+<l>            if (Shiftregister.Rebuild.EndIndex == ProcessingLoopcounter)</l>
+<c>                * Reset to no rebuilding mode</c>
+<l>                Shiftregister.Rebuild.Status     := 0</l>
+<l>                Shiftregister.Rebuild.Kill       := TriggerKill</l>
+<l>                Shiftregister.Rebuild.StartIndex := -1</l>
+<l>                Shiftregister.Rebuild.EndIndex   := -1</l>
+<l>            else</l>
+<c>                * Is still in rebuilding mode</c>
+<l>            endif</l>
+<c>            </c>
+<l>        else</l>
+<l>            Shiftregister.Rebuild.Status     := 0</l>
+<l>            Shiftregister.Rebuild.Kill       := TriggerKill</l>
+<l>            Shiftregister.Rebuild.StartIndex := -1</l>
+<l>            Shiftregister.Rebuild.EndIndex   := -1</l>
+<c>            </c>
+<l>        endif</l>
+<l>    endif</l>
+<l>endif</l>
+<c></c>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="ShiftregisterRebuildCalc">
+<parameters>
+<parameter id="StepWidthNumberFramesToRebuild"/>
+<parameter id="TriggerKill"/>
+<parameter id="TriggerRebuild"/>
+</parameters>
+</docu>
+</procedure>
+</hdevelop>

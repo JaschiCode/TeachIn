@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="25.11.0.0">
+<procedure name="FormatInit">
+<interface/>
+<body>
+<c>* FormatInit</c>
+<c>* ---------------------------------------------------------</c>
+<c>* Initialize the dictionaries with content of format</c>
+<c></c>
+<c></c>
+<l>global tuple App</l>
+<l>global tuple gPLCWatchdogBypass</l>
+<l>global tuple gPLCDebugMode</l>
+<c></c>
+<l>App.Format := dict{}</l>
+<c></c>
+<c></c>
+<l>FormatReadDict ('Camera')</l>
+<l>FormatReadDict ('InspectionVisualization')</l>
+<l>FormatReadDict ('Plc')</l>
+<l>FormatReadDict ('Roi')</l>
+<l>FormatReadDict ('Shiftregister')</l>
+<l>FormatReadDict ('TabletInspection')</l>
+<c></c>
+<c></c>
+<c>* Get number of detections that lead to defect for active features</c>
+<l>NumberOfDetectionsLeadToEjectGet (NumberOfDetectionsLeadToEject_PerLinePerFeature, CriticalDefectActive_PerLinePerFeature)</l>
+<l>App.Format.Shiftregister.V_NumberOfDetectionsLeadToEject_PerLinePerFeature := NumberOfDetectionsLeadToEject_PerLinePerFeature   </l>
+<l>App.Format.Shiftregister.V_CriticalDefectActive_PerLinePerFeature := CriticalDefectActive_PerLinePerFeature</l>
+<c></c>
+<c>* replacement for gSwitchOptionEjectToMachineSignal() (* additional logic to have mode eject and signal to external machine switchable)</c>
+<l>Camera_UseCameraIOsAsDirectEjectSignals := App.Format.Camera.General.V_Camera_UseCameraIOsAsDirectEjectSignals.Value</l>
+<l>if(Camera_UseCameraIOsAsDirectEjectSignals)</l>
+<l>    App.Format.Shiftregister.MovementCompensation.V_Active.Value := 0</l>
+<l>    App.Format.Roi.ROIOffset := App.Format.Shiftregister.V_Eject_FixedStopPositionForFastProducts_RelativeToROI.Value</l>
+<l>else </l>
+<l>    App.Format.Roi.ROIOffset := 0</l>
+<l>endif</l>
+<c></c>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="FormatInit">
+<parameters/>
+</docu>
+</procedure>
+</hdevelop>

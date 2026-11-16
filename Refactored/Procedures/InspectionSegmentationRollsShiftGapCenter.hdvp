@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="25.11.0.0">
+<procedure name="InspectionSegmentationRollsShiftGapCenter">
+<interface>
+<io>
+<par name="Image" base_type="iconic" dimension="0"/>
+</io>
+<oo>
+<par name="GapsLines" base_type="iconic" dimension="0"/>
+</oo>
+<ic>
+<par name="ProcessingThreadID" base_type="ctrl" dimension="0"/>
+<par name="UseFuzzyMeasure" base_type="ctrl" dimension="0"/>
+<par name="ScaleImage" base_type="ctrl" dimension="0"/>
+<par name="Row1" base_type="ctrl" dimension="0"/>
+<par name="Col1" base_type="ctrl" dimension="0"/>
+<par name="Row2" base_type="ctrl" dimension="0"/>
+<par name="Col2" base_type="ctrl" dimension="0"/>
+</ic>
+<oc>
+<par name="GapsCenter" base_type="ctrl" dimension="0"/>
+<par name="TimeNeeded" base_type="ctrl" dimension="0"/>
+</oc>
+</interface>
+<body>
+<c>* InspectionSegmentationRollsShiftGapCenter</c>
+<c>* ---------------------------------------------------------------</c>
+<c>* Detect the center of the gaps within the rolls</c>
+<c></c>
+<l>global tuple App</l>
+<c></c>
+<c></c>
+<l>count_seconds(TimeStart)</l>
+<c></c>
+<c>* Initialize output variables</c>
+<l>gen_empty_obj (GapsLines)</l>
+<l>GapsCenter := []</l>
+<l>TimeNeeded := []</l>
+<c></c>
+<c></c>
+<c>* Define some parameters for gap detection</c>
+<l>ScaleMult          := 1.75</l>
+<l>ScaleAdd           := -200</l>
+<l>ROILength2         := 40</l>
+<l>MeasureSigma       := 6</l>
+<l>AmplitudeThreshold := 20</l>
+<c></c>
+<c></c>
+<c>* Measure 02: Define the Rect2 to measure edges, use coordinates from Rect1 </c>
+<l>Row     := (Row1 + Row2) * 0.5</l>
+<l>Col     := (Col1 + Col2) * 0.5</l>
+<l>Width   := Col2 - Col1</l>
+<l>Height  := Row1 - Row2</l>
+<l>* Phi     := atan2(Height, Width)</l>
+<l>Length1 := 0.5 * sqrt(pow(Height, 2) + pow(Width, 2)) // Betrag/2</l>
+<l>Length2 := ROILength2</l>
+<c></c>
+<c>* Measure 02: Create measure for line Measure 02 [0]</c>
+<c>* Measure 02: Attention: This assumes all images have the same size!</c>
+<l>Phi := rad(90)</l>
+<l>gen_rectangle2 (Rect2, Row, Col, Phi, Length1, Length2)</l>
+<l>reduce_domain (Image, Rect2, ImageReduced)</l>
+<c></c>
+<l>if (ScaleImage)</l>
+<l>    scale_image(ImageReduced, ImageReduced, ScaleMult, ScaleAdd)</l>
+<l>endif</l>
+<c></c>
+<c>* Measure 02: Create MeasureHandle</c>
+<l>get_image_size(ImageReduced, ImageWidth, ImageHeight)</l>
+<l>gen_measure_rectangle2 (Row, Col, Phi, Length1, Length2, ImageWidth, ImageHeight, 'nearest_neighbor', MeasureHandle)</l>
+<c></c>
+<c></c>
+<c>* Measure 01: Set fuzzy functions on measure objects  </c>
+<l>if(UseFuzzyMeasure)</l>
+<l>    FuzzyThreshold := 0.6</l>
+<l>    create_funct_1d_pairs ([7.87789,19.3829,48.1288,59.6338], [0,1,1,0], FunctionSize)</l>
+<l>    create_funct_1d_pairs ([104.483,109.338,143.047,147.902], [0,1,1,0], FunctionGray)</l>
+<l>    set_fuzzy_measure (MeasureHandle, 'size', FunctionSize)</l>
+<l>endif</l>
+<c></c>
+<c></c>
+<c>* Measure 02: ***************************************************************</c>
+<c>* Measure 02: * The code which follows is to be executed once / measurement *</c>
+<c>* Measure 02: ***************************************************************</c>
+<c>* Measure 02: The image is assumed to be made available in the</c>
+<c>* Measure 02: variable last displayed in the graphics window</c>
+<c></c>
+<c>* Measure 02: Execute measurements</c>
+<l>if(UseFuzzyMeasure)</l>
+<l>    measure_pairs (ImageReduced, MeasureHandle, MeasureSigma, AmplitudeThreshold, 'positive', 'all', RowEdgeFirst, __, __, __, __, __, IntraDistance, __)</l>
+<l>else</l>
+<l>     RowEdgeFirst  := []</l>
+<l>     IntraDistance := []</l>
+<l>endif</l>
+<c></c>
+<c>* Measure 02: Do something with the results</c>
+<c>* Measure 02: Clear measure when done</c>
+<l>close_measure (MeasureHandle)</l>
+<c></c>
+<l>GapsCenter:= RowEdgeFirst - 0.5 * IntraDistance</l>
+<c></c>
+<c>* Visualize Lines</c>
+<l>if(|GapsCenter| &gt; 0)</l>
+<l>    get_image_size (Image, ImageWidth, ImageHeight)</l>
+<l>    Rect1Col1 := gen_tuple_const (|GapsCenter|, 0)</l>
+<l>    Rect1Col2 := gen_tuple_const (|GapsCenter|, ImageWidth)</l>
+<l>    gen_rectangle1 (GapsLines, GapsCenter-1, Rect1Col1, GapsCenter+1, Rect1Col2)</l>
+<l>*     dev_clear_window ()</l>
+<l>*     dev_display (ImageReduced)</l>
+<l>*     dev_display (GapsLines)</l>
+<l>endif</l>
+<c></c>
+<c>* Measure duration of gap detection till here</c>
+<l>count_seconds(TimeEnd)</l>
+<l>TimeNeeded := (TimeEnd-TimeStart) * 1000.0</l>
+<c></c>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="InspectionSegmentationRollsShiftGapCenter">
+<parameters>
+<parameter id="Col1"/>
+<parameter id="Col2"/>
+<parameter id="GapsCenter"/>
+<parameter id="GapsLines"/>
+<parameter id="Image"/>
+<parameter id="ProcessingThreadID"/>
+<parameter id="Row1"/>
+<parameter id="Row2"/>
+<parameter id="ScaleImage"/>
+<parameter id="TimeNeeded"/>
+<parameter id="UseFuzzyMeasure"/>
+</parameters>
+</docu>
+</procedure>
+</hdevelop>

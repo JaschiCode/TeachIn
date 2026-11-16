@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="25.11.0.0">
+<procedure name="SensorAcquisition">
+<interface>
+<oo>
+<par name="Image" base_type="iconic" dimension="0"/>
+<par name="ImageCap" base_type="iconic" dimension="0"/>
+</oo>
+<oc>
+<par name="NoMore_ImageLoadedFromDisk" base_type="ctrl" dimension="0"/>
+<par name="Framegrabber_ChunkData" base_type="ctrl" dimension="0"/>
+<par name="Camera_DeviceNumberUsedForGrabbing" base_type="ctrl" dimension="0"/>
+<par name="TimeNeeded" base_type="ctrl" dimension="0"/>
+<par name="TimeNeededGrabbing" base_type="ctrl" dimension="0"/>
+</oc>
+</interface>
+<body>
+<c>* SensorAcquisition</c>
+<c>* ----------------------------------------------------------</c>
+<c></c>
+<l>global tuple App</l>
+<l>* global tuple gProductionLoopCounter</l>
+<l>* global tuple vector(1) gAcqHandle</l>
+<c></c>
+<l>Camera_DeviceNumberUsedForGrabbing := []</l>
+<c></c>
+<l>count_seconds (TimeStart)</l>
+<c></c>
+<l>if (App.Status.Debug.EndlessLoopForTestingEngine = 0)</l>
+<c>    * If the image can be grabbed from camera 1 then grab frame</c>
+<c>    * Otherwise use ProductImage </c>
+<l>    SensorGrabImage (Image, ImageCap, 0, NoImageFound, Framegrabber_ChunkData, Camera_DeviceNumberUsedForGrabbing, TimeNeededGrabbing)</l>
+<l>    App.Status.Counter.ProductionLoopCounter := App.Status.Counter.ProductionLoopCounter + 1</l>
+<l>else</l>
+<l>    NoMore_ImageLoadedFromDisk := 0</l>
+<l>endif</l>
+<c> </c>
+<l>count_seconds (TimeEnd)</l>
+<l>TimeNeeded := (TimeEnd - TimeStart) * 1000.0</l>
+<c></c>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="SensorAcquisition">
+<parameters>
+<parameter id="Camera_DeviceNumberUsedForGrabbing"/>
+<parameter id="Framegrabber_ChunkData"/>
+<parameter id="Image"/>
+<parameter id="ImageCap"/>
+<parameter id="NoMore_ImageLoadedFromDisk"/>
+<parameter id="TimeNeeded"/>
+<parameter id="TimeNeededGrabbing"/>
+</parameters>
+</docu>
+</procedure>
+</hdevelop>

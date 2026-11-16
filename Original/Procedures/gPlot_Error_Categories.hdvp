@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="25.11.0.0">
+<procedure name="gPlot_Error_Categories">
+<interface>
+<oo>
+<par name="hiHistogram" base_type="iconic" dimension="0"/>
+</oo>
+<ic>
+<par name="vlCatVal" base_type="ctrl" dimension="2"/>
+<par name="lFontSize" base_type="ctrl" dimension="0"/>
+<par name="csPlotTitle" base_type="ctrl" dimension="0"/>
+</ic>
+</interface>
+<body>
+<c>* Get number of Categories for Plot</c>
+<l>lVecSize := vlCatVal.at(0).length()</l>
+<c></c>
+<c></c>
+<l>vlHistData := []</l>
+<l>vdXData := []</l>
+<l>vcsTextLines := ['Kategorien: \n\n']</l>
+<c></c>
+<c>*Fill Data for neccessary for Plot</c>
+<c>*Spacing with 0.5 Offset is for correct number placement under graph</c>
+<l>for lVecIdx := 0 to lVecSize by 1</l>
+<l>    if( lVecIdx != lVecSize)</l>
+<l>        vlHistData := [vlHistData,0, |vlCatVal.at(1).at(lVecIdx)|-1] // -1 because the used sequences include a 0 </l>
+<l>        vdXData := [vdXData, lVecIdx+0.501, lVecIdx+0.5]</l>
+<c>        </c>
+<l>        vcsTextLines := vcsTextLines + (lVecIdx+1)$'2.1d' + ' -&gt; ' + vlCatVal.at(0).at(lVecIdx) + '\n'</l>
+<l>    else</l>
+<l>        vlHistData := [vlHistData,0, |vlCatVal.at(1).at(lVecSize-1)|-1] // -1 because the used sequences include a 0 </l>
+<l>        vdXData := [vdXData, lVecIdx+0.501, lVecIdx+0.5]</l>
+<l>    endif</l>
+<l>endfor</l>
+<c></c>
+<c></c>
+<c>* Prepare window for Plot</c>
+<l>set_window_attr('background_color', 'white') </l>
+<l>open_window (0, 0, 1024, 768, 0, 'buffer', '', WindowHandle)</l>
+<l>set_line_width (WindowHandle, 2)</l>
+<c></c>
+<c>* Set fonts for Plot</c>
+<l>get_font( WindowHandle, vcsCurFont)</l>
+<l>csFontSizeNorm := 'default-Normal-' + lFontSize$'.2d'</l>
+<l>csFontSizeBig  := 'default-Bold-' + (lFontSize+8)$'.2d'</l>
+<c></c>
+<l>set_font( WindowHandle, csFontSizeNorm)</l>
+<c></c>
+<c>*Set Boundaries for Plot</c>
+<l>LimitNames := ['start_x','end_x','start_y','end_y']</l>
+<l>LimitValues := [0, lVecSize+0.75, 0, max(vlHistData)*1.1]</l>
+<c></c>
+<c>*Set Axis, Tick and Grid</c>
+<l>GenParamNames := ['axes_color','ticks_x','ticks_y','grid_x','grid_y',LimitNames]</l>
+<l>GenParamValues := ['black', 1, max(vlHistData)/4.0, 'none', 'none',  LimitValues]</l>
+<l>if(GenParamValues[1] = 0) // prevent x-ticks from being 0-&gt; will lead to exception</l>
+<l>    GenParamValues[1] := 0.1</l>
+<l>endif</l>
+<l>if(GenParamValues[2] = 0) // prevent y-ticks from being 0-&gt; will lead to exception</l>
+<l>    GenParamValues[2] := 0.1</l>
+<l>endif</l>
+<c></c>
+<c></c>
+<c>*Set Label Texts and Windows</c>
+<l>GenParamTextNames  := ['box', 'box_color', 'shadow', 'shadow_color']</l>
+<l>GenParamTextValues := [true, '#F0F0F0', true, '#A0A0A0']</l>
+<c></c>
+<c>*Plot the Graphs</c>
+<l>clear_window (WindowHandle)</l>
+<l>Plot_Graph_Buffer (WindowHandle, [], [], '\n\nKategorien', 'Wert', 'none', GenParamNames, GenParamValues)</l>
+<l>Plot_Graph_Buffer  (WindowHandle, vdXData, vlHistData, '', '', 'blue', ['axes_color', 'style', LimitNames], ['none','step', LimitValues])</l>
+<c></c>
+<c>*Display Label</c>
+<l>disp_text(WindowHandle, vcsTextLines, 'window', 'top', 'right', 'blue', GenParamTextNames, GenParamTextValues)</l>
+<c></c>
+<c>*Display Title</c>
+<l>set_font( WindowHandle, csFontSizeBig)</l>
+<l>disp_text (WindowHandle, csPlotTitle, 'window', 'top', 'center', 'black', ['box'],  [false])</l>
+<c></c>
+<c>*Extract Image as iconic Object</c>
+<l>dump_window_image( hiHistogram, WindowHandle)</l>
+<c></c>
+<c>*reset System Font</c>
+<l>set_font( WindowHandle, vcsCurFont)</l>
+<l>set_window_attr('background_color', 'black') </l>
+<l>close_window (WindowHandle)</l>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="gPlot_Error_Categories">
+<parameters>
+<parameter id="csPlotTitle"/>
+<parameter id="hiHistogram"/>
+<parameter id="lFontSize"/>
+<parameter id="vlCatVal"/>
+</parameters>
+</docu>
+</procedure>
+</hdevelop>

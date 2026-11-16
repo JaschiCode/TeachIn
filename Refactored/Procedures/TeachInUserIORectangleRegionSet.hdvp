@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="25.11.0.0">
+<procedure name="TeachInUserIORectangleRegionSet">
+<interface>
+<io>
+<par name="Image" base_type="iconic" dimension="0"/>
+</io>
+<oo>
+<par name="RectMain" base_type="iconic" dimension="0"/>
+</oo>
+<ic>
+<par name="InitPositionRow" base_type="ctrl" dimension="0"/>
+<par name="InitPositionCol" base_type="ctrl" dimension="0"/>
+<par name="SizeHorizontal" base_type="ctrl" dimension="0"/>
+<par name="SizeVertical" base_type="ctrl" dimension="0"/>
+<par name="ChannelSelector" base_type="ctrl" dimension="0"/>
+</ic>
+<oc>
+<par name="ExternalIO_BtnPressed" base_type="ctrl" dimension="0"/>
+<par name="Row1" base_type="ctrl" dimension="0"/>
+<par name="Col1" base_type="ctrl" dimension="0"/>
+<par name="Row2" base_type="ctrl" dimension="0"/>
+<par name="Col2" base_type="ctrl" dimension="0"/>
+</oc>
+</interface>
+<body>
+<c>* TeachInUserIORectangleRegionSet</c>
+<c>* -----------------------------------------------</c>
+<c></c>
+<l>global tuple App</l>
+<c></c>
+<l>WindowHandle := App.Visualization.Windows.[App.Status.Camera.ID]</l>
+<c></c>
+<c></c>
+<c>* Initialize output variables</c>
+<l>gen_empty_obj (RectMain)</l>
+<l>Row1 := -1</l>
+<l>Col1 := -1</l>
+<l>Row2 := -1</l>
+<l>Col2 := -1</l>
+<l>ExternalIO_BtnPressed := -1</l>
+<c></c>
+<c></c>
+<c>* Relative calulation to have the manual touching points squared and </c>
+<c>* in similar size (independent of zooming)</c>
+<l>get_window_extents (WindowHandle, _, _, WindowWidth, WindowHeight)</l>
+<l>get_image_size (Image, ImageWidth, ImageHeight)</l>
+<l>ScaleHorizontal := ImageWidth*1.0/WindowWidth</l>
+<l>ScaleVertical := ImageHeight*1.0/WindowHeight</l>
+<c></c>
+<l>set_draw (WindowHandle, 'margin')</l>
+<l>set_line_width (WindowHandle, 2)</l>
+<c></c>
+<c></c>
+<c>* Check if the coordinates calculated are within the limits of the window. </c>
+<c>* On some small images the init position can be out of window.</c>
+<l>if (InitPositionCol &gt;= ImageWidth)</l>
+<l>    InitPositionCol := ImageWidth/2</l>
+<l>endif</l>
+<l>if(InitPositionRow &gt;= ImageHeight)</l>
+<l>    InitPositionRow := ImageHeight/2</l>
+<l>endif</l>
+<l>Row1 := InitPositionRow - SizeVertical/2</l>
+<l>Col1 := InitPositionCol - SizeHorizontal/2</l>
+<l>Row2 := InitPositionRow + SizeVertical/2</l>
+<l>Col2 := InitPositionCol + SizeHorizontal/2</l>
+<c></c>
+<c></c>
+<l>MessageToDisplay          := []</l>
+<l>MarkerSize                := 50</l>
+<l>InvertImage               := 0</l>
+<l>TeachInUserIORectangleRegionVisualization (Image, RectLeftUpper, RectLeftLower, RectRightUpper, RectRightLower, RectMain, MessageToDisplay, Row1, Col1, Row2, Col2, MarkerSize, ScaleVertical, ScaleHorizontal, InvertImage, WindowHandle, ChannelSelector)</l>
+<l>if (|MessageToDisplay| &gt; 0 and App.System.DebugInHalcon)</l>
+<l>    disp_text (WindowHandle, MessageToDisplay, 'window', 'top', 'left', 'blue', ['box_color','box_padding'], ['#ffffff77',5])</l>
+<l>endif</l>
+<c></c>
+<c></c>
+<l>App.TeachIn.UserIO := dict{}</l>
+<l>App.TeachIn.UserIO.ExternalBtnPressed     := -1</l>
+<l>App.TeachIn.UserIO.StopMonitoringFileIO   := 0</l>
+<l>App.TeachIn.UserIO.IsInsideHandlingRegion := 0</l>
+<l>App.TeachIn.UserIO.Threshold             := App.Format.TabletInspection.Segmentation.V_SegmentationThreshold.Value </l>
+<c></c>
+<l>LineProfileIsCurrentlyShown := 0</l>
+<c></c>
+<c>* Start external thread to react on GUI events</c>
+<l>par_start&lt;ThreadID&gt; : TeachInUserIOMonitorFileIO ()</l>
+<c></c>
+<l>CurRect := 0</l>
+<l>while (1)</l>
+<l>    dev_error_var (ErrorVar, 1)</l>
+<l>    dev_set_check ('~give_error')</l>
+<l>    get_mposition (WindowHandle, MouseRow, MouseCol, MouseButton)</l>
+<l>    Error := ErrorVar</l>
+<l>    dev_set_check ('give_error')</l>
+<l>    wait_seconds (0.05)</l>
+<c>    </c>
+<l>    if (MouseButton == 1) </l>
+<c>        * If it is necessary to drag region around</c>
+<l>        TeachInUserIORectangleRegionCalculatePosition (RectLeftUpper, RectLeftLower, RectRightUpper, RectRightLower, RectMain, Row1, Col1, Row2, Col2, MouseRow, MouseCol, ImageWidth, ImageHeight, CurRect, Row1, Col1, Row2, Col2, CurRect)</l>
+<l>        if (App.TeachIn.UserIO.IsInsideHandlingRegion)</l>
+<l>            TeachInUserIORectangleRegionVisualization (Image, RectLeftUpper, RectLeftLower, RectRightUpper, RectRightLower, RectMain, MessageToDisplay, Row1, Col1, Row2, Col2, MarkerSize, ScaleVertical, ScaleHorizontal, InvertImage, WindowHandle, ChannelSelector)</l>
+<l>        endif</l>
+<l>        elseif (MouseButton == 0)</l>
+<l>        CurRect := 0</l>
+<l>    else</l>
+<c>        </c>
+<l>        if (MouseButton == 4 or App.TeachIn.UserIO.ExternalBtnPressed &gt; -1)</l>
+<c>            </c>
+<l>            if (App.TeachIn.UserIO.ExternalBtnPressed == 3) </l>
+<c>                * Button == 3 for line profile</c>
+<l>                App.TeachIn.UserIO.ExternalBtnPressed := -1</l>
+<l>                if (not LineProfileIsCurrentlyShown)</l>
+<l>                    set_window_param (WindowHandle, 'flush', 'false')</l>
+<l>                    get_part (WindowHandle, WindowVizuPartBackupRow1, WindowVizuPartBackupCol1, WindowVizuPartBackupRow2, WindowVizuPartBackupCol2)</l>
+<l>*                     set_part (WindowHandle, Row1, Col1, Row2, Col2)</l>
+<l>                    set_window_param (WindowHandle, 'flush', 'false')</l>
+<c>                    </c>
+<c>                    * Show the LineProfile with the SegmentationThreshold from format</c>
+<l>                    TeachInShowLineProfile (Image, ChannelSelector, Row1, Col1, Row2, Col2, WindowHandle)</l>
+<l>                    flush_buffer (WindowHandle)</l>
+<c>                    </c>
+<c>                    * Thread that continously reads the current SegmentationThreshold value from format file</c>
+<l>                    par_start&lt;ThreadID&gt; : TeachInUserIOSegmentationThresholdReadContinous ()</l>
+<c>                    </c>
+<c>                    * Show the Line Profile continously until any button is pressed (because all visible buttons should stop the LineProfile)</c>
+<l>                    while (1)</l>
+<l>                        if (App.TeachIn.UserIO.ExternalBtnPressed &gt; -1)</l>
+<l>                            break</l>
+<l>                        endif</l>
+<c>                        </c>
+<c>                        * Update the LineProfile</c>
+<l>                        TeachInShowLineProfile (Image, ChannelSelector, Row1, Col1, Row2, Col2, WindowHandle)</l>
+<l>                        flush_buffer (WindowHandle)</l>
+<c>                        </c>
+<l>                    endwhile</l>
+<c>                    </c>
+<l>                    set_window_param (WindowHandle, 'flush', 'true')</l>
+<l>                    LineProfileIsCurrentlyShown := 1</l>
+<c>                    </c>
+<l>                else</l>
+<l>                    set_part (WindowHandle, WindowVizuPartBackupRow1, WindowVizuPartBackupCol1, WindowVizuPartBackupRow2, WindowVizuPartBackupCol2)</l>
+<l>                    LineProfileIsCurrentlyShown := 0</l>
+<l>                    TeachInUserIORectangleRegionVisualization (Image, RectLeftUpper, RectLeftLower, RectRightUpper, RectRightLower, RectMain, MessageToDisplay, Row1, Col1, Row2, Col2, MarkerSize, ScaleVertical, ScaleHorizontal, InvertImage, WindowHandle, ChannelSelector)</l>
+<l>                endif</l>
+<l>                continue</l>
+<l>            endif</l>
+<l>            break</l>
+<l>        endif</l>
+<l>    endif</l>
+<l>endwhile</l>
+<c></c>
+<c>* Clean up external thread</c>
+<l>App.TeachIn.UserIO.StopMonitoringFileIO := 1</l>
+<l>par_join (ThreadID)</l>
+<l>App.TeachIn.UserIO.StopMonitoringFileIO := 0</l>
+<c></c>
+<l>ExternalIO_BtnPressed := App.TeachIn.UserIO.ExternalBtnPressed</l>
+<c></c>
+<l>smallest_rectangle1 (RectMain, Row1, Col1, Row2, Col2)</l>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="TeachInUserIORectangleRegionSet">
+<parameters>
+<parameter id="ChannelSelector"/>
+<parameter id="Col1"/>
+<parameter id="Col2"/>
+<parameter id="ExternalIO_BtnPressed"/>
+<parameter id="Image"/>
+<parameter id="InitPositionCol"/>
+<parameter id="InitPositionRow"/>
+<parameter id="RectMain"/>
+<parameter id="Row1"/>
+<parameter id="Row2"/>
+<parameter id="SizeHorizontal"/>
+<parameter id="SizeVertical"/>
+</parameters>
+</docu>
+</procedure>
+</hdevelop>

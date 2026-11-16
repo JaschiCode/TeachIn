@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="25.11.0.0">
+<procedure name="TeachInMeasureGeometricHeight">
+<interface>
+<ic>
+<par name="HelpTextString" base_type="ctrl" dimension="0"/>
+<par name="ChannelSelector" base_type="ctrl" dimension="0"/>
+<par name="FilenameImageDump" base_type="ctrl" dimension="0"/>
+</ic>
+</interface>
+<body>
+<c>* TeachInMeasureGeometricHeight</c>
+<c>* -------------------------------------------------------</c>
+<c></c>
+<l>global tuple App</l>
+<c></c>
+<c></c>
+<l>WindowHandle := App.Visualization.Windows.[App.Status.Camera.ID]</l>
+<c></c>
+<l>TeachInSelectAndDisplayMultiChannelImage (App.TeachIn.ImageOrig, ImageSelectedChannel, ImageDisplay, ChannelSelector, 0, 1, 0)</l>
+<l>Image := ImageSelectedChannel</l>
+<c></c>
+<l>Btn1 := App.Language.Keys.HDEV_Cancel</l>
+<l>Btn2 := App.Language.Keys.HDEV_Back</l>
+<l>Btn4 := App.Language.Keys.HDEV_OkNext</l>
+<l>TeachInButtonsInterfaceViaFile (0, Btn1, Btn2, 0, Btn4, 0, 0, 0, 0, HelpTextString, 0, 0, 0, 0)</l>
+<c></c>
+<c></c>
+<l>MessageToDisplay := App.Language.Keys.HDEV_Back</l>
+<l>get_part (WindowHandle, Row1, Col1, Row2, Col2)</l>
+<l>TeachInUserIORectangleRegionSet (Image, RectMain, Row1+(Row2-Row1)/2, Col1+(Col2-Col1)/2, Col2-Col1-40, Row2-Row1-40, ChannelSelector, ExternalIO_BtnPressed, Row1, Col1, Row2, Col2)</l>
+<l>if(ExternalIO_BtnPressed == 1)</l>
+<c>    * Cancel</c>
+<l>    App.TeachIn.ContinueFlag    := 1</l>
+<l>    App.TeachIn.SwitchCondition := 9999</l>
+<l>endif</l>
+<l>if(ExternalIO_BtnPressed == 2)</l>
+<c>    * Redo last step</c>
+<l>    App.TeachIn.ContinueFlag    := 1</l>
+<l>    App.TeachIn.SwitchCondition := 20</l>
+<l>endif</l>
+<c></c>
+<c>* Visualization for external storage of TeachIn</c>
+<l>smallest_rectangle1 (RectMain, RectRow1, RectCol1, RectRow2, RectCol2)  </l>
+<l>TeachInSelectAndDisplayMultiChannelImage (App.TeachIn.ImageOrig, ImageSelectedChannel, ImageDisplay, ChannelSelector, 1, 1, 0)</l>
+<l>disp_obj (RectMain, WindowHandle)</l>
+<l>set_tposition (WindowHandle, RectRow1 + (Row2-Row1)/2, RectCol2 + 10)</l>
+<c></c>
+<l>Message_Height := App.Language.Keys.HDEV_Height</l>
+<l>Message_Width := App.Language.Keys.HDEV_Width</l>
+<l>TextToDisplyInBox := [Message_Height  + '  = ' + (Row2-Row1) + 'px', Message_Width + ' = ' + (Col2-Col1) + 'px']</l>
+<l>disp_text (WindowHandle, TextToDisplyInBox, 'window', 'top', 'left', 'blue', ['box_color','box_padding'], ['#ffffff77',5])</l>
+<l>dump_window (WindowHandle, 'jpeg 100', FilenameImageDump)</l>
+<c></c>
+<c></c>
+<c>* Write the value to dictionary for later processing step</c>
+<l>App.Format.TabletInspection.TeachIn.V_ProductLength_InMovementDirection.Value := round(Row2-Row1)</l>
+<l>TabletDimensionWithMirrors := round(Col2-Col1)</l>
+<c></c>
+<c>* Visualize image again</c>
+<l>TeachInSelectAndDisplayMultiChannelImage (App.TeachIn.ImageOrig, ImageSelectedChannel, ImageDisplay, ChannelSelector, 1, 1, 0)</l>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="TeachInMeasureGeometricHeight">
+<parameters>
+<parameter id="ChannelSelector"/>
+<parameter id="FilenameImageDump"/>
+<parameter id="HelpTextString"/>
+</parameters>
+</docu>
+</procedure>
+</hdevelop>

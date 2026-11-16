@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="25.11.0.0">
+<procedure name="AppInit">
+<interface/>
+<body>
+<c>* AppInit</c>
+<c>* ------------------------------------------------------------</c>
+<c>* Procedure will be called once at start-up</c>
+<c>* to set global variables and init filesystem and parameters</c>
+<c></c>
+<c>* Initialize global parameters</c>
+<l>global def tuple App</l>
+<l>App := dict{}</l>
+<c></c>
+<l>global def tuple gQueuePLCResults</l>
+<l>gQueuePLCResults := []</l>
+<c></c>
+<c></c>
+<c>* Set some general parameters</c>
+<l>StatusInit ()</l>
+<c></c>
+<c>* Initialize system parameters</c>
+<l>SystemInit ()</l>
+<c></c>
+<c>* Initialize the filesystem with relevant directories and files</c>
+<l>FilesystemInit ()</l>
+<c></c>
+<c>* Read the format specific settings</c>
+<l>FormatInit ()</l>
+<c></c>
+<c>* Get WindowPositioning from file</c>
+<l>WindowPositioningInit ()</l>
+<c></c>
+<c>* Generate inspection and eject regions</c>
+<l>RoiInit ()</l>
+<c></c>
+<c>* Read the language library</c>
+<l>LanguageInit ()</l>
+<c></c>
+<c>* Initialize local calibration</c>
+<l>CalibrationLocalInit ()</l>
+<c></c>
+<c>* Initialize global calibration with xy-resolution</c>
+<l>CalibrationGlobalInit ()</l>
+<c></c>
+<c>* Initialize ColorClassification for preprocessing</c>
+<l>ColorClassificationInit ()</l>
+<c></c>
+<c>* Load the ProductImage</c>
+<l>ProductImageInit ()</l>
+<c></c>
+<c>* Initialize and open framegrabber</c>
+<l>SensorInit ()</l>
+<c></c>
+<c>* Initialize ThreadManagement</c>
+<l>ThreadManagementInit ()</l>
+<c></c>
+<c>* Open window and display image and regions</c>
+<l>WindowInit ()</l>
+<c></c>
+<c>* Initialize the shiftregister</c>
+<l>ShiftregisterInit ()</l>
+<c></c>
+<c>* Open plc connection</c>
+<l>PlcInit ()</l>
+<c></c>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="AppInit">
+<parameters/>
+</docu>
+</procedure>
+</hdevelop>

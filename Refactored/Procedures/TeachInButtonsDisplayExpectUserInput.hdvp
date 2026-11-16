@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="25.11.0.0">
+<procedure name="TeachInButtonsDisplayExpectUserInput">
+<interface>
+<io>
+<par name="Image" base_type="iconic" dimension="0"/>
+</io>
+<ic>
+<par name="ChannelSelector" base_type="ctrl" dimension="0"/>
+</ic>
+<oc>
+<par name="ExternalIO_BtnPressed" base_type="ctrl" dimension="0"/>
+</oc>
+</interface>
+<body>
+<c>* TeachInButtonsDisplayExpectUserInput</c>
+<c>* ----------------------------------------------------</c>
+<c></c>
+<l>global tuple App</l>
+<c></c>
+<l>WindowHandle := App.Visualization.Windows.[App.Status.Camera.ID]</l>
+<c></c>
+<l>if (not App.TeachIn.ExitCondition)</l>
+<l>    TeachInButtonRegionsCreate (Image, ButtonRectangles, 2)</l>
+<l>    select_obj (ButtonRectangles, RectAgain, 1)</l>
+<l>    select_obj (ButtonRectangles, RectOK, 2)</l>
+<l>    if (App.System.DebugInHalcon)</l>
+<l>        disp_obj (Image, WindowHandle)</l>
+<l>        disp_obj (RectAgain, WindowHandle)</l>
+<l>        disp_obj (RectOK, WindowHandle)</l>
+<l>        TeachInButtonsContentString (Image, RectAgain, 'Farbe erneut lernen')</l>
+<l>        TeachInButtonsContentString (Image, RectOK, 'OK/Weiter.')</l>
+<l>    else</l>
+<l>        TeachInButtonsInterfaceViaFile (0, ['Cancel'], ['Reteach colour'], ['OK/Next'], 0, 0, 0, 0, 0, ['Please decide if colour teach in is acceptable.'], 0, 0, 0, 0)</l>
+<l>    endif</l>
+<c>    </c>
+<c>    </c>
+<l>    RedrawGrafic := 1</l>
+<l>    BtnPressed := []</l>
+<l>    while (1) </l>
+<l>        if (RedrawGrafic = 1)</l>
+<l>            RedrawGrafic := 0</l>
+<l>            disp_obj (Image, WindowHandle)</l>
+<l>            if (App.System.DebugInHalcon)</l>
+<l>                disp_obj (RectAgain, WindowHandle)</l>
+<l>                disp_obj (RectOK, WindowHandle)</l>
+<l>                TeachInButtonsContentString (Image, RectAgain, 'Farbe erneut lernen')</l>
+<l>                TeachInButtonsContentString (Image, RectOK, 'OK/Weiter.')</l>
+<l>            endif</l>
+<l>        endif </l>
+<l>        Error:=[]</l>
+<l>        if (App.System.DebugInHalcon)</l>
+<l>            dev_error_var (ErrorVar, 1)</l>
+<l>            dev_set_check ('~give_error')</l>
+<l>            get_mbutton (WindowHandle, Row, Col, Button)</l>
+<l>            Error := ErrorVar</l>
+<l>            dev_set_check ('give_error')</l>
+<l>        else   </l>
+<c>*             UserIO_MonitorFile_GetBtnPress (InterfaceFromGuiFileAndPath, BtnPressed)</c>
+<l>*             if (BtnPressed = [])</l>
+<c>                * do something so output will not freeze</c>
+<l>*                 set_window_param (WindowHandle, 'flush', 'false')</l>
+<l>*                 dev_display (ImageOrigOut)</l>
+<l>*                 flush_buffer (WindowHandle)</l>
+<l>*                 set_window_param (WindowHandle, 'flush', 'true')</l>
+<l>*                 wait_seconds(0.05)</l>
+<l>*             endif</l>
+<l>        endif</l>
+<l>        TeachInGuiGetBtnPress (BtnPressed)</l>
+<l>        if (|BtnPressed| == 0)</l>
+<l>            set_window_param (WindowHandle, 'flush', 'false')</l>
+<l>            disp_obj (Image, WindowHandle)</l>
+<l>             if (App.System.DebugInHalcon)</l>
+<l>                disp_obj (RectAgain, WindowHandle)</l>
+<l>                disp_obj (RectOK, WindowHandle)</l>
+<l>                TeachInButtonsContentString (Image, RectAgain, 'Farbe erneut lernen')</l>
+<l>                TeachInButtonsContentString (Image, RectOK, 'OK/Weiter.')</l>
+<l>            endif</l>
+<l>            flush_buffer (WindowHandle)</l>
+<l>            set_window_param (WindowHandle, 'flush', 'true')</l>
+<l>            wait_seconds(0.05)</l>
+<l>        endif</l>
+<c>        </c>
+<l>        IsInside:= 0</l>
+<l>        if(App.TeachIn.ExitCondition)</l>
+<l>            break</l>
+<l>        endif</l>
+<l>        if (Error == 2 or |BtnPressed| &gt; 0)</l>
+<l>            if (BtnPressed == 1)</l>
+<l>                ExternalIO_BtnPressed := 1</l>
+<l>                break  </l>
+<l>            endif</l>
+<l>            if (App.System.DebugInHalcon and |BtnPressed| == 0)</l>
+<l>                test_region_point (RectAgain, Row, Col, IsInside)</l>
+<l>            endif</l>
+<l>            if (IsInside or BtnPressed == 2)</l>
+<l>                ExternalIO_BtnPressed:=2</l>
+<l>                break</l>
+<l>            endif</l>
+<c>            </c>
+<c>            * Check if left is rectangle pressed</c>
+<l>            if (App.System.DebugInHalcon and |BtnPressed| == 0)</l>
+<l>                test_region_point (RectOK, Row, Col, IsInside)</l>
+<l>            endif</l>
+<l>            if (IsInside or BtnPressed == 3)</l>
+<l>                ExternalIO_BtnPressed := 3</l>
+<l>                break</l>
+<l>            endif</l>
+<c>            </c>
+<l>        endif</l>
+<l>    endwhile</l>
+<l>endif</l>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="TeachInButtonsDisplayExpectUserInput">
+<parameters>
+<parameter id="ChannelSelector"/>
+<parameter id="ExternalIO_BtnPressed"/>
+<parameter id="Image"/>
+</parameters>
+</docu>
+</procedure>
+</hdevelop>

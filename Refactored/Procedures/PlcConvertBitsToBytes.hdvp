@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="25.11.0.0">
+<procedure name="PlcConvertBitsToBytes">
+<interface>
+<ic>
+<par name="Input" base_type="ctrl" dimension="0"/>
+</ic>
+<oc>
+<par name="Output" base_type="ctrl" dimension="0"/>
+<par name="Bytes" base_type="ctrl" dimension="0"/>
+<par name="Error" base_type="ctrl" dimension="0"/>
+</oc>
+</interface>
+<body>
+<c>* PlcConvertBitsToBytes </c>
+<c>* --------------------------------------------------------------</c>
+<c></c>
+<c>* Control variable for error</c>
+<l>Error := 0</l>
+<l>Output := []</l>
+<c></c>
+<c>* Check if input kann by divided with 8 to be sure it is a byte with 8 bits</c>
+<l>ByteTuple := Input</l>
+<l>if (|ByteTuple|%8 != 0)</l>
+<l>    Error := 1</l>
+<l>    return ()</l>
+<l>endif</l>
+<l>if (max(ByteTuple) &gt; 1)</l>
+<l>    Error := 1</l>
+<l>    return ()</l>
+<l>endif</l>
+<c></c>
+<c>* Split the input and select the single bytes</c>
+<l>Bytes := |ByteTuple|/8</l>
+<l>for IndexN := 1 to Bytes by 1</l>
+<l>    SelectedBites := ByteTuple[(8*(IndexN-1)),(8*(IndexN-1))+1,(8*(IndexN-1))+2,(8*(IndexN-1))+3,(8*(IndexN-1))+4,(8*(IndexN-1))+5,(8*(IndexN-1))+6,(8*(IndexN-1))+7]</l>
+<c>  </c>
+<c>    * Calculate the decimal value to send to plc</c>
+<l>    SelectedByte := (SelectedBites[0]*1) + (SelectedBites[1]*2) + (SelectedBites[2]*4) + (SelectedBites[3]*8) + (SelectedBites[4]*16) + (SelectedBites[5]*32) + (SelectedBites[6]*64) + (SelectedBites[7]*128)</l>
+<l>    Output := [Output, SelectedByte]</l>
+<l>endfor</l>
+<c></c>
+<l>Error := 0</l>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="PlcConvertBitsToBytes">
+<parameters>
+<parameter id="Bytes"/>
+<parameter id="Error"/>
+<parameter id="Input"/>
+<parameter id="Output"/>
+</parameters>
+</docu>
+</procedure>
+</hdevelop>

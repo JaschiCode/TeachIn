@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="25.11.0.0">
+<procedure name="ColorClassificationInit">
+<interface/>
+<body>
+<c>* ColorClassificationInit</c>
+<c>* ----------------------------------------------------------</c>
+<c></c>
+<l>global tuple App</l>
+<c></c>
+<l>App.ColorClassification := dict{}</l>
+<l>App.ColorClassification.Handle := []</l>
+<c>    </c>
+<l>ColourClassificationFilename := App.Filesystem.Format.Config.Files.ColorClassification</l>
+<l>TabletSpot_DetectionActive := App.Format.TabletInspection.Measure_ProductSpot.V_FeatureActive.Value</l>
+<c></c>
+<c>* Set number of processes</c>
+<l>get_system ('processor_num', NumberOfProcessors)</l>
+<l>if(NumberOfProcessors &gt; 1)</l>
+<c>    * Use max amount of CPU power - but leave one cpu available for other system related things</c>
+<l>    NumberOfProcessors := NumberOfProcessors -1</l>
+<l>endif</l>
+<l>set_system ('thread_num', NumberOfProcessors)</l>
+<c></c>
+<c>* use colour spot detection. if not activated in the later process phase it is identified via the empty colourhandle</c>
+<l>if (not App.Status.Mode.TeachIn and TabletSpot_DetectionActive)</l>
+<l>    read_class_mlp (ColourClassificationFilename, MLPHandle)</l>
+<l>    set_system ('parallelize_operators', 'true') </l>
+<c></c>
+<c>    * Use reject_threshold for images with uv-light to get better results</c>
+<l>    create_class_lut_mlp (MLPHandle, [], [], App.ColorClassification.Handle)</l>
+<c></c>
+<l>    set_system ('parallelize_operators', 'false')</l>
+<l>endif</l>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="ColorClassificationInit">
+<parameters/>
+</docu>
+</procedure>
+</hdevelop>

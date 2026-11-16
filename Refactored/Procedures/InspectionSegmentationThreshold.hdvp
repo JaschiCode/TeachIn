@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="25.11.0.0">
+<procedure name="InspectionSegmentationThreshold">
+<interface>
+<ic>
+<par name="ProcessingThreadID" base_type="ctrl" dimension="0"/>
+<par name="ChannelSelector" base_type="ctrl" dimension="0"/>
+</ic>
+<oc>
+<par name="TimeNeeded" base_type="ctrl" dimension="0"/>
+</oc>
+</interface>
+<body>
+<c>* InspectionSegmentationThreshold</c>
+<c>* -----------------------------------------------------------------------</c>
+<c>* Segment tablets with usual threshold operation</c>
+<c></c>
+<l>global tuple App</l>
+<c></c>
+<l>count_seconds(TimeStart)</l>
+<c></c>
+<c>* Get variables from dictionary</c>
+<l>ImageValue       := App.Inspection.Threads.[ProcessingThreadID].Images.TopLight.HSV.Value</l>
+<l>ImageMono        := App.Inspection.Threads.[ProcessingThreadID].Images.BackLight.Mono    </l>
+<l>ImageUV          := App.Inspection.Threads.[ProcessingThreadID].Images.TopLight.UV  </l>
+<l>TabletsROIsUnion := App.Inspection.Threads.[ProcessingThreadID].Regions.Tablets.ROIsUnion</l>
+<l>LanesROIsUnion   := App.Inspection.Threads.[ProcessingThreadID].Regions.Lanes.ROIsUnion</l>
+<c></c>
+<l>ThresholdRedMin := App.Format.TabletInspection.Segmentation.V_Segmentation_ColourSupport_Threshold_RedMin.Value</l>
+<l>ThresholdRedMax := App.Format.TabletInspection.Segmentation.V_Segmentation_ColourSupport_Threshold_RedMax.Value</l>
+<l>AreaMin         := App.Format.TabletInspection.Segmentation.V_Segmentation_SmallestSingleObjectFilter_Area_Min.Value</l>
+<c></c>
+<c>* Select channel for measurement if TabletsAvailable</c>
+<l>if (App.Inspection.Threads.[ProcessingThreadID].Segmentation.TabletsAvailable)</l>
+<l>    switch (ChannelSelector)</l>
+<l>    case 0: </l>
+<c>        * BottomLight Mono</c>
+<l>        reduce_domain (ImageMono, TabletsROIsUnion, ImageReduced)</l>
+<l>        break</l>
+<l>    case 1: </l>
+<c>        * TopLight HSV-Value</c>
+<l>        reduce_domain (ImageValue, TabletsROIsUnion, ImageReduced)</l>
+<l>        break</l>
+<l>    case 2: </l>
+<c>        * TopLight UV</c>
+<l>        reduce_domain (ImageUV, TabletsROIsUnion, ImageReduced)</l>
+<l>        break      </l>
+<l>    endswitch</l>
+<l>endif</l>
+<c></c>
+<l>mean_image (ImageReduced, ImageMean, 7, 7)</l>
+<l>if(ChannelSelector == 0)</l>
+<l>    threshold (ImageMean, Reg, 0, ThresholdRedMin)</l>
+<l>else</l>
+<l>    threshold (ImageMean, Reg, ThresholdRedMin, ThresholdRedMax)</l>
+<l>endif</l>
+<c></c>
+<c>* In case there is a wrong or too excessive segmentation aviod that. Protect from oversegmentation in spot step</c>
+<l>area_center (LanesROIsUnion, Area, _, _)</l>
+<l>SegmentationMaxSelection := round(Area * 0.5 )       </l>
+<c></c>
+<l>connection (Reg, Reg)</l>
+<l>select_shape (Reg, Reg, 'area', 'and', AreaMin, SegmentationMaxSelection)    </l>
+<c></c>
+<c></c>
+<c>* Set variables to dictionary</c>
+<l>App.Inspection.Threads.[ProcessingThreadID].Regions.Tablets.Segmented := Reg</l>
+<c></c>
+<l>count_seconds(TimeEnd)</l>
+<l>TimeNeeded := (TimeEnd - TimeStart) * 1000.0</l>
+<c></c>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="InspectionSegmentationThreshold">
+<parameters>
+<parameter id="ChannelSelector"/>
+<parameter id="ProcessingThreadID"/>
+<parameter id="TimeNeeded"/>
+</parameters>
+</docu>
+</procedure>
+</hdevelop>

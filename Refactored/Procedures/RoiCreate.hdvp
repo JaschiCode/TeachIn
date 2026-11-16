@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="25.11.0.0">
+<procedure name="RoiCreate">
+<interface>
+<oo>
+<par name="RinnenROIs" base_type="iconic" dimension="0"/>
+<par name="EjectROIs" base_type="iconic" dimension="0"/>
+</oo>
+<ic>
+<par name="ROI_StartCol" base_type="ctrl" dimension="0"/>
+<par name="ROI_OffsetImageTop_UpperROIPosition" base_type="ctrl" dimension="0"/>
+<par name="ROI_OffsetImageTop_LowerROIPosition" base_type="ctrl" dimension="0"/>
+<par name="ROI_OffsetX" base_type="ctrl" dimension="0"/>
+<par name="ROI_Width" base_type="ctrl" dimension="0"/>
+<par name="ROIEject_OffsetImageTop" base_type="ctrl" dimension="0"/>
+<par name="ROIEject_Length" base_type="ctrl" dimension="0"/>
+<par name="ROIEject_Width" base_type="ctrl" dimension="0"/>
+</ic>
+</interface>
+<body>
+<c>* RoiCreate</c>
+<c>* ------------------------------------------</c>
+<c>* Create the regions</c>
+<c></c>
+<l>Row1 := []</l>
+<l>Row2 := []</l>
+<l>Col1 := []</l>
+<l>Col2 := []</l>
+<l>EjectRow1 := []</l>
+<l>EjectRow2 := []</l>
+<l>EjectCol1 := []</l>
+<l>EjectCol2 := []</l>
+<c></c>
+<l>for Index := 0 to |ROI_StartCol|-1 by 1</l>
+<l>    tuple_concat (Row1, ROI_OffsetImageTop_UpperROIPosition, Row1)</l>
+<l>    tuple_concat (Row2, ROI_OffsetImageTop_LowerROIPosition, Row2)</l>
+<l>    tuple_concat (Col1, (ROI_StartCol[Index] + ROI_OffsetX) - (ROI_Width / 2), Col1)</l>
+<l>    tuple_concat (Col2, (ROI_StartCol[Index] + ROI_OffsetX) + (ROI_Width/2), Col2)</l>
+<c>    * </c>
+<l>    tuple_concat (EjectRow1, ROIEject_OffsetImageTop, EjectRow1)</l>
+<l>    tuple_concat (EjectRow2, ROIEject_OffsetImageTop + ROIEject_Length, EjectRow2)</l>
+<l>    tuple_concat (EjectCol1, (ROI_StartCol[Index] + ROI_OffsetX) - (ROIEject_Width / 2), EjectCol1)</l>
+<l>    tuple_concat (EjectCol2, (ROI_StartCol[Index] + ROI_OffsetX) + (ROIEject_Width/2), EjectCol2)</l>
+<l>endfor</l>
+<l>gen_rectangle1 (RinnenROIs, Row1, Col1, Row2, Col2)</l>
+<l>gen_rectangle1 (EjectROIs, EjectRow1, EjectCol1, EjectRow2, EjectCol2)</l>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="RoiCreate">
+<parameters>
+<parameter id="EjectROIs"/>
+<parameter id="ROIEject_Length"/>
+<parameter id="ROIEject_OffsetImageTop"/>
+<parameter id="ROIEject_Width"/>
+<parameter id="ROI_OffsetImageTop_LowerROIPosition"/>
+<parameter id="ROI_OffsetImageTop_UpperROIPosition"/>
+<parameter id="ROI_OffsetX"/>
+<parameter id="ROI_StartCol"/>
+<parameter id="ROI_Width"/>
+<parameter id="RinnenROIs"/>
+</parameters>
+</docu>
+</procedure>
+</hdevelop>

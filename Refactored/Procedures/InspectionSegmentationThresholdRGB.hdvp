@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="25.11.0.0">
+<procedure name="InspectionSegmentationThresholdRGB">
+<interface>
+<ic>
+<par name="ProcessingThreadID" base_type="ctrl" dimension="0"/>
+<par name="ChannelSelector" base_type="ctrl" dimension="0"/>
+</ic>
+</interface>
+<body>
+<c>* InspectionSegmentationThresholdRGB</c>
+<c>* -------------------------------------------------------------</c>
+<c></c>
+<l>global tuple App</l>
+<c></c>
+<c></c>
+<c>* Get variables from dictionary</c>
+<l>ImageHSV                       := App.Inspection.Threads.[ProcessingThreadID].Images.TopLight.HSV.AllChannel</l>
+<l>ImageHue                       := App.Inspection.Threads.[ProcessingThreadID].Images.TopLight.HSV.Hue</l>
+<l>ImageSaturation                := App.Inspection.Threads.[ProcessingThreadID].Images.TopLight.HSV.Saturation</l>
+<l>ImageValue                     := App.Inspection.Threads.[ProcessingThreadID].Images.TopLight.HSV.Value</l>
+<l>LanesROIs                      := App.Inspection.Threads.[ProcessingThreadID].Regions.Lanes.ROIs</l>
+<l>LanesROIsUnion                 := App.Inspection.Threads.[ProcessingThreadID].Regions.Lanes.ROIsUnion</l>
+<l>RollsGapCenter                 := App.Inspection.Threads.[ProcessingThreadID].Regions.Rolls.GapCenter</l>
+<l>ChannelSelector                := App.Inspection.Threads.[ProcessingThreadID].Segmentation.Parameters.ChannelSelector</l>
+<l>ShiftMean                      := App.Sensor.GrabImageMetaData.Sequencer_MovedDistanceInBetweenGrabbedImages</l>
+<l>SegmentationDynThresholdActive := App.Inspection.Threads.[ProcessingThreadID].Segmentation.Parameters.DynThresholdActive</l>
+<l>AreaMin                        := App.Format.TabletInspection.Segmentation.V_Segmentation_SmallestSingleObjectFilter_Area_Min.Value</l>
+<c></c>
+<l>get_image_size (ImageValue, ImageWidth, _)</l>
+<l>if (|ImageWidth| &gt; 0)</l>
+<l>    reduce_domain (ImageValue, LanesROIsUnion, ImageValueReduced)</l>
+<c>    </c>
+<l>    switch (ChannelSelector)</l>
+<l>    case 0: </l>
+<c>        * BackLight</c>
+<l>        ImageForProductOnRollMeasurement := App.Inspection.Threads.[ProcessingThreadID].Images.BackLight.Mono</l>
+<l>        break</l>
+<l>    case 1: </l>
+<c>        * TopLight HSV</c>
+<l>        ImageForProductOnRollMeasurement := App.Inspection.Threads.[ProcessingThreadID].Images.BackLight.Mono</l>
+<l>        trans_to_rgb (ImageHue, ImageValue, ImageSaturation, ImageRed, ImageGreen, ImageBlue, 'hls')  </l>
+<l>        break</l>
+<l>    case 2: </l>
+<c>        * TopLight UV </c>
+<l>        if (|Shift| == 0)</l>
+<l>            Shift := 0</l>
+<l>        endif</l>
+<l>        move_region (RollsGapCenter, RollsGapCenter, Shift * 2, 0)</l>
+<l>        ROI_Pos := ROI_Pos + Shift * 2</l>
+<l>        ImageForProductOnRollMeasurement := App.Inspection.Threads.[ProcessingThreadID].Images.TopLight.UV</l>
+<l>        break       </l>
+<l>    endswitch</l>
+<c>    </c>
+<c>    </c>
+<l>    if(SegmentationDynThresholdActive)</l>
+<l>        App.Inspection.Threads.[ProcessingThreadID].Segmentation.Parameters.ROI_IncreaseWithBy_Factor := 0.05</l>
+<l>    else</l>
+<l>        App.Inspection.Threads.[ProcessingThreadID].Segmentation.Parameters.ROI_IncreaseWithBy_Factor := 0</l>
+<l>    endif</l>
+<c>    </c>
+<c>    * Find tablet on roll via measure pairs in gap of backlight with subpixel accuracy</c>
+<l>    gen_empty_obj (App.Inspection.Threads.[ProcessingThreadID].Regions.Tablets.ROIs)</l>
+<l>    gen_empty_obj (App.Inspection.Threads.[ProcessingThreadID].Regions.Tablets.ROIsUnion)</l>
+<l>    count_obj (LanesROIs, NumLanes) </l>
+<l>    for IdxLane := 0 to NumLanes-1 by 1</l>
+<l>        select_obj (LanesROIs, LanesROI, IdxLane+1) </l>
+<c>        </c>
+<c>        * todo: replace by ROIs given by FPGA</c>
+<l>        InspectionSegmentationFindProductOnRolls (ImageForProductOnRollMeasurement, LanesROI, ProcessingThreadID, IdxLane)</l>
+<l>    endfor</l>
+<l>    union1 (App.Inspection.Threads.[ProcessingThreadID].Regions.Tablets.ROIs, App.Inspection.Threads.[ProcessingThreadID].Regions.Tablets.ROIsUnion)</l>
+<c>    </c>
+<c>    </c>
+<c>    * Segment the tablet regions with dynamic threshold or without</c>
+<l>    if(SegmentationDynThresholdActive)</l>
+<l>        InspectionSegmentationDynThreshold (ProcessingThreadID, TimeNeeded)</l>
+<l>    else</l>
+<l>        InspectionSegmentationThreshold (ProcessingThreadID, ChannelSelector, TimeNeeded)</l>
+<l>    endif</l>
+<l>    union1 (App.Inspection.Threads.[ProcessingThreadID].Regions.Tablets.Segmented, RegionSegmentedUnion)</l>
+<l>    App.Inspection.Threads.[ProcessingThreadID].Regions.Tablets.SegmentedUnion := RegionSegmentedUnion</l>
+<c>    </c>
+<l>    ColorSupportIsActive := App.Format.TabletInspection.Segmentation.V_Segmentation_ColourSupport_Active.Value</l>
+<l>    if (ColorSupportIsActive)</l>
+<c>        </c>
+<l>    endif</l>
+<c></c>
+<l>    SegmentationColorSupport (ImageHSV, ImageRed, ImageGreen, ImageBlue, LanesROIsUnion, RegionSegmentedUnion, RegionSegmented, RegionColorSupport)</l>
+<c>       </c>
+<c>    </c>
+<l>else</l>
+<c>    * RGB threshold based product segmentation</c>
+<l>    ++++ todo: JH</l>
+<l>*     decompose3 (ImageOrig, Red, Green, Blue)</l>
+<c></c>
+<l>*     if (Threaded1Serial0 = 1)</l>
+<l>*         par_start&lt;ThreadID1&gt; : gThresholdForThreading (Red, Lanes_ROIsUnion, Red_Region, Threshold_RedMin)</l>
+<l>*         par_start&lt;ThreadID2&gt; : gThresholdForThreading (Green, Lanes_ROIsUnion, Green_Region, Threshold_GreenMin)</l>
+<l>*         par_start&lt;ThreadID3&gt; : gThresholdForThreading (Blue, Lanes_ROIsUnion, Blue_Region, Threshold_BlueMin)</l>
+<l>*         par_join ([ThreadID1,ThreadID2,ThreadID3])</l>
+<l>*     else</l>
+<l>*         reduce_domain (Red, Lanes_ROIsUnion, Red_Reduced)</l>
+<l>*         threshold (Red_Reduced, Red_Region, Threshold_RedMin, Threshold_RedMax)</l>
+<c></c>
+<l>*         reduce_domain (Green, Lanes_ROIsUnion, Green_Reduced)</l>
+<l>*         threshold (Green_Reduced, Green_Region, Threshold_GreenMin, Threshold_GreenMax)</l>
+<c></c>
+<l>*         reduce_domain (Blue, Lanes_ROIsUnion, Blue_Reduced)</l>
+<l>*         threshold (Blue_Reduced, Blue_Region, Threshold_BlueMin, Threshold_BlueMax)</l>
+<l>*     endif</l>
+<c></c>
+<l>*     union2 (Red_Region, Green_Region, RegionUnion)</l>
+<l>*     union2 (RegionUnion, Blue_Region, SegmentedRegion)</l>
+<l>endif</l>
+<c></c>
+<l>connection (RegionSegmentedUnion, RegionSegmented)</l>
+<l>select_shape (RegionSegmented, RegionSegmented, 'area', 'and', AreaMin, 1e6)</l>
+<c></c>
+<c>* Set variables to dictionary</c>
+<l>App.Inspection.Threads.[ProcessingThreadID].Regions.Tablets.Segmented      := RegionSegmented</l>
+<l>App.Inspection.Threads.[ProcessingThreadID].Regions.Tablets.SegmentedUnion := RegionSegmentedUnion</l>
+<c></c>
+<l>return ()</l>
+<c></c>
+</body>
+<docu id="InspectionSegmentationThresholdRGB">
+<parameters>
+<parameter id="ChannelSelector"/>
+<parameter id="ProcessingThreadID"/>
+</parameters>
+</docu>
+</procedure>
+</hdevelop>

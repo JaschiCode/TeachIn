@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="25.11.0.0">
+<procedure name="SystemInit">
+<interface/>
+<body>
+<c>* SystemInit</c>
+<c>* ----------------------------------------------</c>
+<c></c>
+<l>global tuple App</l>
+<c></c>
+<l>App.System := dict{}</l>
+<c></c>
+<c>* Set environemt to utf8 instead of local</c>
+<l>set_system ('filename_encoding', 'utf8')</l>
+<c></c>
+<c></c>
+<l>dev_get_system ('engine_environment', SystemInformations)</l>
+<l>if (SystemInformations = 'HDevelop')</l>
+<l>    App.System.DebugInHalcon := 1</l>
+<l>else</l>
+<l>    App.System.DebugInHalcon := 0</l>
+<l>endif</l>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="SystemInit">
+<parameters/>
+</docu>
+</procedure>
+</hdevelop>

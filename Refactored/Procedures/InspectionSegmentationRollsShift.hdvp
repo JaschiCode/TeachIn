@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="25.11.0.0">
+<procedure name="InspectionSegmentationRollsShift">
+<interface>
+<ic>
+<par name="ProcessingThreadID" base_type="ctrl" dimension="0"/>
+</ic>
+<oc>
+<par name="TimeNeeded" base_type="ctrl" dimension="0"/>
+</oc>
+</interface>
+<body>
+<c>* InspectionSegmentationRollsShift</c>
+<c>* ------------------------------------------------------------------------------------</c>
+<c>* The contrast within the rolls can be identified in toplight </c>
+<c>* and backlight to detect the center of the gaps</c>
+<c></c>
+<l>global tuple App</l>
+<c></c>
+<l>count_seconds(TimeStart)</l>
+<c></c>
+<c>* Get variables from dictionary</c>
+<l>ImageTopLight  := App.Inspection.Threads.[ProcessingThreadID].Images.TopLight.HSV.Value</l>
+<l>ImageBackLight := App.Inspection.Threads.[ProcessingThreadID].Images.BackLight.Mono</l>
+<c></c>
+<c></c>
+<c>* Initialize output variables</c>
+<l>ShiftMean  := -1</l>
+<l>RollsGapsRow    := []</l>
+<l>RollsGapsHeight := []</l>
+<l>gen_empty_obj (RollsGapCenter)</l>
+<c></c>
+<c></c>
+<l>get_domain (ImageTopLight, Domain)</l>
+<l>smallest_rectangle1 (Domain, Row1, Col1, Row2, Col2)</l>
+<l>ImageWidth  := Col2 - Col1</l>
+<l>ImageHeight := Row2 - Row1</l>
+<c></c>
+<c></c>
+<c>* Select rectangles left and right of image for segmentation area</c>
+<l>SegmentationWidth := 100</l>
+<l>gen_rectangle1 (RectLeft, Row1, Col1, Row2, Col1 + SegmentationWidth)</l>
+<l>SegmentFromOneSide := 1</l>
+<l>if(SegmentFromOneSide)</l>
+<l>    reduce_domain (ImageBackLight, RectLeft, ImageBackLight)</l>
+<l>    reduce_domain (ImageTopLight, RectLeft, ImageTopLight)</l>
+<l>else</l>
+<l>    gen_rectangle1 (RectRight, Row1, Col2 - SegmentationWidth, Row2, Col2)</l>
+<l>    union2 (RectLeft, RectRight, RectSegmentation)</l>
+<l>    reduce_domain (ImageBackLight, RectSegmentation, ImageBackLight)</l>
+<l>    reduce_domain (ImageTopLight, RectSegmentation, ImageTopLight)</l>
+<l>endif</l>
+<l>Row2 := Row2 - 25 // necessary to compensate bug in UV- shift moves regions outside image there</l>
+<l>Col2 := Col1 + SegmentationWidth</l>
+<c></c>
+<c></c>
+<c>* Image BackLight Calculation</c>
+<c>* The Backlight image is calculated with Fuzzy</c>
+<l>UseFuzzyMeasure := 1</l>
+<l>ScaleImage      := 1</l>
+<l>InspectionSegmentationRollsShiftGapCenter (ImageBackLight, GapsLinesBackLight, ProcessingThreadID, UseFuzzyMeasure, ScaleImage, Row1, Col1, Row2, Col2, GapsCenterBackLight, TimeNeededBackLight)</l>
+<l>if(|GapsCenterBackLight| == 0)</l>
+<l>    UseFuzzyMeasure := 0</l>
+<l>    ScaleImage      := 0</l>
+<l>    InspectionSegmentationRollsShiftGapCenter (ImageBackLight, GapsLinesBackLight, ProcessingThreadID, UseFuzzyMeasure, ScaleImage, Row1, Col1, Row2, Col2, GapsCenterBackLight, TimeNeededBackLight)</l>
+<l>endif</l>
+<c></c>
+<c></c>
+<c>* Image TopLight Calculation</c>
+<c>* The TopLight image is calculated without Fuzzy</c>
+<l>ScaleImage := 1</l>
+<l>InspectionSegmentationRollsShiftGapCenter (ImageTopLight, GapsLinesTopLight, ProcessingThreadID, UseFuzzyMeasure, ScaleImage, Row1, Col1, Row2, Col2, GapsCenterTopLight, TimeNeededTopLight)</l>
+<l>if(|GapsCenterTopLight| == 0)</l>
+<l>    UseFuzzyMeasure := 0</l>
+<l>    ScaleImage      := 0</l>
+<l>    InspectionSegmentationRollsShiftGapCenter (ImageTopLight, GapsLinesTopLight, ProcessingThreadID, UseFuzzyMeasure, ScaleImage, Row1, Col1, Row2, Col2, GapsCenterTopLight, TimeNeededTopLight)</l>
+<l>endif</l>
+<c></c>
+<c></c>
+<c>* Calculate image shift - the shift roll related from BackLight to TopLight</c>
+<l>InspectionSegmentationRollsShiftMean (GapsCenterTopLight, GapsCenterBackLight, ShiftMean)</l>
+<c></c>
+<c></c>
+<c>* Calculate typical distance from roll to roll</c>
+<l>if (|GapsCenterBackLight| &gt; 1)</l>
+<l>    MaxDistanceCenterPointsImageBackLight := GapsCenterBackLight[|GapsCenterBackLight|-1] - GapsCenterBackLight[0] </l>
+<l>    RollsGapsHeight := abs(MaxDistanceCenterPointsImageBackLight / (|GapsCenterBackLight|-1))</l>
+<l>endif</l>
+<c></c>
+<c>* generate roll center regions for output</c>
+<l>RegionHeigth := 1</l>
+<l>ConstCol1    := gen_tuple_const (|GapsCenterBackLight|, Col1)</l>
+<l>ConstCol2    := gen_tuple_const (|GapsCenterBackLight|, Col2)</l>
+<l>if (|GapsCenterBackLight| &gt; 0)</l>
+<l>    gen_rectangle1 (RollsGapCenter, GapsCenterBackLight - (RegionHeigth /2), ConstCol1, GapsCenterBackLight + (RegionHeigth /2), ConstCol2)</l>
+<l>endif</l>
+<c></c>
+<c>* Some output naming</c>
+<l>RollsGapsRow := GapsCenterBackLight</l>
+<l>RollsGapsRow := sort (RollsGapsRow)</l>
+<l>sort_region (RollsGapCenter, RollsGapCenter, 'first_point', 'true', 'row')</l>
+<c></c>
+<c></c>
+<c>* Set variables to dictionary</c>
+<l>App.Inspection.Threads.[ProcessingThreadID].Regions.Rolls.GapCenter                 := RollsGapCenter</l>
+<l>App.Inspection.Threads.[ProcessingThreadID].Segmentation.Parameters.RollsGapsRow    := RollsGapsRow</l>
+<l>App.Inspection.Threads.[ProcessingThreadID].Segmentation.Parameters.RollsGapsHeight := RollsGapsHeight</l>
+<l>App.Sensor.GrabImageMetaData.Sequencer_MovedDistanceInBetweenGrabbedImages          := ShiftMean</l>
+<c></c>
+<l>count_seconds(Seconds_End)</l>
+<l>TimeNeeded := (Seconds_End - TimeStart) * 1000.0</l>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="InspectionSegmentationRollsShift">
+<parameters>
+<parameter id="ProcessingThreadID"/>
+<parameter id="TimeNeeded"/>
+</parameters>
+</docu>
+</procedure>
+</hdevelop>

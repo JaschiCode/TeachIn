@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="25.11.0.0">
+<procedure name="SegmentationFilterRegionsCuttingROI">
+<interface>
+<io>
+<par name="RegionTablets" base_type="iconic" dimension="0"/>
+</io>
+<oo>
+<par name="RegionTabletsWithoutTabletsOnBorder" base_type="iconic" dimension="0"/>
+</oo>
+<ic>
+<par name="ProcessingThreadID" base_type="ctrl" dimension="0"/>
+<par name="IsFilterActive" base_type="ctrl" dimension="0"/>
+</ic>
+</interface>
+<body>
+<c>* SegmentationFilterRegionsCuttingROI</c>
+<c>* -------------------------------------------------------------------------------------------</c>
+<c>* When there are overlapping rois a single intersection may lead to cut objects. </c>
+<c>* This may happen on 360 machine when objects are close - will not happen on count secure</c>
+<c></c>
+<l>global tuple App</l>
+<c></c>
+<c>* Get variables from dictionary</c>
+<l>ImageMultiChannel := App.Inspection.Threads.[ProcessingThreadID].Images.MultiChannel</l>
+<l>LanesROIs         := App.Inspection.Threads.[ProcessingThreadID].Regions.Lanes.ROIs</l>
+<c></c>
+<l>if (IsFilterActive)</l>
+<l>    count_obj (LanesROIs, NumLanesROIs)</l>
+<l>    for IdxLane := 0 to NumLanesROIs-1 by 1</l>
+<l>        select_obj (LanesROIs, LaneROI, IdxLane+1)</l>
+<c>        </c>
+<l>        intersection (LaneROI, RegionTablets, RegionTest) </l>
+<l>        connection (RegionTest, RegionTest)</l>
+<c></c>
+<c>        * Don't remove directly all objetcs intersecting with left and right side</c>
+<c>        * Check for intersections with top and bottom in this step</c>
+<c>        * If necessary add checking for intersection on left and right side</c>
+<l>        GetObjects_UpperLower0_LeftRight1_Both2_Lower3 := 0</l>
+<l>        SegmentationFilterRegionsRemoveTabletsOnBorderAndInEjectbox (ImageMultiChannel, LanesROIs, RegionTablets, RegionTabletsOnBorder, GetObjects_UpperLower0_LeftRight1_Both2_Lower3)</l>
+<l>        difference (RegionTablets, RegionTabletsOnBorder, RegionTablets)</l>
+<l>    endfor    </l>
+<l>    select_shape (RegionTablets, RegionTablets, 'area', 'and', 1, 1e6)</l>
+<l>else</l>
+<l>    intersection (LanesROIs, RegionTablets, RegionTablets)</l>
+<l>endif</l>
+<c></c>
+<l>RegionTabletsWithoutTabletsOnBorder := RegionTablets</l>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="SegmentationFilterRegionsCuttingROI">
+<parameters>
+<parameter id="IsFilterActive"/>
+<parameter id="ProcessingThreadID"/>
+<parameter id="RegionTablets"/>
+<parameter id="RegionTabletsWithoutTabletsOnBorder"/>
+</parameters>
+</docu>
+</procedure>
+</hdevelop>

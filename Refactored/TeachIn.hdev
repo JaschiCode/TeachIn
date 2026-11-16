@@ -1,0 +1,510 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="25.11.0.0">
+<procedure name="main">
+<interface/>
+<body>
+<c>* TeachIn</c>
+<c>* -------------------------------------------</c>
+<c>* New version</c>
+<c>* -------------------------------------------</c>
+<c></c>
+<l>global def tuple gStopAtProcess</l>
+<l>global def tuple gStopAtCameraStart</l>
+<c></c>
+<l>gStopAtProcess := 0 </l>
+<l>gStopAtCameraStart := 0</l>
+<c></c>
+<l>Main ()</l>
+<c></c>
+</body>
+<docu id="main">
+<parameters/>
+</docu>
+</procedure>
+<procedure name="Main">
+<interface/>
+<body>
+<l>import './Procedures'</l>
+<c></c>
+<l>global tuple App</l>
+<c></c>
+<c></c>
+<c></c>
+<c></c>
+<c>* ______________________________________________________________________________________</c>
+<l>global def tuple gStopProcessingExit</l>
+<l>global def tuple gCounterPLCCamtrigger</l>
+<l>global def tuple gThread_Middle_Active</l>
+<c></c>
+<c></c>
+<c></c>
+<c>* Initialize the app and read json files</c>
+<c>* ***************************************************</c>
+<l>AppInit ()</l>
+<c></c>
+<c></c>
+<c>* Execute communication cycle with plc once at start</c>
+<c>* ***************************************************</c>
+<l>PlcCommunicationCycle (1, gen_tuple_const(8, 0), [], 0, 1)</l>
+<l>* IndexCamera := 0</l>
+<c></c>
+<l>OptionalTupleToSendInPLCCommunicationQueue := []</l>
+<l>gCounterPLCCamtrigger := 0</l>
+<c></c>
+<c></c>
+<c></c>
+<c></c>
+<c>* Set progress bar on GUI</c>
+<c>* ***************************************************</c>
+<l>ButtonsIntervaceViaFile (App.Filesystem.Temp.Files.ButtonInterfaceToGUI, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0)</l>
+<c></c>
+<c></c>
+<c></c>
+<c>* Set some debug values</c>
+<c>* ***************************************************</c>
+<l>App.Status.Debug.WorkOnFramegrabberEnable    := 0</l>
+<l>App.Status.Debug.EndlessLoopForTestingEngine := 0</l>
+<c></c>
+<c></c>
+<c></c>
+<c>* Set some specific values for TeachIn</c>
+<c>* ***************************************************</c>
+<c></c>
+<c>* Change value for WorkOnCameraEnable</c>
+<l>App.Format.Camera.General.V_Camera_WorkOnCameraEnable.Value := 0</l>
+<c></c>
+<c>* Change debug parameter</c>
+<l>* gPLCWatchdogBypass := App.Format.Plc.General.V_PLCWatchdog_Bypass.Value</l>
+<l>* gPLCDebugMode      := 0  </l>
+<c></c>
+<c>* Copy parameters of TabletInspection, because some values might be changed for the teach in process</c>
+<l>copy_dict (App.Format.TabletInspection, [], [], App.Format.TabletInspection_ToWrite)</l>
+<c></c>
+<c>* Set OCR to inactive for teachin as there is no feature available that will be taught</c>
+<l>get_dict_param (App.Format.TabletInspection, 'key_exists', 'Measure_ProductOCR', FeatureExistsOCR)</l>
+<l>if (FeatureExistsOCR)</l>
+<l>    App.Format.TabletInspection.Measure_ProductOCR.V_FeatureActive.Value := 0</l>
+<l>endif</l>
+<c></c>
+<c></c>
+<c>* calibration</c>
+<l>CalibrationActive        := App.Format.CalibrationLocal.General.V_FeatureActive.Value</l>
+<l>CalibrationTeachInActive := App.Format.CalibrationLocal.General.V_TeachIn_Active.Value</l>
+<l>CalibrationObject_MeasureSystemAnalyses_Active := App.Format.CalibrationLocal.General.V_CalibrationObject_MeasureSystemAnalyses_Active.Value</l>
+<c></c>
+<l>if (CalibrationTeachInActive and CalibrationObject_MeasureSystemAnalyses_Active)</l>
+<l>    CalibrationObject_MeasureSystemAnalyses_Active := 0</l>
+<l>endif</l>
+<c></c>
+<c></c>
+<c></c>
+<c>* Init calibration file</c>
+<c>* ***************************************************</c>
+<l>Camera_NumberOfConnectedCameras := App.Format.Camera.General.V_Camera_NumberOfConnectedCameras.Value</l>
+<l>for IndexInitCam := 0 to |App.ROIs.NumberOfPos|-1 by 1</l>
+<l>    for IndexInitLane := 0 to App.ROIs.NumberOfPos[IndexInitCam] -1 by 1</l>
+<l>        Calibration_VCamera_VLane_VMeasureFeature_TResult_TValue.at(IndexInitCam).at(IndexInitLane).at(0).at(0) := []</l>
+<l>    endfor</l>
+<l>endfor</l>
+<c></c>
+<c></c>
+<c></c>
+<c></c>
+<c>* todo:</c>
+<c>* TeachIn aus SortSecure übernehmen</c>
+<c>* besserer Ablauf der Switchcases - vor allem, falls im Programm zurückgegangen wird.</c>
+<c>* Einstellen des Threshold im LineProfile</c>
+<c>* Beim Einlernen der Farbe des Hintergrunds - Kästchen in den unteren Ecken größer machen</c>
+<c>* Calibration part</c>
+<c>* *************************************************************************************************</c>
+<c></c>
+<c>* do some init preperations</c>
+<l>FilenameProductImage0 := App.Filesystem.Format.Images_ProductTeachIn.Path + App.Filesystem.Format.Prefixes.ProductImage + '0000.tif'</l>
+<l>CopyProductimage_ForImageReadFromDisk (App.Visualization.ProductImage, FilenameProductImage0)</l>
+<l>DeleteInterfaceFromGuiFile ()</l>
+<c></c>
+<l>gen_empty_obj (EmptyObject)</l>
+<c></c>
+<l>App.TeachIn := dict{}</l>
+<l>App.TeachIn.SwitchCondition       := 10    // hint: 9999 is break, 1000 is sucessfull teach in</l>
+<l>App.TeachIn.ContinueFlag          := 0</l>
+<l>App.TeachIn.ExitCondition         := 0</l>
+<l>App.TeachIn.ImageOrig             := App.Visualization.ProductImage</l>
+<l>App.TeachIn.ImageToLearnOn        := EmptyObject</l>
+<l>App.TeachIn.ColorClassification   := dict{}</l>
+<c></c>
+<l>App.Status.Counter.ProductionLoopCounter := 0</l>
+<c></c>
+<l>while (1)</l>
+<c>    </c>
+<l>    switch (App.TeachIn.SwitchCondition)</l>
+<c>        </c>
+<l>    case 10:</l>
+<c>        * Select an image to learn on</c>
+<l>        HelpTextString  := App.Language.Keys.HDEV_PictureSelectionHelpText</l>
+<l>        ChannelSelector := 1</l>
+<l>        TeachInSelectImageToLearnOn (HelpTextString, ChannelSelector)</l>
+<l>        if (App.TeachIn.ContinueFlag)</l>
+<l>            continue</l>
+<l>        endif</l>
+<c>        </c>
+<c>        * Go to next step </c>
+<l>        App.TeachIn.SwitchCondition := 20</l>
+<l>        break</l>
+<c>        </c>
+<c>        </c>
+<l>    case 20: </l>
+<c>        * Zoom up a region for geometric learning </c>
+<l>        HelpTextString  := App.Language.Keys.HDEV_TeachInHelptextGeometric</l>
+<l>        ChannelSelector := App.Format.TabletInspection.Segmentation.V_Segmentation_SelectSegmentationImage_BottomLight0_TopLight1_UVLight2.Value</l>
+<l>        TeachInZoomUpRegionForOperatorInput (HelpTextString, ChannelSelector)</l>
+<l>        if (App.TeachIn.ContinueFlag)</l>
+<l>            continue</l>
+<l>        endif</l>
+<c>        </c>
+<c>        * Go to next step </c>
+<l>        App.TeachIn.SwitchCondition := 30</l>
+<l>        break</l>
+<c>        </c>
+<c>        </c>
+<l>    case 30: </l>
+<c>        * Measure geometric height </c>
+<l>        HelpTextString    := App.Language.Keys.HDEV_TeachInRectangle</l>
+<l>        ChannelSelector   := App.Format.TabletInspection.Segmentation.V_Segmentation_SelectSegmentationImage_BottomLight0_TopLight1_UVLight2.Value</l>
+<l>        FilenameImageDump := App.Filesystem.Format.FormatData.Path + '030_WidthHeigth_Learned.jpg'</l>
+<l>        TeachInMeasureGeometricHeight (HelpTextString, ChannelSelector, FilenameImageDump)</l>
+<l>        if (App.TeachIn.ContinueFlag)</l>
+<l>            continue</l>
+<l>        endif</l>
+<c>        </c>
+<c>        * Go to next step </c>
+<l>        App.TeachIn.SwitchCondition := 40</l>
+<l>        break</l>
+<c>        </c>
+<c>        </c>
+<l>    case 40: </l>
+<c>        * Zoom up a region for color learning inner product</c>
+<l>        HelpTextString  := App.Language.Keys.HDEV_TeachInColour</l>
+<l>        ChannelSelector := App.Format.TabletInspection.Segmentation.V_Segmentation_SelectSegmentationImage_BottomLight0_TopLight1_UVLight2.Value</l>
+<l>        if (ChannelSelector == 0)</l>
+<c>            * Ensure that color image or uv can be used</c>
+<l>            ChannelSelector := 1</l>
+<l>        endif</l>
+<l>        TeachInZoomUpRegionForOperatorInput (HelpTextString, ChannelSelector)</l>
+<l>        if (App.TeachIn.ContinueFlag)</l>
+<l>            continue</l>
+<l>        endif</l>
+<c>        </c>
+<c>        * Go to next step </c>
+<l>        App.TeachIn.SwitchCondition := 50</l>
+<l>        break</l>
+<c>        </c>
+<c>        </c>
+<l>    case 50: </l>
+<c>        * Select region for inner color of tablet</c>
+<l>        HelpTextString    := [App.Language.Keys.HDEV_TeachInColourInnerColourPainting, App.Language.Keys.HDEV_TeachInSelectRegion]</l>
+<l>        ChannelSelector   := App.Format.TabletInspection.Segmentation.V_Segmentation_SelectSegmentationImage_BottomLight0_TopLight1_UVLight2.Value</l>
+<l>        FilenameImageDump := App.Filesystem.Format.FormatData.Path + '050_Colour_Learned.jpg'</l>
+<l>        if (ChannelSelector == 0)</l>
+<c>            * Ensure that color image or uv can be used</c>
+<l>            ChannelSelector := 1</l>
+<l>        endif</l>
+<l>        TeachInSelectRegionOperatorInteractiveDrawRegion (RegionOutput, HelpTextString, ChannelSelector, FilenameImageDump)</l>
+<l>        App.TeachIn.ColorClassification.InnerRegion := RegionOutput</l>
+<l>        if (App.TeachIn.ContinueFlag)</l>
+<l>            continue</l>
+<l>        endif</l>
+<c>        </c>
+<c>        * Go to next step </c>
+<l>        App.TeachIn.SwitchCondition := 60</l>
+<l>        break</l>
+<c>        </c>
+<c>        </c>
+<l>    case 60: </l>
+<c>        * Zoom up region for mirror region and reflexions</c>
+<l>        HelpTextString  := App.Language.Keys.HDEV_TeachInColourMirrorZoomColourPainting</l>
+<l>        ChannelSelector := App.Format.TabletInspection.Segmentation.V_Segmentation_SelectSegmentationImage_BottomLight0_TopLight1_UVLight2.Value</l>
+<l>        if (ChannelSelector == 0)</l>
+<c>            * Ensure that color image or uv can be used</c>
+<l>            ChannelSelector := 1</l>
+<l>        endif</l>
+<l>        TeachInImageOverpaintForColorClassification ()</l>
+<l>        TeachInZoomUpRegionForOperatorInput (HelpTextString, ChannelSelector)</l>
+<l>        if (App.TeachIn.ContinueFlag)</l>
+<l>            continue</l>
+<l>        endif</l>
+<c>        </c>
+<c>        * Go to next step </c>
+<l>        App.TeachIn.SwitchCondition := 70</l>
+<l>        break</l>
+<c>        </c>
+<c>        </c>
+<l>    case 70: </l>
+<c>        * Select region for mirror and reflexions</c>
+<l>        HelpTextString    := [App.Language.Keys.HDEV_TeachInColourMirrorColourPainting, App.Language.Keys.HDEV_TeachInSelectRegion]</l>
+<l>        ChannelSelector   := App.Format.TabletInspection.Segmentation.V_Segmentation_SelectSegmentationImage_BottomLight0_TopLight1_UVLight2.Value</l>
+<l>        FilenameImageDump := App.Filesystem.Format.FormatData.Path + '070_Mirror_Learned.jpg'</l>
+<l>        if (ChannelSelector == 0)</l>
+<c>            * Ensure that color image or uv can be used</c>
+<l>            ChannelSelector := 1</l>
+<l>        endif</l>
+<l>        TeachInSelectRegionOperatorInteractiveDrawRegion (RegionOutput, HelpTextString, ChannelSelector, FilenameImageDump)</l>
+<l>        App.TeachIn.ColorClassification.OuterRegion := RegionOutput</l>
+<l>        if (App.TeachIn.ContinueFlag)</l>
+<l>            continue</l>
+<l>        endif</l>
+<c>        </c>
+<c>        * Go to next step </c>
+<l>        App.TeachIn.SwitchCondition := 80</l>
+<l>        break</l>
+<c>        </c>
+<c>        </c>
+<l>    case 80: </l>
+<c>        * Select region for background</c>
+<l>        HelpTextString    := [App.Language.Keys.HDEV_TeachInColourBackgroundColourPainting, App.Language.Keys.HDEV_TeachInSelectRegion]</l>
+<l>        ChannelSelector   := App.Format.TabletInspection.Segmentation.V_Segmentation_SelectSegmentationImage_BottomLight0_TopLight1_UVLight2.Value</l>
+<l>        FilenameImageDump := App.Filesystem.Format.FormatData.Path + '080_Background_Learned.jpg'</l>
+<l>        if (ChannelSelector == 0)</l>
+<c>            * Ensure that color image or uv can be used</c>
+<l>            ChannelSelector := 1</l>
+<l>        endif</l>
+<l>        TeachInImageOverpaintForColorClassification ()</l>
+<l>        TeachInSelectAndDisplayMultiChannelImage (App.TeachIn.ImageOrig, ImageSelectedChannel, ImageDisplay, ChannelSelector, 1, 1, 1)</l>
+<l>        TeachInSelectRegionOperatorInteractiveDrawRegion (RegionOutput, HelpTextString, ChannelSelector, FilenameImageDump)</l>
+<l>        App.TeachIn.ColorClassification.Background := RegionOutput</l>
+<l>        if (App.TeachIn.ContinueFlag)</l>
+<l>            continue</l>
+<l>        endif</l>
+<c>        </c>
+<c>        * Go to next step </c>
+<l>        App.TeachIn.SwitchCondition := 90</l>
+<l>        break </l>
+<c>        </c>
+<c>        </c>
+<l>    case 90: </l>
+<c>        * Calculate the color classificator, manage to not convert color for teach in</c>
+<l>        HelpTextString         := App.Language.Keys.HDEV_TeachInWhileColourCalculationHint</l>
+<l>        ChannelSelector        := App.Format.TabletInspection.Segmentation.V_Segmentation_SelectSegmentationImage_BottomLight0_TopLight1_UVLight2.Value</l>
+<l>        FilenameImageDump      := App.Filesystem.Format.FormatData.Path +  '090_Colourclassified_Learned.jpg'</l>
+<l>        SwitchConditionRestart := 40</l>
+<l>        TeachInColorClassificationCalculation (HelpTextString, ChannelSelector, FilenameImageDump, SwitchConditionRestart)</l>
+<l>        if (App.TeachIn.ContinueFlag)</l>
+<l>            continue</l>
+<l>        endif</l>
+<c>        </c>
+<c>        * Go to next step </c>
+<l>        App.TeachIn.SwitchCondition := 100</l>
+<l>        break </l>
+<c>        </c>
+<c>        </c>
+<l>    case 100: </l>
+<c>        * Calculate data based on recorded images</c>
+<l>        HelpTextString         := App.Language.Keys.HDEV_TeachInWhileCalculationHint</l>
+<l>        ChannelSelector        := App.Format.TabletInspection.Segmentation.V_Segmentation_SelectSegmentationImage_BottomLight0_TopLight1_UVLight2.Value</l>
+<l>        TeachInDataCalculationBasedOnRecordedImages (HelpTextString, ChannelSelector)</l>
+<c>        </c>
+<c>        </c>
+<l>        ++++++++++++++++</l>
+<c>        </c>
+<l>    case 1000: </l>
+<c>        * TeachIn done successfully</c>
+<l>        ButtonsIntervaceViaFile (InterfaceToGuiFileAndPath, 1, 0, 0, 0, 0, 0, 0, 0, 0, gVTMessagesInLocalLanguage.at(28)[1], 0, 0, 0, 0)</l>
+<l>        get_image_size (ImageToLearnOn, Width, Height) </l>
+<l>        set_part (WindowHandle, 0, 0, Height, Width)</l>
+<l>        TeachInSelectAndDisplayMultiChannelImage (App.TeachIn.ImageOrig, App.TeachIn.ImageToLearnOn, ImageDisplay, ChannelSelector, 1, 1, 1)</l>
+<l>        set_color (WindowHandle, 'blue')</l>
+<l>        disp_obj (App.ROIs.Lanes.[App.Status.Camera.ID], WindowHandle)</l>
+<l>        set_color (WindowHandle, 'gray')</l>
+<l>        disp_obj (App.ROIs.Ejects.[App.Status.Camera.ID], WindowHandle)</l>
+<l>        if (App.System.DebugInHalcon)</l>
+<l>            disp_text (WindowHandle, gVTMessagesInLocalLanguage.at(29)[1], 'window', 'top', 'center', 'blue', ['box_color','box_padding'], ['#ffffff77',5])</l>
+<l>        endif</l>
+<l>        break</l>
+<c>        </c>
+<l>    case 9999: </l>
+<c>        * TeachIn interrupred - not done successfully</c>
+<l>        ButtonsIntervaceViaFile (InterfaceToGuiFileAndPath, 0, 0, 0, 0, 0, 0, 0, 0, 0, gVTMessagesInLocalLanguage.at(29)[1], 0, 0, 0, 0)</l>
+<c>        * need to reset part in case it was changed in histogram view for teavhin in tolerances</c>
+<l>        get_image_size (ImageToLearnOn, Width, Height)</l>
+<l>        set_part (WindowHandle, 0, 0, Height, Width)</l>
+<c>        * Last visu before exit</c>
+<l>        TeachInSelectAndDisplayMultiChannelImage (App.TeachIn.ImageOrig, App.TeachIn.ImageToLearnOn, ImageDisplay, ChannelSelector, 1, 1, 1)</l>
+<l>        set_color (WindowHandle, 'blue')</l>
+<l>        disp_obj (App.ROIs.Lanes.[App.Status.Camera.ID], WindowHandle)</l>
+<l>        set_color (WindowHandle, 'gray')</l>
+<l>        disp_obj (App.ROIs.Ejects.[App.Status.Camera.ID], WindowHandle)</l>
+<l>        if (App.System.DebugInHalcon)</l>
+<l>            disp_text (WindowHandle, gVTMessagesInLocalLanguage.at(29)[1], 'window', 'top', 'center', 'blue', ['box_color','box_padding'], ['#ffffff77',5])</l>
+<l>        endif</l>
+<l>        break</l>
+<l>    endswitch</l>
+<c>    </c>
+<c>    </c>
+<l>endwhile</l>
+<c></c>
+<c></c>
+<l>gCalibration_TeachIn_WriteToFile (CalibrationTeachInActive, CalibrationObject_MeasureSystemAnalyses_Active, Calibration_VCamera_VLane_VMeasureFeature_TResult_TValue, FormatPath, Calibration_VCamera_VLane_PixToMM_XY)</l>
+<l>* stop ()</l>
+<c>* *************************************************</c>
+<c>* *************************************************</c>
+<c>* *************************************************</c>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="Main">
+<parameters/>
+</docu>
+</procedure>
+<procedure name="DeleteInterfaceFromGuiFile">
+<interface/>
+<body>
+<c>*DeleteInterfaceFromGuiFile</c>
+<c>* -------------------------------------------------------</c>
+<c>* Delet a pressed button from GUI if it exists</c>
+<c></c>
+<l>global tuple App</l>
+<c></c>
+<l>file_exists (App.Filesystem.Temp.Files.ButtonInterfaceFromGUI, FileExists)</l>
+<l>if (FileExists)</l>
+<l>    delete_file (App.Filesystem.Temp.Files.ButtonInterfaceFromGUI)</l>
+<l>endif</l>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="DeleteInterfaceFromGuiFile">
+<parameters/>
+</docu>
+</procedure>
+<procedure name="CopyProductimage_ForImageReadFromDisk">
+<interface>
+<io>
+<par name="Grab_Image" base_type="iconic" dimension="0"/>
+</io>
+<ic>
+<par name="FileandPathPathname_ImagesProductTeachIn" base_type="ctrl" dimension="0"/>
+</ic>
+</interface>
+<body>
+<c>* copy the Productimage to Images/Productimage0001.tif if it not exists. Useful if image was read from disk without grabbing.</c>
+<l>* Filename := PathnameForImageFiles + FilenameForImageFiles + (ProcutionLoopCounter+1)$'.4d'</l>
+<l>* FilenameToCheck := PathnameValues[12] + FilenameProductimage + (0 $'.4d') + '.tif'</l>
+<l>file_exists (FileandPathPathname_ImagesProductTeachIn, FileExists)</l>
+<l>if (FileExists # 1)</l>
+<l>    write_image (Grab_Image, 'tiff', 0, FileandPathPathname_ImagesProductTeachIn)</l>
+<l>endif</l>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="CopyProductimage_ForImageReadFromDisk">
+<parameters>
+<parameter id="FileandPathPathname_ImagesProductTeachIn"/>
+<parameter id="Grab_Image"/>
+</parameters>
+</docu>
+</procedure>
+<procedure name="ButtonsIntervaceViaFile">
+<interface>
+<ic>
+<par name="FilenameIntervaceFile" base_type="ctrl" dimension="0"/>
+<par name="Btn0FlagTeachInSuccessfull" base_type="ctrl" dimension="0"/>
+<par name="Btn1" base_type="ctrl" dimension="0"/>
+<par name="Btn2" base_type="ctrl" dimension="0"/>
+<par name="Btn3" base_type="ctrl" dimension="0"/>
+<par name="Btn4" base_type="ctrl" dimension="0"/>
+<par name="Btn5IconArrowLeft" base_type="ctrl" dimension="0"/>
+<par name="Btn6IconArrowRight" base_type="ctrl" dimension="0"/>
+<par name="Btn7CancelDraw" base_type="ctrl" dimension="0"/>
+<par name="Btn8ProgressBar" base_type="ctrl" dimension="0"/>
+<par name="Btn9HelpText" base_type="ctrl" dimension="0"/>
+<par name="BtnACaption" base_type="ctrl" dimension="0"/>
+<par name="BtnB" base_type="ctrl" dimension="0"/>
+<par name="BtnC" base_type="ctrl" dimension="0"/>
+<par name="BtnD" base_type="ctrl" dimension="0"/>
+</ic>
+</interface>
+<body>
+<l>* set_system ('filename_encoding', 'utf8')</l>
+<l>open_file (FilenameIntervaceFile, 'output', FileHandle)</l>
+<l>if (Btn0FlagTeachInSuccessfull # 0)</l>
+<l>    fwrite_string (FileHandle, '0;' + Btn0FlagTeachInSuccessfull)</l>
+<l>    fnew_line (FileHandle)</l>
+<l>endif</l>
+<l>if (Btn1 # 0)</l>
+<l>    fwrite_string (FileHandle, '1;' + Btn1)</l>
+<l>    fnew_line (FileHandle)</l>
+<l>endif</l>
+<l>if (Btn2 # 0)</l>
+<l>    fwrite_string (FileHandle, '2;' + Btn2)</l>
+<l>    fnew_line (FileHandle)</l>
+<l>endif</l>
+<l>if (Btn3 # 0)</l>
+<l>    fwrite_string (FileHandle, '3;' + Btn3)</l>
+<l>    fnew_line (FileHandle)</l>
+<l>endif</l>
+<l>if (Btn4 # 0)</l>
+<l>    fwrite_string (FileHandle, '4;' + Btn4)</l>
+<l>    fnew_line (FileHandle)</l>
+<l>endif</l>
+<l>if (Btn5IconArrowLeft # 0)</l>
+<l>    fwrite_string (FileHandle, '5;' + Btn5IconArrowLeft)</l>
+<l>    fnew_line (FileHandle)</l>
+<l>endif</l>
+<l>if (Btn6IconArrowRight # 0)</l>
+<l>    fwrite_string (FileHandle, '6;' + Btn6IconArrowRight)</l>
+<l>    fnew_line (FileHandle)</l>
+<l>endif</l>
+<l>if (Btn7CancelDraw # 0)</l>
+<l>    fwrite_string (FileHandle, '7;' + Btn7CancelDraw)</l>
+<l>    fnew_line (FileHandle)</l>
+<l>endif</l>
+<l>if (Btn8ProgressBar # 0)</l>
+<l>    fwrite_string (FileHandle, '8;' + Btn8ProgressBar)</l>
+<l>    fnew_line (FileHandle)</l>
+<l>endif</l>
+<l>if (Btn9HelpText # 0)</l>
+<l>    fwrite_string (FileHandle, '9;' + Btn9HelpText)</l>
+<l>    fnew_line (FileHandle)</l>
+<l>endif</l>
+<l>if (BtnACaption # 0)</l>
+<l>    fwrite_string (FileHandle, 'A;' + BtnACaption)</l>
+<l>    fnew_line (FileHandle)</l>
+<l>endif</l>
+<l>if (BtnB # 0)</l>
+<l>    fwrite_string (FileHandle, 'B;' + BtnB)</l>
+<l>    fnew_line (FileHandle)</l>
+<l>endif</l>
+<l>if (BtnC # 0)</l>
+<l>    fwrite_string (FileHandle, 'C;' + BtnC)</l>
+<l>    fnew_line (FileHandle)</l>
+<l>endif</l>
+<l>if (BtnD # 0)</l>
+<l>    fwrite_string (FileHandle, 'D;' + BtnD)</l>
+<l>    fnew_line (FileHandle)</l>
+<l>endif</l>
+<l>close_file (FileHandle)</l>
+<l>* set_system ('filename_encoding', 'locale')</l>
+<c></c>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="ButtonsIntervaceViaFile">
+<parameters>
+<parameter id="Btn0FlagTeachInSuccessfull"/>
+<parameter id="Btn1"/>
+<parameter id="Btn2"/>
+<parameter id="Btn3"/>
+<parameter id="Btn4"/>
+<parameter id="Btn5IconArrowLeft"/>
+<parameter id="Btn6IconArrowRight"/>
+<parameter id="Btn7CancelDraw"/>
+<parameter id="Btn8ProgressBar"/>
+<parameter id="Btn9HelpText"/>
+<parameter id="BtnACaption"/>
+<parameter id="BtnB"/>
+<parameter id="BtnC"/>
+<parameter id="BtnD"/>
+<parameter id="FilenameIntervaceFile"/>
+</parameters>
+</docu>
+</procedure>
+</hdevelop>

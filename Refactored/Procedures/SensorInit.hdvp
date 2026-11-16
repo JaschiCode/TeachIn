@@ -1,0 +1,434 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="25.11.0.0">
+<procedure name="SensorInit">
+<interface/>
+<body>
+<c>* SensorInit</c>
+<c>* ------------------------------------------------------</c>
+<c>* Init the framegrabbers if available. </c>
+<c>* Specials for 360 configuration: </c>
+<c>* The timeout is relevant for the machineindexreset - due to it is in relation to a framegrabber timeout</c>
+<c></c>
+<l>global tuple App</l>
+<l>global tuple gStopAtCameraStart</l>
+<c></c>
+<l>App.Sensor := dict{}</l>
+<c></c>
+<c>* Initialize parameters</c>
+<l>App.Sensor.AcqHandle := []</l>
+<l>App.Sensor.CameraCorrectlyInitialised        := 0</l>
+<l>App.Sensor.FramegrabberFirstImageToInitTaken := 0 // Variable to skip first image that was grabben on SiSo interface := 0</l>
+<l>App.Sensor.FramegrabberInitFrames            := 0 // todo: 10 // count of mono colored images to init queues and complete engine cycle</l>
+<c></c>
+<c></c>
+<c>* Set general camera parameters from format</c>
+<l>WorkOnCameraEnable         := App.Format.Camera.General.V_Camera_WorkOnCameraEnable.Value</l>
+<l>NumberOfConnectedCameras   := App.Format.Camera.General.V_Camera_NumberOfConnectedCameras.Value</l>
+<l>InternalTrigger0_External1 := App.Format.Camera.General.V_Camera_InternalTrigger0_External1.Value</l>
+<c></c>
+<c>* Set camera specific parameters from format</c>
+<l>ExposureTime               := App.Format.Camera.Cameras.['Camera_' + App.Status.Camera.ID].V_Exposuretime.Value</l>
+<c>* !!! todo Gain funktoniert bei Optronis anders. Rauswerfen oder anpassen</c>
+<l>Gain                       := App.Format.Camera.Cameras.['Camera_' + App.Status.Camera.ID].V_Gain.Value</l>
+<l>FPS                        := App.Format.Camera.Cameras.['Camera_' + App.Status.Camera.ID].V_FPS.Value</l>
+<l>ImageGrabResolution_Width  := App.Format.Camera.Cameras.['Camera_' + App.Status.Camera.ID].V_ImageGrabResolution_Width.Value</l>
+<l>ImageGrabResolution_Height := App.Format.Camera.Cameras.['Camera_' + App.Status.Camera.ID].V_ImageGrabResolution_Height.Value</l>
+<l>ImageGrabOffset_X          := App.Format.Camera.Cameras.['Camera_' + App.Status.Camera.ID].V_ImageGrabOffset_X.Value</l>
+<l>ImageGrabOffset_Y          := App.Format.Camera.Cameras.['Camera_' + App.Status.Camera.ID].V_ImageGrabOffset_Y.Value</l>
+<l>* GammaEnable                := App.Format.Camera.Cameras.['Camera_' + App.Status.Camera.ID].V_GammaEnable.Value</l>
+<c></c>
+<c></c>
+<l>if (gStopAtCameraStart)</l>
+<l>    gStopAtCameraStart := 0</l>
+<l>    stop()</l>
+<l>endif</l>
+<c></c>
+<c></c>
+<l>if (WorkOnCameraEnable &gt;= 1)  </l>
+<l>    Camera_FPGA_TopLight_MicroSec                  := App.Format.Camera.FPGA.V_Camera_FPGA_TopLight_MicroSec.Value</l>
+<l>    Camera_FPGA_TopLight_SupportBackLight_MicroSec := App.Format.Camera.FPGA.V_Camera_FPGA_TopLight_SupportBackLight_MicroSec.Value</l>
+<l>    Camera_FPGA_BackLight_MicroSec                 := App.Format.Camera.FPGA.V_Camera_FPGA_BackLight_MicroSec.Value</l>
+<l>    Camera_FPGA_UVLight_Gain                       := App.Format.Camera.FPGA.V_Camera_FPGA_UVLight_Gain.Value</l>
+<c></c>
+<c>    * Signal for length of eject </c>
+<l>    Camera_FPGA_EjectPulseLength_SampleEject_MicroSec  := App.Format.Camera.FPGA.V_Camera_FPGA_EjectPulseLength_SampleEject_MicroSec.Value</l>
+<l>    Camera_FPGA_EjectPulseLength_MicroSec              := App.Format.Camera.FPGA.V_Camera_FPGA_EjectPulseLength_MicroSec.Value</l>
+<l>    Camera_FPGA_EjectPulseLength_Offset_MicroSec_Lane0 := App.Format.Camera.FPGA.V_Camera_FPGA_EjectPulseLength_Offset_MicroSec_Lane0.Value</l>
+<l>    Camera_FPGA_EjectPulseLength_Offset_MicroSec_Lane1 := App.Format.Camera.FPGA.V_Camera_FPGA_EjectPulseLength_Offset_MicroSec_Lane1.Value</l>
+<l>    Camera_FPGA_EjectPulseLength_Offset_MicroSec_Lane2 := App.Format.Camera.FPGA.V_Camera_FPGA_EjectPulseLength_Offset_MicroSec_Lane2.Value</l>
+<l>    Camera_FPGA_EjectPulseLength_Offset_MicroSec_Lane3 := App.Format.Camera.FPGA.V_Camera_FPGA_EjectPulseLength_Offset_MicroSec_Lane3.Value</l>
+<l>    Camera_FPGA_EjectPulseLength_Offset_MicroSec_Lane4 := App.Format.Camera.FPGA.V_Camera_FPGA_EjectPulseLength_Offset_MicroSec_Lane4.Value</l>
+<c></c>
+<c>    * check for framegrabber parameter and set applet</c>
+<l>    info_framegrabber ('GenICamTL', 'info_boards', Information, ValueList)</l>
+<l>    Device := ValueList[0]</l>
+<c>    * ' | device:1210-25-178-PillInspect_V33_53_imaFlex_250926_1Cam-0 | unique_name:1210-25-178-PillInspect_V33_53_imaFlex_250926_1Cam-0 | interface:iF-CXP12-Q SN_a6280335 | producer:C:\\FramegrabberSDK\\bin\\ProducerCXP.cti | vendor:Optronis GmbH | model:CyclonePlus-25-C | tl_type:CXP | status:available'</c>
+<l>*      Device := ' | device:1210-25-178-PillInspect_V33_53_imaFlex_250926_1Cam-0 | unique_name:1210-25-178-PillInspect_V33_53_imaFlex_250926_1Cam-0 | interface:iF-CXP12-Q SN_a6280335 | producer:C:\\FramegrabberSDK\\bin\\ProducerCXP.cti | vendor:Optronis GmbH | model:CyclonePlus-25-C | tl_type:CXP | status:available'</l>
+<l>*     Device := ' | device:1210-25-178-PillInspect_V33_53_imaFlex_021026_1Cam-0 | unique_name:1210-25-178-PillInspect_V33_53_imaFlex_021026_1Cam-0 | interface:iF-CXP12-Q SN_a6280335 | producer:C:\\FramegrabberSDK\\bin\\ProducerCXP.cti | vendor:Optronis GmbH | model:CyclonePlus-25-C | tl_type:CXP | status:available'    </l>
+<l>*     Device := ' | device:1210-25-178-PillInspect_V33_53_imaFlex_091026_1Cam_Test2-0 | unique_name:1210-25-178-PillInspect_V33_53_imaFlex_091026_1Cam_Test2-0 | interface:iF-CXP12-Q SN_a6280335 | producer:C:\\FramegrabberSDK\\bin\\ProducerCXP.cti | vendor:Optronis GmbH | model:CyclonePlus-25-C | tl_type:CXP | status:available'</l>
+<l>    GrabBuffer_SizeInFrames := 50 </l>
+<c></c>
+<l>    gFramegrabber_OpenAndInit_FileSynchronisation_CameraNumberUsed (App.Status.Debug.WorkOnFirstCameraOnly, PathToCheckForLocalCameraUsed, CameraNumberUsed)</l>
+<c>    ******************************</c>
+<l>    write_tuple (CameraNumberUsed, '../temp/CamUsed' + CameraNumberUsed + '.tpl')</l>
+<c>    * delete initialized flag if available</c>
+<l>    file_exists (PathToCheckForLocalCameraUsed + 'CamInitialised_' + CameraNumberUsed + '.txt', FileExists)</l>
+<l>    if (FileExists = 1)</l>
+<l>        delete_file (PathToCheckForLocalCameraUsed + 'CamInitialised_' + CameraNumberUsed + '.txt')</l>
+<l>    endif</l>
+<c>    </c>
+<c>    ***</c>
+<c>    </c>
+<l>    BufferString := ('num_buffers=' + GrabBuffer_SizeInFrames)</l>
+<l>    GenericParameters := BufferString</l>
+<l>    dev_set_check ('~give_error')</l>
+<l>    open_framegrabber ('GenICamTL', 1, 1, 0, 0, 0, 0, 'default', -1, 'default', GenericParameters, 'false', 'default', Device, -1, -1, AcqHandle)</l>
+<l>    dev_set_check ('give_error') </l>
+<c>        </c>
+<l>    if (AcqHandle = [])</l>
+<l>        CameraCorrectlyInitialised := 0</l>
+<l>        return()</l>
+<l>    endif</l>
+<c></c>
+<l>    set_framegrabber_param (AcqHandle, '[Interface]UserSetFile', 'C:/Users/Meliscout/Desktop/Einstellungen_FPGA/PillInspect_1Cam_Test2.mcf')</l>
+<l>    set_framegrabber_param (AcqHandle, '[Interface]UserSetLoad', 1)</l>
+<c>    </c>
+<c>    * set auto roi control to false. Otherwise full camera width and height will be used.</c>
+<l>    set_framegrabber_param(AcqHandle, '[Device]AutomaticROIControl', 0)</l>
+<l>    set_framegrabber_param (AcqHandle, 'Height', 3000)   // todo Werte aus Format lesen</l>
+<l>    set_framegrabber_param (AcqHandle, 'OffsetY', 1300)</l>
+<l>    set_framegrabber_param (AcqHandle, 'Width', 4416)</l>
+<l>    set_framegrabber_param (AcqHandle, 'OffsetX', 128)</l>
+<c>        </c>
+<l>* close_framegrabber (AcqHandle)</l>
+<c>    * set signal that cam master is initialised</c>
+<l>    open_file (PathToCheckForLocalCameraUsed + 'CamInitialised_' + CameraNumberUsed + '.txt', 'output', FileHandle)</l>
+<l>    close_file (FileHandle)</l>
+<l>*     endif</l>
+<c>    </c>
+<c>    ***</c>
+<c>    </c>
+<c>    </c>
+<c>    * set up light timing - bottom light        Device1Process1ParametersExposuretimelight0</c>
+<l>*     set_framegrabber_param (AcqHandle, '[Device]Device1Process1ParametersExposuretimelight0', Camera_FPGA_BackLight_MicroSec)</l>
+<c>    * set up light timing - top light</c>
+<l>*     set_framegrabber_param (AcqHandle, '[Device]Device1Process1ParametersExposureTimeLight1', Camera_FPGA_TopLight_MicroSec) // Top light set value of first camera to all cameras            </l>
+<l>*     set_framegrabber_param (AcqHandle, '[Device]Device1Process1ParametersSupportBacklight', 1) // switch on support back light for top light</l>
+<l>*     set_framegrabber_param (AcqHandle, '[Device]Device1Process1ParametersSupportBacklightTime', Camera_FPGA_TopLight_SupportBackLight_MicroSec) // set length for backlight duration as support light in toplight illumination</l>
+<c></c>
+<c>    * set image output to rgb if needed</c>
+<l>    RGB_Output := 0</l>
+<l>    if(RGB_Output = 0) // this is hsl output</l>
+<l>        set_framegrabber_param (AcqHandle, '[Device]Device1Process0ParametersColoroutput', 'Hsv') // external vcamera to hsl output     </l>
+<l>    else</l>
+<l>        set_framegrabber_param (AcqHandle, '[Device]Device1Process0ParametersColoroutput', 'Rgb') // external vcamera to rgb output</l>
+<l>    endif</l>
+<c>    </c>
+<c>    * Set eject pulse length</c>
+<l>*     set_framegrabber_param (AcqHandle, '[Device]Device1Process1ParametersJetcontrolJetpulsewidth', Camera_FPGA_EjectPulseLength_MicroSec) // pulse width for ejection signal</l>
+<c>    </c>
+<l>    FPGA_Tick_InSec :=0.0032</l>
+<c>    </c>
+<c>    * Set sample eject length        </c>
+<l>*     Camera_FPGA_EjectPulseLength_SampleEject_FPGATicks := Camera_FPGA_EjectPulseLength_SampleEject_MicroSec / FPGA_Tick_InSec * 1000000000</l>
+<l>*     tuple_int (Camera_FPGA_EjectPulseLength_SampleEject_FPGATicks, Camera_FPGA_EjectPulseLength_SampleEject_FPGATicks)</l>
+<l>*     set_framegrabber_param (AcqHandle, '[Device]Device1Process1ImplementationSensorgateWidth6Width', Camera_FPGA_EjectPulseLength_SampleEject_FPGATicks)    </l>
+<c>    </c>
+<l>*     Camera_FPGA_EjectPulseLength_FPGATicksc := Camera_FPGA_EjectPulseLength_MicroSec / FPGA_Tick_InSec</l>
+<c>    </c>
+<c>    * setup FPGA Eject Lane specific IO values for board 0</c>
+<l>*     tuple_int ((Camera_FPGA_EjectPulseLength_Offset_MicroSec_Lane0 / FPGA_Tick_InSec) + Camera_FPGA_EjectPulseLength_FPGATicksc, FPGATicks_Temp)</l>
+<l>*     set_framegrabber_param (AcqHandle, '[Device]Device1Process1ImplementationSensorgateWidth0Width', FPGATicks_Temp)   </l>
+<l>*     tuple_int ((Camera_FPGA_EjectPulseLength_Offset_MicroSec_Lane1 / FPGA_Tick_InSec) + Camera_FPGA_EjectPulseLength_FPGATicksc, FPGATicks_Temp)</l>
+<l>*     set_framegrabber_param (AcqHandle, '[Device]Device1Process1ImplementationSensorgateWidth1Width', FPGATicks_Temp)</l>
+<l>*     tuple_int ((Camera_FPGA_EjectPulseLength_Offset_MicroSec_Lane2 / FPGA_Tick_InSec) + Camera_FPGA_EjectPulseLength_FPGATicksc, FPGATicks_Temp)</l>
+<l>*     set_framegrabber_param (AcqHandle, '[Device]Device1Process1ImplementationSensorgateWidth2Width', FPGATicks_Temp)</l>
+<l>*     tuple_int ((Camera_FPGA_EjectPulseLength_Offset_MicroSec_Lane3 / FPGA_Tick_InSec) + Camera_FPGA_EjectPulseLength_FPGATicksc, FPGATicks_Temp)</l>
+<l>*     set_framegrabber_param (AcqHandle, '[Device]Device1Process1ImplementationSensorgateWidth3Width', FPGATicks_Temp)</l>
+<l>*     tuple_int ((Camera_FPGA_EjectPulseLength_Offset_MicroSec_Lane4 / FPGA_Tick_InSec) + Camera_FPGA_EjectPulseLength_FPGATicksc, FPGATicks_Temp)</l>
+<l>*     set_framegrabber_param (AcqHandle, '[Device]Device1Process1ImplementationSensorgateWidth4Width', FPGATicks_Temp)</l>
+<c></c>
+<c>    </c>
+<c>    * activate trigger processing 0 is off, 1 is on</c>
+<l>*     set_framegrabber_param (AcqHandle, '[Device]Device1Process1ParametersEnabletriggerprocessing', 0)    </l>
+<c>   </c>
+<c>    </c>
+<c>    * next lines were used to switch in between internal and extrnal triggering. for some reason it did not work as supposed- image channels were mixed up </c>
+<l>*     if(InternalTrigger0_External1 = 0) // use internal frequency or external trigger to trigger cams - trgger mode is activated in grab just before grab procedure loop</l>
+<l>*         set_framegrabber_param (AcqHandle, '[Device]Device1Process1ParametersImagetriggermode', 2) // internal via frequency generator</l>
+<l>*     else // external triggering via IO</l>
+<c>        * impotant to leave light switched off- otherwise parallel processes will grab e.g. slave processes</c>
+<l>*         set_framegrabber_param (AcqHandle, '[Device]Device1Process1ParametersImagetriggermode', 0) // external via IO</l>
+<c>        * activate trigger processing 0 is off, 1 is on - is activated just before grabbing loop</c>
+<l>*         set_framegrabber_param (AcqHandle, '[Device]Device1Process1ParametersEnabletriggerprocessing', 1)</l>
+<l>*     endif  </l>
+<c></c>
+<l>    CameraCorrectlyInitialised := 1</l>
+<l>else</l>
+<l>    CameraCorrectlyInitialised := 1</l>
+<l>endif</l>
+<c>            </c>
+<l>return()</l>
+<c></c>
+<c></c>
+<c>* init the framegrabbers if available. </c>
+<c>* specials for 360 configuration: // the timeout is relevant for the machineindexreset - due to it is in relation to a framegrabber timeout</c>
+<l>* global tuple gGrab_Timeout</l>
+<l>* global tuple dict_Camera </l>
+<l>* global tuple dict_Calibration</l>
+<l>* global tuple gStopAtCameraStart</l>
+<c></c>
+<l>* global def tuple gFramegrabberFirstImageToInitTaken</l>
+<l>* global def tuple gFramegrabberInitFrames</l>
+<c></c>
+<c>* </c>
+<l>* AcqHandle := []</l>
+<l>* CameraNumberUsed := 0</l>
+<l>* CameraCorrectlyInitialised := 0</l>
+<l>* gFramegrabberFirstImageToInitTaken := 0 // variable to skip first image that was grabben on SiSo interface</l>
+<l>* gFramegrabberInitFrames := 1 // todo: 10 // count of mono colored images to init queues and complete engine cycle</l>
+<c>* </c>
+<c>* general camera parameters</c>
+<l>* WorkOnCameraEnable := dict_Camera.General.V_Camera_WorkOnCameraEnable.Value</l>
+<l>* NumberOfConnectedCameras := dict_Camera.General.V_Camera_NumberOfConnectedCameras.Value</l>
+<l>* UseCameraIOsAsDirectEjectSignals := dict_Camera.General.V_Camera_UseCameraIOsAsDirectEjectSignals.Value</l>
+<l>* InternalTrigger0_External1 := dict_Camera.General.V_Camera_InternalTrigger0_External1.Value</l>
+<c></c>
+<c></c>
+<c></c>
+<c></c>
+<l>*         ExposureTime := dict_Camera.Cameras.['Camera_' + CameraNumberUsed].V_Exposuretime.Value</l>
+<c>        * !!! todo Gain funktoniert bei Optronis anders. Rauswerfen oder anpassen</c>
+<l>*         Gain := dict_Camera.Cameras.['Camera_' + CameraNumberUsed].V_Gain.Value</l>
+<l>*         FPS := dict_Camera.Cameras.['Camera_' + CameraNumberUsed].V_FPS.Value</l>
+<l>*         ImageGrabResolution_Width := dict_Camera.Cameras.['Camera_' + CameraNumberUsed].V_ImageGrabResolution_Width.Value</l>
+<l>*         ImageGrabResolution_Height := dict_Camera.Cameras.['Camera_' + CameraNumberUsed].V_ImageGrabResolution_Height.Value</l>
+<l>*         ImageGrabOffset_X := dict_Camera.Cameras.['Camera_' + CameraNumberUsed].V_ImageGrabOffset_X.Value</l>
+<l>*         ImageGrabOffset_Y := dict_Camera.Cameras.['Camera_' + CameraNumberUsed].V_ImageGrabOffset_Y.Value</l>
+<l>*         GammaEnable := dict_Camera.Cameras.['Camera_' + CameraNumberUsed].V_GammaEnable.Value</l>
+<c></c>
+<c></c>
+<l>* if (gStopAtCameraStart)</l>
+<l>*     gStopAtCameraStart := 0</l>
+<l>*     stop()</l>
+<l>* endif</l>
+<c></c>
+<c></c>
+<l>* if (WorkOnCameraEnable &gt;= 1)  </l>
+<l>*     Camera_FPGA_TopLight_MicroSec := dict_Camera.FPGA.V_Camera_FPGA_TopLight_MicroSec.Value</l>
+<l>*     Camera_FPGA_TopLight_SupportBackLight_MicroSec := dict_Camera.FPGA.V_Camera_FPGA_TopLight_SupportBackLight_MicroSec.Value</l>
+<l>*     Camera_FPGA_BackLight_MicroSec := dict_Camera.FPGA.V_Camera_FPGA_BackLight_MicroSec.Value</l>
+<l>*     Camera_FPGA_UVLight_Gain := dict_Camera.FPGA.V_Camera_FPGA_UVLight_Gain.Value</l>
+<c></c>
+<c>    * Signal length Eject </c>
+<l>*     Camera_FPGA_EjectPulseLength_SampleEject_MicroSec := dict_Camera.FPGA.V_Camera_FPGA_EjectPulseLength_SampleEject_MicroSec.Value</l>
+<l>*     Camera_FPGA_EjectPulseLength_MicroSec := dict_Camera.FPGA.V_Camera_FPGA_EjectPulseLength_MicroSec.Value</l>
+<l>*     Camera_FPGA_EjectPulseLength_Offset_MicroSec_Lane0 := dict_Camera.FPGA.V_Camera_FPGA_EjectPulseLength_Offset_MicroSec_Lane0.Value</l>
+<l>*     Camera_FPGA_EjectPulseLength_Offset_MicroSec_Lane1 := dict_Camera.FPGA.V_Camera_FPGA_EjectPulseLength_Offset_MicroSec_Lane1.Value</l>
+<l>*     Camera_FPGA_EjectPulseLength_Offset_MicroSec_Lane2 := dict_Camera.FPGA.V_Camera_FPGA_EjectPulseLength_Offset_MicroSec_Lane2.Value</l>
+<l>*     Camera_FPGA_EjectPulseLength_Offset_MicroSec_Lane3 := dict_Camera.FPGA.V_Camera_FPGA_EjectPulseLength_Offset_MicroSec_Lane3.Value</l>
+<l>*     Camera_FPGA_EjectPulseLength_Offset_MicroSec_Lane4 := dict_Camera.FPGA.V_Camera_FPGA_EjectPulseLength_Offset_MicroSec_Lane4.Value</l>
+<c></c>
+<c>    * todo: an neuen Framegrabber imaFlex CXP-12 Quad anpassen</c>
+<c>    * check for framegrabber parameter and set applet</c>
+<c>    * todo: weiter</c>
+<l>*     info_framegrabber ('GenICamTL', 'info_boards', Information, ValueList)</l>
+<l>*     Device := ValueList[0]</l>
+<c>    * ' | device:1210-25-178-PillInspect_V33_53_imaFlex_250926_1Cam-0 | unique_name:1210-25-178-PillInspect_V33_53_imaFlex_250926_1Cam-0 | interface:iF-CXP12-Q SN_a6280335 | producer:C:\\FramegrabberSDK\\bin\\ProducerCXP.cti | vendor:Optronis GmbH | model:CyclonePlus-25-C | tl_type:CXP | status:available'</c>
+<l>*      Device := ' | device:1210-25-178-PillInspect_V33_53_imaFlex_250926_1Cam-0 | unique_name:1210-25-178-PillInspect_V33_53_imaFlex_250926_1Cam-0 | interface:iF-CXP12-Q SN_a6280335 | producer:C:\\FramegrabberSDK\\bin\\ProducerCXP.cti | vendor:Optronis GmbH | model:CyclonePlus-25-C | tl_type:CXP | status:available'</l>
+<l>*     Device := ' | device:1210-25-178-PillInspect_V33_53_imaFlex_021026_1Cam-0 | unique_name:1210-25-178-PillInspect_V33_53_imaFlex_021026_1Cam-0 | interface:iF-CXP12-Q SN_a6280335 | producer:C:\\FramegrabberSDK\\bin\\ProducerCXP.cti | vendor:Optronis GmbH | model:CyclonePlus-25-C | tl_type:CXP | status:available'    </l>
+<l>*     Device := ' | device:1210-25-178-PillInspect_V33_53_imaFlex_091026_1Cam_Test2-0 | unique_name:1210-25-178-PillInspect_V33_53_imaFlex_091026_1Cam_Test2-0 | interface:iF-CXP12-Q SN_a6280335 | producer:C:\\FramegrabberSDK\\bin\\ProducerCXP.cti | vendor:Optronis GmbH | model:CyclonePlus-25-C | tl_type:CXP | status:available'</l>
+<l>*     GrabBuffer_SizeInFrames := 50 </l>
+<l>*     stop()        </l>
+<c></c>
+<l>*     gFramegrabber_OpenAndInit_FileSynchronisation_CameraNumberUsed (DebugWorkOnFirstCameraOnly, PathToCheckForLocalCameraUsed, CameraNumberUsed)</l>
+<c>    ******************************</c>
+<l>*     write_tuple (CameraNumberUsed, '../temp/CamUsed' + CameraNumberUsed + '.tpl')</l>
+<c>    </c>
+<c>    *Christian: check ob MSA aktiv</c>
+<l>*     if (dict_Calibration.V_FeatureActive.Value)</l>
+<l>*         if (dict_Calibration.V_TeachIn_Active.Value or dict_Calibration.V_CalibrationObject_MeasureSystemAnalyses_Active.Value)</l>
+<l>*             teachinactive := 1</l>
+<c>*             Überschreiben der CameraNumberUsed, da nicht die eingestellte Kamera verwendet wird</c>
+<l>*             CameraNumberUsed := CameraNumberToOpen</l>
+<l>*         else </l>
+<l>*             teachinactive := 0</l>
+<l>*         endif</l>
+<l>*     else</l>
+<l>*         teachinactive := 0</l>
+<l>*     endif</l>
+<c>    ***</c>
+<c>    </c>
+<c>    * delete initialized flag if available</c>
+<l>*     file_exists (PathToCheckForLocalCameraUsed + 'CamInitialised_' + CameraNumberUsed + '.txt', FileExists)</l>
+<l>*     if (FileExists = 1)</l>
+<l>*         delete_file (PathToCheckForLocalCameraUsed + 'CamInitialised_' + CameraNumberUsed + '.txt')</l>
+<l>*     endif</l>
+<c>    </c>
+<c>    ***</c>
+<c>    </c>
+<c>    </c>
+<c>    </c>
+<c>    *Christian: Wenn TeachIn dann wird jede Kamera so behandelt wie sonst nur Master</c>
+<l>*     if (teachinactive)</l>
+<l>*         stop()</l>
+<l>*         GenericParameters := [BufferString,SlaveString]</l>
+<l>*         dev_set_check ('~give_error')</l>
+<l>*         open_framegrabber ('SiliconSoftware', 1, 1, 0, 0, 0, 0, 'default', -1, 'default', GenericParameters, 'false', MyCamType, Device, Port, -1, AcqHandle)</l>
+<l>*         dev_set_check ('give_error') </l>
+<c>        * Get the number of allowed field parameters</c>
+<l>*         get_framegrabber_param (AcqHandle, 'available_param_names', NumFieldParameterPow) // all available parameters listed</l>
+<l>*         if(DebugWorkOnFirstCameraOnly # 1) // assuming there are 3 cameras per board</l>
+<c>            **** init precondition for camera 1 and 4 (start count an 0)</c>
+<l>*             gFramegrabber_SiSo_SetupDevice (CameraNumberUsed +1 , 0, 3, Device, Port, SlaveString)        </l>
+<l>*             GenericParameters := [BufferString,SlaveString]</l>
+<l>*             dev_set_check ('~give_error')</l>
+<l>*             open_framegrabber ('SiliconSoftware', 1, 1, 0, 0, 0, 0, 'default', -1, 'default', GenericParameters, 'false', MyCamType, Device, Port, -1, AcqHandle1)</l>
+<l>*             dev_set_check ('give_error') </l>
+<c>            **** init precondition for camera 2 and 5 (start count an 0)</c>
+<l>*             gFramegrabber_SiSo_SetupDevice (CameraNumberUsed +2, 0, 3, Device, Port, SlaveString)</l>
+<l>*             GenericParameters := [BufferString,SlaveString]</l>
+<l>*             dev_set_check ('~give_error')</l>
+<l>*             open_framegrabber ('SiliconSoftware', 1, 1, 0, 0, 0, 0, 'default', -1, 'default', GenericParameters, 'false', MyCamType, Device, Port, -1, AcqHandle2)</l>
+<l>*             dev_set_check ('give_error')</l>
+<c>            **************************************</c>
+<l>*         endif</l>
+<c>        * set signal that cam master is initialised</c>
+<l>*         open_file (PathToCheckForLocalCameraUsed + 'CamInitialised_' + CameraNumberUsed + '.txt', 'output', FileHandle)</l>
+<l>*         close_file (FileHandle)</l>
+<c>    </c>
+<l>*     else</l>
+<l>*     BufferString := ('num_buffers=' + GrabBuffer_SizeInFrames)</l>
+<l>*     GenericParameters := BufferString</l>
+<l>*     dev_set_check ('~give_error')</l>
+<l>*     open_framegrabber ('GenICamTL', 1, 1, 0, 0, 0, 0, 'default', -1, 'default', GenericParameters, 'false', 'default', Device, -1, -1, AcqHandle)</l>
+<l>*     dev_set_check ('give_error') </l>
+<c>        </c>
+<l>*     if (AcqHandle = [])</l>
+<l>*         CameraCorrectlyInitialised := 0</l>
+<l>*         return()</l>
+<l>*     endif</l>
+<c></c>
+<l>*     set_framegrabber_param (AcqHandle, '[Interface]UserSetFile', 'C:/Users/Meliscout/Desktop/Einstellungen_FPGA/PillInspect_1Cam_Test2.mcf')</l>
+<l>*     set_framegrabber_param (AcqHandle, '[Interface]UserSetLoad', 1)</l>
+<c>    </c>
+<c>    * set auto roi control to false. Otherwise full camera width and height will be used.</c>
+<l>*     set_framegrabber_param(AcqHandle, '[Device]AutomaticROIControl', 0)</l>
+<l>*     set_framegrabber_param (AcqHandle, 'Height', 3000)   // todo Werte aus Format lesen</l>
+<l>*     set_framegrabber_param (AcqHandle, 'OffsetY', 1300)</l>
+<l>*     set_framegrabber_param (AcqHandle, 'Width', 4416)</l>
+<l>*     set_framegrabber_param (AcqHandle, 'OffsetX', 128)</l>
+<c>        </c>
+<l>* close_framegrabber (AcqHandle)</l>
+<c>    * set signal that cam master is initialised</c>
+<l>*     open_file (PathToCheckForLocalCameraUsed + 'CamInitialised_' + CameraNumberUsed + '.txt', 'output', FileHandle)</l>
+<l>*     close_file (FileHandle)</l>
+<l>*     endif</l>
+<c>    </c>
+<c>    ***</c>
+<c>    </c>
+<c>    </c>
+<c></c>
+<c></c>
+<l>*     close_framegrabber (AcqHandle)</l>
+<c>    * set up light timing - bottom light        Device1Process1ParametersExposuretimelight0</c>
+<l>*     set_framegrabber_param (AcqHandle, '[Device]Device1Process1ParametersExposuretimelight0', Camera_FPGA_BackLight_MicroSec)</l>
+<c>    * set up light timing - top light</c>
+<l>*     set_framegrabber_param (AcqHandle, '[Device]Device1Process1ParametersExposureTimeLight1', Camera_FPGA_TopLight_MicroSec) // Top light set value of first camera to all cameras            </l>
+<l>*     set_framegrabber_param (AcqHandle, '[Device]Device1Process1ParametersSupportBacklight', 1) // switch on support back light for top light</l>
+<l>*     set_framegrabber_param (AcqHandle, '[Device]Device1Process1ParametersSupportBacklightTime', Camera_FPGA_TopLight_SupportBackLight_MicroSec) // set length for backlight duration as support light in toplight illumination</l>
+<l>*     get_framegrabber_param (AcqHandle, '[Device]Device1Process0ParametersColoroutput', Value)</l>
+<c></c>
+<c>    * set image output to rgb if needed</c>
+<l>*     RGB_Output := 0</l>
+<l>*     if(RGB_Output = 0) // this is hsl output</l>
+<l>*         set_framegrabber_param (AcqHandle, '[Device]Device1Process0ParametersColoroutput', 'Hsv') // external vcamera to hsl output     </l>
+<l>*     else</l>
+<l>*         set_framegrabber_param (AcqHandle, '[Device]Device1Process0ParametersColoroutput', 'Rgb') // external vcamera to rgb output</l>
+<c></c>
+<l>*     endif</l>
+<c>    </c>
+<c>    * Set eject pulse length</c>
+<l>*     set_framegrabber_param (AcqHandle, '[Device]Device1Process1ParametersJetcontrolJetpulsewidth', Camera_FPGA_EjectPulseLength_MicroSec) // pulse width for ejection signal</l>
+<c>    </c>
+<l>*     FPGA_Tick_InSec :=0.0032</l>
+<c>    </c>
+<c>    * Set sample eject length        </c>
+<l>*     Camera_FPGA_EjectPulseLength_SampleEject_FPGATicks := Camera_FPGA_EjectPulseLength_SampleEject_MicroSec / FPGA_Tick_InSec * 1000000000</l>
+<l>*     tuple_int (Camera_FPGA_EjectPulseLength_SampleEject_FPGATicks, Camera_FPGA_EjectPulseLength_SampleEject_FPGATicks)</l>
+<l>*     set_framegrabber_param (AcqHandle, '[Device]Device1Process1ImplementationSensorgateWidth6Width', Camera_FPGA_EjectPulseLength_SampleEject_FPGATicks)    </l>
+<c>    </c>
+<l>*     Camera_FPGA_EjectPulseLength_FPGATicksc := Camera_FPGA_EjectPulseLength_MicroSec / FPGA_Tick_InSec</l>
+<c>    </c>
+<c>    * setup FPGA Eject Lane specific IO values for board 0</c>
+<l>*     tuple_int ((Camera_FPGA_EjectPulseLength_Offset_MicroSec_Lane0 / FPGA_Tick_InSec) + Camera_FPGA_EjectPulseLength_FPGATicksc, FPGATicks_Temp)</l>
+<l>*     set_framegrabber_param (AcqHandle, '[Device]Device1Process1ImplementationSensorgateWidth0Width', FPGATicks_Temp)   </l>
+<l>*     tuple_int ((Camera_FPGA_EjectPulseLength_Offset_MicroSec_Lane1 / FPGA_Tick_InSec) + Camera_FPGA_EjectPulseLength_FPGATicksc, FPGATicks_Temp)</l>
+<l>*     set_framegrabber_param (AcqHandle, '[Device]Device1Process1ImplementationSensorgateWidth1Width', FPGATicks_Temp)</l>
+<l>*     tuple_int ((Camera_FPGA_EjectPulseLength_Offset_MicroSec_Lane2 / FPGA_Tick_InSec) + Camera_FPGA_EjectPulseLength_FPGATicksc, FPGATicks_Temp)</l>
+<l>*     set_framegrabber_param (AcqHandle, '[Device]Device1Process1ImplementationSensorgateWidth2Width', FPGATicks_Temp)</l>
+<l>*     tuple_int ((Camera_FPGA_EjectPulseLength_Offset_MicroSec_Lane3 / FPGA_Tick_InSec) + Camera_FPGA_EjectPulseLength_FPGATicksc, FPGATicks_Temp)</l>
+<l>*     set_framegrabber_param (AcqHandle, '[Device]Device1Process1ImplementationSensorgateWidth3Width', FPGATicks_Temp)</l>
+<l>*     tuple_int ((Camera_FPGA_EjectPulseLength_Offset_MicroSec_Lane4 / FPGA_Tick_InSec) + Camera_FPGA_EjectPulseLength_FPGATicksc, FPGATicks_Temp)</l>
+<l>*     set_framegrabber_param (AcqHandle, '[Device]Device1Process1ImplementationSensorgateWidth4Width', FPGATicks_Temp)</l>
+<c></c>
+<c>    </c>
+<c>    * activate trigger processing 0 is off, 1 is on</c>
+<l>*     set_framegrabber_param (AcqHandle, '[Device]Device1Process1ParametersEnabletriggerprocessing', 0)    </l>
+<c>   </c>
+<c>    </c>
+<c>    * next lines were used to switch in between internal and extrnal triggering. for some reason it did not work as supposed- image channels were mixed up </c>
+<l>*     if(InternalTrigger0_External1 = 0) // use internal frequency or external trigger to trigger cams - trgger mode is activated in grab just before grab procedure loop</l>
+<l>*         set_framegrabber_param (AcqHandle, '[Device]Device1Process1ParametersImagetriggermode', 2) // internal via frequency generator</l>
+<l>*     else // external triggering via IO</l>
+<c>        * impotant to leave light switched off- otherwise parallel processes will grab e.g. slave processes</c>
+<l>*         set_framegrabber_param (AcqHandle, '[Device]Device1Process1ParametersImagetriggermode', 0) // external via IO</l>
+<c>        * activate trigger processing 0 is off, 1 is on - is activated just before grabbing loop</c>
+<l>*         set_framegrabber_param (AcqHandle, '[Device]Device1Process1ParametersEnabletriggerprocessing', 1)</l>
+<l>*     endif  </l>
+<c></c>
+<l>*     CameraCorrectlyInitialised := 1</l>
+<l>* else</l>
+<l>*     CameraCorrectlyInitialised := 1</l>
+<l>* endif</l>
+<c>            </c>
+<l>* return()</l>
+<c>            </c>
+<c>*********************************************************************************************************************</c>
+<c>*********************************************************************************************************************</c>
+<c>*********************************************************************************************************************           </c>
+<c>            * test grab</c>
+<l>*             grab_image_start (AcqHandle, -1)</l>
+<l>*             while(1)</l>
+<l>*                 dev_set_check ('~give_error')</l>
+<l>*                 grab_image_async (ImageOrig, AcqHandle, -1)</l>
+<l>*                 dev_set_check ('give_error')</l>
+<l>*                 get_image_size (ImageOrig, Width1, Height1)</l>
+<l>*                 if(Width1 # [])</l>
+<l>*                     count_channels (ImageOrig, ImageOrig_Channels)</l>
+<l>*                     if(ImageOrig_Channels = 1)</l>
+<c>                        * convert interleaved image to a 3 channel image</c>
+<l>*                         get_image_pointer1 (ImageOrig, Pointer, TypeRGB, Width, Height)</l>
+<l>*                         get_image_size (ImageOrig, Width1, Height1)</l>
+<l>*                         gen_image_interleaved (ImageOrig, Pointer, 'bgr', Width / 3, Height, -1, 'byte', 0, 0, 0, 0, -1, 0)</l>
+<l>*                         dev_display (ImageOrig)</l>
+<l>*                         stop()</l>
+<l>*                     endif                    </l>
+<l>*                     decompose3 (ImageOrig, Image1, Image2, Image3)</l>
+<l>*                     trans_to_rgb (Image1, Image3, Image2, ImageRed, ImageGreen, ImageBlue, 'hls')        </l>
+<l>*                     compose3 (ImageRed, ImageGreen, ImageBlue, MultiChannelImage)</l>
+<l>*                     dev_display (MultiChannelImage)</l>
+<l>*                     stop()</l>
+<l>*                 endif</l>
+<c>                </c>
+<l>*             endwhile</l>
+<c>        *********************************************************************************************************************</c>
+<c>        *********************************************************************************************************************</c>
+<c>        *********************************************************************************************************************</c>
+<c></c>
+</body>
+<docu id="SensorInit">
+<parameters/>
+</docu>
+</procedure>
+</hdevelop>

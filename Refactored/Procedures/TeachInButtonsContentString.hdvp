@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="25.11.0.0">
+<procedure name="TeachInButtonsContentString">
+<interface>
+<io>
+<par name="Image" base_type="iconic" dimension="0"/>
+<par name="RectangleToWriteInMiddle" base_type="iconic" dimension="0"/>
+</io>
+<ic>
+<par name="StringToWrite" base_type="ctrl" dimension="0"/>
+</ic>
+</interface>
+<body>
+<c>* TeachInButtonsContentString</c>
+<c>* -------------------------------------------------</c>
+<c>* Write string in middle of given region</c>
+<c></c>
+<l>global tuple App</l>
+<c></c>
+<l>WindowHandle := App.Visualization.Windows.[App.Status.Camera.ID]</l>
+<c></c>
+<l>get_window_extents (WindowHandle, _, _, WindowWidth, WindowHeight)</l>
+<l>get_image_size (Image, ImageWidth, ImageHeight)</l>
+<c></c>
+<l>ScaleHorizontal := (WindowWidth * 1.0) / ImageWidth</l>
+<l>ScaleVertical   := (WindowHeight * 1.0) / ImageHeight</l>
+<c></c>
+<l>area_center (RectangleToWriteInMiddle, _, Row1, Col1)</l>
+<l>get_string_extents (WindowHandle, StringToWrite, Ascent, Descent, StringWidth, StringHeight)</l>
+<c></c>
+<l>disp_text (WindowHandle, StringToWrite, 'window', (Row1 * ScaleVertical) - (StringHeight/2), (Col1 * ScaleHorizontal) - (StringWidth/2), 'blue', ['box_color','box_padding'], ['#ffffff77',5])</l>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="TeachInButtonsContentString">
+<parameters>
+<parameter id="Image"/>
+<parameter id="RectangleToWriteInMiddle"/>
+<parameter id="StringToWrite"/>
+</parameters>
+</docu>
+</procedure>
+</hdevelop>

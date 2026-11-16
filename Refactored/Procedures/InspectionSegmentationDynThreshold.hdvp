@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="25.11.0.0">
+<procedure name="InspectionSegmentationDynThreshold">
+<interface>
+<ic>
+<par name="ProcessingThreadID" base_type="ctrl" dimension="0"/>
+</ic>
+<oc>
+<par name="TimeNeeded" base_type="ctrl" dimension="0"/>
+</oc>
+</interface>
+<body>
+<c>* InspectionSegmentationDynThreshold</c>
+<c>* ------------------------------------------------------------------------------------------</c>
+<c>* This procedure receives positions of spaces between the rolls (assembly line)</c>
+<c>* For every position, a line is placed to search for edges ([0, 1] or [1, 0] transitions)</c>
+<c>* The edge positions are used to create rectangles around capsules</c>
+<c>* Possible errors:</c>
+<c>*    - Caps are connected due to dark roll borders -&gt; bigger capsules which are detected as 1; solution: erosion_rectangle1(Reg, Reg, 1, HorizHeight) where HorizHeight is large (10+)</c>
+<c>*    - No caps found - erosion too strong</c>
+<c></c>
+<l>global tuple App</l>
+<c></c>
+<l>count_seconds(TimeStart)</l>
+<c></c>
+<c>* Get variables from dictionary</c>
+<l>Image            := App.Inspection.Threads.[ProcessingThreadID].Images.TopLight.HSV.Value</l>
+<l>TabletsROIsUnion := App.Inspection.Threads.[ProcessingThreadID].Regions.Tablets.ROIsUnion</l>
+<l>AreaMin          := App.Format.TabletInspection.Segmentation.V_Segmentation_SmallestSingleObjectFilter_Area_Min.Value</l>
+<c></c>
+<c>* Parameters for image processing</c>
+<l>DynThreshold := 8      // threshold for dynamic threshold</l>
+<l>MeanSize := 32         // size for mean image</l>
+<l>DilationSize := 15     // size for dilation rectangle (square)</l>
+<c></c>
+<l>ErosionSize := 1        // size for dilation rectangle (square)</l>
+<l>HorizHeight := 60       // height to remove horizontal connections and restore shape(erosion + dilation)</l>
+<l>HeightSelect1 := 20     // smaller height for shape select</l>
+<l>HeightSelect2 := 70     // larger height for shape select (also used for width)</l>
+<c></c>
+<c>******************************************</c>
+<c>* Image Processing</c>
+<c>******************************************</c>
+<c>* Bin for dark areas because of incident light</c>
+<l>reduce_domain (Image, TabletsROIsUnion, ImageReduced)</l>
+<l>mean_image (ImageReduced, ImageMean, MeanSize, MeanSize)</l>
+<c></c>
+<l>dyn_threshold (ImageReduced, ImageMean, Reg, DynThreshold, 'dark')</l>
+<l>union1 (Reg, Reg)</l>
+<l>connection (Reg, Reg)</l>
+<l>select_shape (Reg, Reg, ['height'], 'and', [HeightSelect1], [1e6]) // remove small particles</l>
+<c></c>
+<c>* Close capsules to avoid getting removed while eroding with line later</c>
+<l>dilation_rectangle1(Reg, Reg, DilationSize ,DilationSize)</l>
+<c></c>
+<c>* Remove small areas</c>
+<l>fill_up(Reg, Reg) // fill caps to make sure not to break rois with erosion</l>
+<l>select_shape (Reg, Reg, ['area', 'height'], 'and', [AreaMin, HeightSelect2], [1e6, 1e6])</l>
+<c></c>
+<c>* Remove horizontal connections</c>
+<l>erosion_rectangle1(Reg, Reg, 1, HorizHeight) // remove connections with roll gaps</l>
+<l>union1 (Reg, Reg)</l>
+<l>connection (Reg, Reg)</l>
+<l>select_shape (Reg, Reg, ['height'], 'and', [HeightSelect1], [1e6]) // remove gap parts</l>
+<l>dilation_rectangle1(Reg, Reg, 1, HorizHeight) // restore size by erosion with line</l>
+<l>dilation_rectangle1(Reg, Reg, 10, 1) // restore size by erosion with line</l>
+<c></c>
+<c>* Union connected regions</c>
+<l>union1 (Reg, Reg)</l>
+<l>connection (Reg, Reg)</l>
+<c></c>
+<c>* Convex fill</c>
+<l>shape_trans (Reg, Reg, 'convex') // fill up</l>
+<l>erosion_rectangle1(Reg, Reg, DilationSize,DilationSize) // restore size which has been blown up by dilation</l>
+<c></c>
+<c>* Union connected regions</c>
+<l>union1 (Reg, Reg)</l>
+<l>connection (Reg, Reg)</l>
+<l>select_shape (Reg, Reg, ['area', 'height', 'width'], 'and', [AreaMin, HeightSelect2, HeightSelect2], [1e6, 1e6, 1e6]) // last clean up</l>
+<c></c>
+<c></c>
+<c>* Set variables to dictionary</c>
+<l>App.Inspection.Threads.[ProcessingThreadID].Regions.Tablets.Segmented := Reg</l>
+<c></c>
+<l>count_seconds (TimeEnd)</l>
+<l>TimeNeeded := (TimeEnd - TimeStart) * 1000.0</l>
+<c></c>
+<c></c>
+<l>return ()</l>
+<c></c>
+</body>
+<docu id="InspectionSegmentationDynThreshold">
+<parameters>
+<parameter id="ProcessingThreadID"/>
+<parameter id="TimeNeeded"/>
+</parameters>
+</docu>
+</procedure>
+</hdevelop>

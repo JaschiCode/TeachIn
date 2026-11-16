@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="25.11.0.0">
+<procedure name="NumberOfDetectionsLeadToEjectAdd">
+<interface>
+<ic>
+<par name="Feature" base_type="ctrl" dimension="0"/>
+<par name="NumberOfDetectionsLeadToEject_PerLinePerFeature" base_type="ctrl" dimension="0"/>
+<par name="CriticalDefectActive_PerLinePerFeature" base_type="ctrl" dimension="0"/>
+</ic>
+<oc>
+<par name="NumberOfDetectionsLeadToEject_PerLinePerFeatureOut" base_type="ctrl" dimension="0"/>
+<par name="CriticalDefectActive_PerLinePerFeatureOut" base_type="ctrl" dimension="0"/>
+</oc>
+</interface>
+<body>
+<c>* NumberOfDetectionsLeadToEjectAdd</c>
+<c>* --------------------------------------------------------------------------</c>
+<c>* Check if the given feature is active. </c>
+<c>* If yes, add the number of detections that lead to eject</c>
+<c></c>
+<l>global tuple App</l>
+<c></c>
+<c>* Initialize output variables</c>
+<l>NumberOfDetectionsLeadToEject_PerLinePerFeatureOut := NumberOfDetectionsLeadToEject_PerLinePerFeature</l>
+<l>CriticalDefectActive_PerLinePerFeatureOut          := CriticalDefectActive_PerLinePerFeature</l>
+<c></c>
+<l>if(Feature.V_FeatureActive.Value)</l>
+<l>    NumberOfDetectionsLeadToEject_PerLinePerFeatureOut := [NumberOfDetectionsLeadToEject_PerLinePerFeatureOut, Feature.V_NumberOfDetectionsLeadToEject.Value]</l>
+<l>    CriticalDefectActive_PerLinePerFeatureOut := [CriticalDefectActive_PerLinePerFeatureOut, Feature.V_CriticalDefectActive.Value]</l>
+<l>endif</l>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="NumberOfDetectionsLeadToEjectAdd">
+<parameters>
+<parameter id="CriticalDefectActive_PerLinePerFeature"/>
+<parameter id="CriticalDefectActive_PerLinePerFeatureOut"/>
+<parameter id="Feature"/>
+<parameter id="NumberOfDetectionsLeadToEject_PerLinePerFeature"/>
+<parameter id="NumberOfDetectionsLeadToEject_PerLinePerFeatureOut"/>
+</parameters>
+</docu>
+</procedure>
+</hdevelop>

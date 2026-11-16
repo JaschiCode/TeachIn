@@ -1,0 +1,681 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="25.11.0.0">
+<procedure name="Plot_Graph_Buffer">
+<interface>
+<ic>
+<par name="WindowHandle" base_type="ctrl" dimension="0"/>
+<par name="XValues" base_type="ctrl" dimension="0"/>
+<par name="YValues" base_type="ctrl" dimension="0"/>
+<par name="XLabel" base_type="ctrl" dimension="0"/>
+<par name="YLabel" base_type="ctrl" dimension="0"/>
+<par name="Color" base_type="ctrl" dimension="0"/>
+<par name="GenParamName" base_type="ctrl" dimension="0"/>
+<par name="GenParamValue" base_type="ctrl" dimension="0"/>
+</ic>
+</interface>
+<body>
+<c>* This procedure plots tuples representing functions</c>
+<c>* or curves in a coordinate system.</c>
+<c></c>
+<c>* Input parameters:</c>
+<c></c>
+<c>* XValues: X values of the function to be plotted</c>
+<c>*          If XValues is set to [], it is internally set to 0,1,2,...,|YValues|-1.</c>
+<c>*          If XValues is a tuple of strings, the values are taken as categories.</c>
+<c></c>
+<c>* YValues: Y values of the function(s) to be plotted</c>
+<c>*          If YValues is set to [], it is internally set to 0,1,2,...,|XValues|-1.</c>
+<c>*          The number of y values must be equal to the number of x values</c>
+<c>*          or an integral multiple. In the latter case,</c>
+<c>*          multiple functions are plotted, that share the same x values.</c>
+<c></c>
+<c>* XLabel: X-axis label</c>
+<c></c>
+<c>* XLabel: Y-axis label</c>
+<c></c>
+<c>* Color: Color of the plotted function</c>
+<c>*        If [] is given, the currently set display color is used.</c>
+<c>*        If 'none is given, the function is not plotted, but only</c>
+<c>*        the coordinate axes as specified.</c>
+<c>*        If more than one color is given, multiple functions</c>
+<c>*        can be displayed in different colors.</c>
+<c></c>
+<c>* GenParamName:  Generic parameters to control the presentation</c>
+<c>*                Possible Values:</c>
+<c>*    'axes_color': coordinate system color</c>
+<c>*                  Default: 'white'</c>
+<c>*                  If 'none' is given, no coordinate system is shown.</c>
+<c>*    'style': Graph style</c>
+<c>*             Possible values: 'line' (default), 'cross', 'step', 'filled'</c>
+<c>*    'clip': Clip graph to coordinate system Length</c>
+<c>*            Possible values: 'yes', 'no' (default)</c>
+<c>*    'ticks': Control display of ticks on the axes</c>
+<c>*             If 'min_max_origin' is given (default), ticks are shown</c>
+<c>*             at the minimum and maximum values of the axes and at the</c>
+<c>*             intercept point of x- and y-axis.</c>
+<c>*             If 'none' is given, no ticks are shown.</c>
+<c>*             If any number != 0 is given, it is interpreted as distance</c>
+<c>*             between the ticks.</c>
+<c>*    'ticks_x': Control display of ticks on x-axis only</c>
+<c>*    'ticks_y': Control display of ticks on y-axis only</c>
+<c>*    'format_x': Format of the values next to the ticks of the x-axis</c>
+<c>*                (see tuple_string for more details).</c>
+<c>*    'format_y': Format of the values next to the ticks of the y-axis</c>
+<c>*                (see tuple_string for more details).</c>
+<c>*    'grid': Control display of grid lines within the coordinate system</c>
+<c>*            If 'min_max_origin' is given (default), grid lines are shown</c>
+<c>*            at the minimum and maximum values of the axes.</c>
+<c>*            If 'none' is given, no grid lines are shown.</c>
+<c>*            If any number != 0 is given, it is interpreted as distance</c>
+<c>*            between the grid lines.</c>
+<c>*    'grid_x': Control display of grid lines for the x-axis only</c>
+<c>*    'grid_y': Control display of grid lines for the y-axis only</c>
+<c>*    'grid_color': Color of the grid (default: 'dim gray')</c>
+<c>*    'margin': The distance in pixels of the coordinate system Length</c>
+<c>*              to all four window borders.</c>
+<c>*    'margin_left': The distance in pixels of the coordinate system Length</c>
+<c>*                   to the left window border.</c>
+<c>*    'margin_right': The distance in pixels of the coordinate system Length</c>
+<c>*                    to the right window border.</c>
+<c>*    'margin_top': The distance in pixels of the coordinate system Length</c>
+<c>*                  to the upper window border.</c>
+<c>*    'margin_bottom': The distance in pixels of the coordinate system Length</c>
+<c>*                     to the lower window border.</c>
+<c>*    'start_x': Lowest x value of the x-axis</c>
+<c>*               Default: min(XValues)</c>
+<c>*    'end_x': Highest x value of the x-axis</c>
+<c>*             Default: max(XValues)</c>
+<c>*    'start_y': Lowest y value of the y-axis</c>
+<c>*               Default: min(YValues)</c>
+<c>*    'end_y': Highest y value of the y-axis</c>
+<c>*             Default: max(YValues)</c>
+<c>*    'axis_location_x': Either 'bottom', 'origin', or 'top'</c>
+<c>*                to position the x-axis conveniently,</c>
+<c>*                or the Y coordinate of the intercept point of x- and y-axis.</c>
+<c>*                Default: 'bottom'</c>
+<c>*                (Used to be called 'origin_y')</c>
+<c>*    'axis_location_y': Either 'left', 'origin', or 'right'</c>
+<c>*                to position the y-axis conveniently,</c>
+<c>*                or the X coordinate of the intercept point of x- and y-axis.</c>
+<c>*                Default: 'left'</c>
+<c>*                (Used to be called 'origin_x')</c>
+<c></c>
+<c>* GenParamValue: Values of the generic parameters of GenericParamName</c>
+<c></c>
+<c></c>
+<c>* Store current display settings</c>
+<l>dev_get_window (PreviousWindowHandle)</l>
+<l>dev_set_window (WindowHandle)</l>
+<l>get_system ('clip_region', ClipRegion)</l>
+<l>get_window_extents (WindowHandle, Row, Column, Width, Height)</l>
+<l>get_part (WindowHandle, PartRow1, PartColumn1, PartRow2, PartColumn2)</l>
+<l>get_rgb (WindowHandle, Red, Green, Blue)</l>
+<l>get_draw (WindowHandle, DrawMode)</l>
+<l>get_line_style (WindowHandle, OriginStyle)</l>
+<c></c>
+<c>* Set display parameters</c>
+<l>set_line_style (WindowHandle, [])</l>
+<l>set_system ('clip_region', 'false')</l>
+<c>*-20 for space to left img border; +160 for space to Category overlay</c>
+<l>set_part (WindowHandle, 0, -20, Height - 1, Width +160)</l>
+<c></c>
+<c>* Check input coordinates</c>
+<c></c>
+<l>if (XValues == [] and YValues == [])</l>
+<c>    * Neither XValues nor YValues are given:</c>
+<c>    * Set axes to interval [0,1]</c>
+<l>    XAxisEndValue := 1</l>
+<l>    YAxisEndValue := 1</l>
+<l>    XAxisStartValue := 0</l>
+<l>    YAxisStartValue := 0</l>
+<l>    XValuesAreStrings := false</l>
+<l>else</l>
+<l>    if (XValues == [])</l>
+<c>        * XValues are omitted:</c>
+<c>        * Set equidistant XValues</c>
+<l>        XValues := [0:|YValues| - 1]</l>
+<l>        XValuesAreStrings := false</l>
+<l>    elseif (YValues == [])</l>
+<c>        * YValues are omitted:</c>
+<c>        * Set equidistant YValues</c>
+<l>        YValues := [0:|XValues| - 1]</l>
+<l>    endif</l>
+<l>    if (|YValues| % |XValues| != 0)</l>
+<c>        * Number of YValues does not match number of XValues</c>
+<l>        throw ('Number of YValues is no multiple of the number of XValues!')</l>
+<l>        return ()</l>
+<l>    endif</l>
+<l>    XValuesAreStrings := is_string_elem(XValues)</l>
+<l>    XValuesAreStrings := sum(XValuesAreStrings) == |XValuesAreStrings|</l>
+<l>    if (XValuesAreStrings)</l>
+<c>        * XValues are given as strings:</c>
+<c>        * Show XValues as ticks</c>
+<l>        XTickValues := XValues</l>
+<l>        XTicks := 1</l>
+<c>        * Set x-axis dimensions</c>
+<l>        XValues := [1:|XValues|]</l>
+<l>    endif</l>
+<c>    * Set default x-axis dimensions</c>
+<l>    if (|XValues| &gt; 1)</l>
+<l>        XAxisStartValue := min(XValues)</l>
+<l>        XAxisEndValue := max(XValues)</l>
+<l>    else</l>
+<l>        XAxisEndValue := XValues[0] + 0.5</l>
+<l>        XAxisStartValue := XValues[0] - 0.5</l>
+<l>    endif</l>
+<l>endif</l>
+<c>* Set default y-axis dimensions</c>
+<l>if (|YValues| &gt; 1)</l>
+<l>    YAxisStartValue := min(YValues)</l>
+<l>    YAxisEndValue := max(YValues)</l>
+<l>elseif (|YValues| == 1)</l>
+<l>    YAxisStartValue := YValues[0] - 0.5</l>
+<l>    YAxisEndValue := YValues[0] + 0.5</l>
+<l>else</l>
+<l>    YAxisStartValue := 0</l>
+<l>    YAxisEndValue := 1</l>
+<l>endif</l>
+<c>* Set default interception point of x- and y- axis</c>
+<l>YAxisPosition := 'default'</l>
+<l>XAxisPosition := 'default'</l>
+<c></c>
+<c>* Set more defaults</c>
+<l>LeftBorder := Width * 0.1</l>
+<l>RightBorder := Width * 0.1</l>
+<l>UpperBorder := Height * 0.1</l>
+<l>LowerBorder := Height * 0.1</l>
+<l>AxesColor := 'white'</l>
+<l>Style := 'line'</l>
+<l>Clip := 'no'</l>
+<l>XTicks := 'min_max_origin'</l>
+<l>YTicks := 'min_max_origin'</l>
+<l>XGrid := 'none'</l>
+<l>YGrid := 'none'</l>
+<l>GridColor := 'dim gray'</l>
+<l>YPosition := 'left'</l>
+<l>FormatX := 'default'</l>
+<l>FormatY := 'default'</l>
+<c></c>
+<c>* Parse generic parameters</c>
+<c></c>
+<l>NumGenParamNames := |GenParamName|</l>
+<l>NumGenParamValues := |GenParamValue|</l>
+<l>if (NumGenParamNames != NumGenParamValues)</l>
+<l>    throw ('Number of generic parameter names does not match generic parameter values!')</l>
+<l>    return ()</l>
+<l>endif</l>
+<c></c>
+<l>for GenParamIndex := 0 to |GenParamName| - 1 by 1</l>
+<c></c>
+<c>    * Set 'axes_color'</c>
+<l>    if (GenParamName[GenParamIndex] == 'axes_color')</l>
+<l>        AxesColor := GenParamValue[GenParamIndex]</l>
+<c></c>
+<c>        * Set 'style'</c>
+<l>    elseif (GenParamName[GenParamIndex] == 'style')</l>
+<l>        Style := GenParamValue[GenParamIndex]</l>
+<c></c>
+<c>        * Set 'clip'</c>
+<l>    elseif (GenParamName[GenParamIndex] == 'clip')</l>
+<l>        Clip := GenParamValue[GenParamIndex]</l>
+<l>        if (Clip != 'yes' and Clip != 'no')</l>
+<l>            throw ('Unsupported clipping option: \'' + Clip + '\'')</l>
+<l>        endif</l>
+<c></c>
+<c>        * Set 'ticks'</c>
+<l>    elseif (GenParamName[GenParamIndex] == 'ticks')</l>
+<l>        XTicks := GenParamValue[GenParamIndex]</l>
+<l>        YTicks := GenParamValue[GenParamIndex]</l>
+<c></c>
+<c>        * Set 'ticks_x'</c>
+<l>    elseif (GenParamName[GenParamIndex] == 'ticks_x')</l>
+<l>        XTicks := GenParamValue[GenParamIndex]</l>
+<c></c>
+<c>        * Set 'ticks_y'</c>
+<l>    elseif (GenParamName[GenParamIndex] == 'ticks_y')</l>
+<l>        YTicks := GenParamValue[GenParamIndex]</l>
+<c></c>
+<c>        * Set 'grid'</c>
+<l>    elseif (GenParamName[GenParamIndex] == 'grid')</l>
+<l>        XGrid := GenParamValue[GenParamIndex]</l>
+<l>        YGrid := GenParamValue[GenParamIndex]</l>
+<l>        XGridTicks := XTicks</l>
+<c></c>
+<c>        * Set 'grid_x'</c>
+<l>    elseif (GenParamName[GenParamIndex] == 'grid_x')</l>
+<l>        XGrid := GenParamValue[GenParamIndex]</l>
+<c></c>
+<c>        * Set 'grid_y'</c>
+<l>    elseif (GenParamName[GenParamIndex] == 'grid_y')</l>
+<l>        YGrid := GenParamValue[GenParamIndex]</l>
+<c></c>
+<c>        * Set 'grid_color'</c>
+<l>    elseif (GenParamName[GenParamIndex] == 'grid_color')</l>
+<l>        GridColor := GenParamValue[GenParamIndex]</l>
+<c></c>
+<c>        * Set 'start_x'</c>
+<l>    elseif (GenParamName[GenParamIndex] == 'start_x')</l>
+<l>        XAxisStartValue := GenParamValue[GenParamIndex]</l>
+<c></c>
+<c>        * Set 'end_x'</c>
+<l>    elseif (GenParamName[GenParamIndex] == 'end_x')</l>
+<l>        XAxisEndValue := GenParamValue[GenParamIndex]</l>
+<c></c>
+<c>        * Set 'start_y'</c>
+<l>    elseif (GenParamName[GenParamIndex] == 'start_y')</l>
+<l>        YAxisStartValue := GenParamValue[GenParamIndex]</l>
+<c></c>
+<c>        * Set 'end_y'</c>
+<l>    elseif (GenParamName[GenParamIndex] == 'end_y')</l>
+<l>        YAxisEndValue := GenParamValue[GenParamIndex]</l>
+<c></c>
+<c>        * Set 'axis_location_y' (old name 'origin_x')</c>
+<l>    elseif (GenParamName[GenParamIndex] == 'axis_location_y' or GenParamName[GenParamIndex] == 'origin_x')</l>
+<l>        YAxisPosition := GenParamValue[GenParamIndex]</l>
+<c></c>
+<c>        * Set 'axis_location_x' (old name: 'origin_y')</c>
+<l>    elseif (GenParamName[GenParamIndex] == 'axis_location_x' or GenParamName[GenParamIndex] == 'origin_y')</l>
+<l>        XAxisPosition := GenParamValue[GenParamIndex]</l>
+<c></c>
+<c>        * Set 'margin'</c>
+<l>    elseif (GenParamName[GenParamIndex] == 'margin')</l>
+<l>        LeftBorder := GenParamValue[GenParamIndex]</l>
+<l>        RightBorder := GenParamValue[GenParamIndex]</l>
+<l>        UpperBorder := GenParamValue[GenParamIndex]</l>
+<l>        LowerBorder := GenParamValue[GenParamIndex]</l>
+<c></c>
+<c>        * Set 'margin_left'</c>
+<l>    elseif (GenParamName[GenParamIndex] == 'margin_left')</l>
+<l>        LeftBorder := GenParamValue[GenParamIndex]</l>
+<c></c>
+<c>        * Set 'margin_right'</c>
+<l>    elseif (GenParamName[GenParamIndex] == 'margin_right')</l>
+<l>        RightBorder := GenParamValue[GenParamIndex]</l>
+<c></c>
+<c>        * Set 'margin_top'</c>
+<l>    elseif (GenParamName[GenParamIndex] == 'margin_top')</l>
+<l>        UpperBorder := GenParamValue[GenParamIndex]</l>
+<c></c>
+<c>        * Set 'margin_bottom'</c>
+<l>    elseif (GenParamName[GenParamIndex] == 'margin_bottom')</l>
+<l>        LowerBorder := GenParamValue[GenParamIndex]</l>
+<l>    elseif (GenParamName[GenParamIndex] == 'format_x')</l>
+<l>        FormatX := GenParamValue[GenParamIndex]</l>
+<l>    elseif (GenParamName[GenParamIndex] == 'format_y')</l>
+<l>        FormatY := GenParamValue[GenParamIndex]</l>
+<l>    else</l>
+<l>        throw ('Unknown generic parameter: \'' + GenParamName[GenParamIndex] + '\'')</l>
+<l>    endif</l>
+<l>endfor</l>
+<c></c>
+<c>* Check consistency of start and end values</c>
+<c>* of the axes.</c>
+<l>if (XAxisStartValue &gt; XAxisEndValue)</l>
+<l>    throw ('Value for \'start_x\' is greater than value for \'end_x\'')</l>
+<l>endif</l>
+<l>if (YAxisStartValue &gt; YAxisEndValue)</l>
+<l>    throw ('Value for \'start_y\' is greater than value for \'end_y\'')</l>
+<l>endif</l>
+<c></c>
+<c>* Set the position of the y-axis.</c>
+<l>if (YAxisPosition == 'default')</l>
+<l>    YAxisPosition := XAxisStartValue</l>
+<l>endif</l>
+<l>if (is_string(YAxisPosition) == 1)</l>
+<l>    if (YAxisPosition == 'left')</l>
+<l>        YAxisPosition := XAxisStartValue</l>
+<l>    elseif (YAxisPosition == 'right')</l>
+<l>        YAxisPosition := XAxisEndValue</l>
+<l>    elseif (YAxisPosition == 'origin')</l>
+<l>        YAxisPosition := 0</l>
+<l>    else</l>
+<l>        throw ('Unsupported axis_location_y: \'' + YAxisPosition + '\'')</l>
+<l>    endif</l>
+<l>endif</l>
+<c>* Set the position of the ticks on the y-axis</c>
+<c>* depending of the location of the y-axis.</c>
+<l>if (mean([XAxisStartValue,XAxisEndValue]) &gt; YAxisPosition)</l>
+<l>    YTickDirection := 'right'</l>
+<l>else</l>
+<l>    YTickDirection := 'left'</l>
+<l>endif</l>
+<c></c>
+<c>* Set the position of the x-axis.</c>
+<l>if (XAxisPosition == 'default')</l>
+<l>    XAxisPosition := YAxisStartValue</l>
+<l>endif</l>
+<l>if (is_string(XAxisPosition) == 1)</l>
+<l>    if (XAxisPosition == 'bottom')</l>
+<l>        XAxisPosition := YAxisStartValue</l>
+<l>    elseif (XAxisPosition == 'top')</l>
+<l>        XAxisPosition := YAxisEndValue</l>
+<l>    elseif (XAxisPosition == 'origin')</l>
+<l>        XAxisPosition := 0</l>
+<l>    else</l>
+<l>        throw ('Unsupported axis_location_x: \'' + XAxisPosition + '\'')</l>
+<l>    endif</l>
+<l>endif</l>
+<c>* Set the position of the ticks on the y-axis</c>
+<c>* depending of the location of the y-axis.</c>
+<l>if (mean([YAxisStartValue,YAxisEndValue]) &gt; XAxisPosition)</l>
+<l>    XTickDirection := 'up'</l>
+<l>else</l>
+<l>    XTickDirection := 'down'</l>
+<l>endif</l>
+<c></c>
+<c>* Calculate basic pixel coordinates and scale factors</c>
+<c></c>
+<l>XAxisWidthPx := Width - LeftBorder - RightBorder</l>
+<l>XAxisWidth := XAxisEndValue - XAxisStartValue</l>
+<l>if (XAxisWidth == 0)</l>
+<l>    XAxisStartValue := XAxisStartValue - 0.5</l>
+<l>    XAxisEndValue := XAxisEndValue + 0.5</l>
+<l>    XAxisWidth := 1</l>
+<l>endif</l>
+<l>XScaleFactor := XAxisWidthPx / real(XAxisWidth)</l>
+<l>YAxisHeightPx := Height - LowerBorder - UpperBorder</l>
+<l>YAxisHeight := YAxisEndValue - YAxisStartValue</l>
+<l>if (YAxisHeight == 0)</l>
+<l>    YAxisStartValue := YAxisStartValue - 0.5</l>
+<l>    YAxisEndValue := YAxisEndValue + 0.5</l>
+<l>    YAxisHeight := 1</l>
+<l>endif</l>
+<l>YScaleFactor := YAxisHeightPx / real(YAxisHeight)</l>
+<l>YAxisOffsetPx := (YAxisPosition - XAxisStartValue) * XScaleFactor</l>
+<l>XAxisOffsetPx := (XAxisPosition - YAxisStartValue) * YScaleFactor</l>
+<c></c>
+<c>* Display grid lines</c>
+<c></c>
+<l>if (GridColor != 'none')</l>
+<l>    DotStyle := [5,7]</l>
+<l>    set_line_style (WindowHandle, DotStyle)</l>
+<l>    set_color (WindowHandle, GridColor)</l>
+<c></c>
+<c>    * Display x grid lines</c>
+<l>    if (XGrid != 'none')</l>
+<l>        if (XGrid == 'min_max_origin')</l>
+<c>            * Calculate 'min_max_origin' grid line coordinates</c>
+<l>            if (YAxisPosition == XAxisStartValue)</l>
+<l>                XGridValues := [XAxisStartValue,XAxisEndValue]</l>
+<l>            else</l>
+<l>                XGridValues := [XAxisStartValue,YAxisPosition,XAxisEndValue]</l>
+<l>            endif</l>
+<l>        else</l>
+<c>            * Calculate equidistant grid line coordinates</c>
+<l>            XGridStart := ceil(XAxisStartValue / XGrid) * XGrid</l>
+<l>            XGridValues := [XGridStart:XGrid:XAxisEndValue]</l>
+<l>        endif</l>
+<l>        XCoord := (XGridValues - XAxisStartValue) * XScaleFactor</l>
+<c>        * Generate and display grid lines</c>
+<l>        for IndexGrid := 0 to |XGridValues| - 1 by 1</l>
+<l>            gen_contour_polygon_xld (ContourXGrid, [Height - LowerBorder,UpperBorder], [LeftBorder + XCoord[IndexGrid],LeftBorder + XCoord[IndexGrid]])</l>
+<l>            disp_obj (ContourXGrid, WindowHandle)</l>
+<l>        endfor</l>
+<l>    endif</l>
+<c></c>
+<c>    * Display y grid lines</c>
+<l>    if (YGrid != 'none')</l>
+<l>        if (YGrid == 'min_max_origin')</l>
+<c>            * Calculate 'min_max_origin' grid line coordinates</c>
+<l>            if (XAxisPosition == YAxisStartValue)</l>
+<l>                YGridValues := [YAxisStartValue,YAxisEndValue]</l>
+<l>            else</l>
+<l>                YGridValues := [YAxisStartValue,XAxisPosition,YAxisEndValue]</l>
+<l>            endif</l>
+<l>        else</l>
+<c>            * Calculate equidistant grid line coordinates</c>
+<l>            YGridStart := ceil(YAxisStartValue / YGrid) * YGrid</l>
+<l>            YGridValues := [YGridStart:YGrid:YAxisEndValue]</l>
+<l>        endif</l>
+<l>        YCoord := (YGridValues - YAxisStartValue) * YScaleFactor</l>
+<c>        * Generate and display grid lines</c>
+<l>        for IndexGrid := 0 to |YGridValues| - 1 by 1</l>
+<l>            gen_contour_polygon_xld (ContourYGrid, [Height - LowerBorder - YCoord[IndexGrid],Height - LowerBorder - YCoord[IndexGrid]], [LeftBorder,Width - RightBorder])</l>
+<l>            disp_obj (ContourYGrid, WindowHandle)</l>
+<l>        endfor</l>
+<l>    endif</l>
+<l>endif</l>
+<l>set_line_style (WindowHandle, [])</l>
+<c></c>
+<c></c>
+<c>* Display the coordinate system axes</c>
+<l>if (AxesColor != 'none')</l>
+<c>    * Display axes</c>
+<l>    set_color (WindowHandle, AxesColor)</l>
+<l>    gen_arrow_contour_xld (XArrow, Height - LowerBorder - XAxisOffsetPx, LeftBorder, Height - LowerBorder - XAxisOffsetPx, Width - RightBorder, 0, 0)</l>
+<l>    disp_obj (XArrow, WindowHandle)</l>
+<l>    gen_arrow_contour_xld (YArrow, Height - LowerBorder, LeftBorder + YAxisOffsetPx, UpperBorder, LeftBorder + YAxisOffsetPx, 0, 0)</l>
+<l>    disp_obj (YArrow, WindowHandle)</l>
+<c>    * Display labels</c>
+<l>    get_string_extents (WindowHandle, XLabel, Ascent, Descent, TextWidthXLabel, TextHeightXLabel)</l>
+<l>    get_string_extents (WindowHandle, YLabel, Ascent, Descent, TextWidthYLabel, TextHeightYLabel)</l>
+<l>    if (YTickDirection == 'right')</l>
+<l>        if (XTickDirection == 'up')</l>
+<l>            disp_text (WindowHandle, XLabel, 'image', Height - LowerBorder - TextHeightXLabel - 3, Width - RightBorder - TextWidthXLabel - 3, AxesColor, 'box', 'false')</l>
+<l>            disp_text (WindowHandle, ' ' + YLabel, 'image', UpperBorder, LeftBorder + 3 + YAxisOffsetPx, AxesColor, 'box', 'false')</l>
+<l>        else</l>
+<l>            disp_text (WindowHandle, XLabel, 'image', Height - LowerBorder + 3 - XAxisOffsetPx, Width - RightBorder - TextWidthXLabel - 3, AxesColor, 'box', 'false')</l>
+<l>            disp_text (WindowHandle, ' ' + YLabel, 'image', Height - LowerBorder - TextHeightXLabel - 3, LeftBorder + 3 + YAxisOffsetPx, AxesColor, 'box', 'false')</l>
+<l>        endif</l>
+<l>    else</l>
+<l>        if (XTickDirection == 'up')</l>
+<l>            disp_text (WindowHandle, XLabel, 'image', Height - LowerBorder - 2 * TextHeightXLabel + 3, LeftBorder - 3, AxesColor, 'box', 'false')</l>
+<l>            disp_text (WindowHandle, ' ' + YLabel, 'image', UpperBorder, Width - RightBorder - TextWidthYLabel - 13, AxesColor, 'box', 'false')</l>
+<l>        else</l>
+<l>            disp_text (WindowHandle, XLabel, 'image', Height - LowerBorder + 3 - XAxisOffsetPx, LeftBorder - 3, AxesColor, 'box', 'false')</l>
+<l>            disp_text (WindowHandle, ' ' + YLabel, 'image', Height - LowerBorder - TextHeightXLabel - 3, Width - RightBorder - 2 * TextWidthYLabel - 3, AxesColor, 'box', 'false')</l>
+<l>        endif</l>
+<l>    endif</l>
+<l>endif</l>
+<c></c>
+<c>* Display ticks</c>
+<c></c>
+<l>if (AxesColor != 'none')</l>
+<l>    set_color (WindowHandle, AxesColor)</l>
+<l>    if (XTicks != 'none')</l>
+<c></c>
+<c>        * Display x ticks</c>
+<l>        if (XValuesAreStrings)</l>
+<c>            * Display string XValues as categories</c>
+<l>            XTicks := |XValues| / |XTickValues|</l>
+<l>            XCoord := (XValues - XAxisStartValue) * XScaleFactor</l>
+<l>        else</l>
+<c>            * Display tick values</c>
+<l>            if (XTicks == 'min_max_origin')</l>
+<c>                * Calculate 'min_max_origin' tick coordinates</c>
+<l>                if (YAxisPosition == XAxisStartValue)</l>
+<l>                    XTickValues := [XAxisStartValue,XAxisEndValue]</l>
+<l>                else</l>
+<l>                    XTickValues := [XAxisStartValue,YAxisPosition,XAxisEndValue]</l>
+<l>                endif</l>
+<l>            else</l>
+<c>                * Calculate equidistant tick coordinates</c>
+<l>                XTickStart := ceil(XAxisStartValue / XTicks) * XTicks</l>
+<l>                XTickValues := [XTickStart:XTicks:XAxisEndValue]</l>
+<l>            endif</l>
+<c>            * Remove ticks that are smaller than the x-axis start.</c>
+<l>            Indices := find(XTickValues [&lt;] XAxisStartValue,1)</l>
+<l>            XCoord := (XTickValues - XAxisStartValue) * XScaleFactor</l>
+<l>            XCoord := remove(XCoord,Indices)</l>
+<l>            XTickValues := remove(XTickValues,Indices)</l>
+<c></c>
+<l>            if (FormatX == 'default')</l>
+<l>                TypeTicks := type(XTicks)</l>
+<l>                if (TypeTicks == H_TYPE_STRING)</l>
+<c>                    * String ('min_max_origin')</c>
+<c>                    * Format depends on actual values</c>
+<l>                    TypeTicks := type(XTickValues)</l>
+<l>                endif</l>
+<l>                if (TypeTicks == H_TYPE_INT)</l>
+<c>                    * Round to integer</c>
+<l>                    XTickValues := int(XTickValues)</l>
+<l>                else</l>
+<c>                    * Use floating point numbers</c>
+<l>                    XTickValues := XTickValues$'.2f'</l>
+<l>                endif</l>
+<l>            else</l>
+<c>                </c>
+<l>                XTickValues := XTickValues$FormatX</l>
+<l>            endif</l>
+<l>        endif</l>
+<c>        * Generate and display ticks</c>
+<l>        for IndexTicks := 0 to |XTickValues| - 1 by 1</l>
+<l>            get_string_extents (WindowHandle, XTickValues[IndexTicks], Ascent1, Descent1, TextWidthXTicks, TextHeightXTicks)</l>
+<l>            if (XTickDirection == 'up')</l>
+<l>                gen_contour_polygon_xld (ContourXTick, [Height - LowerBorder - XAxisOffsetPx,Height - LowerBorder - XAxisOffsetPx - 5], [LeftBorder + XCoord[IndexTicks],LeftBorder + XCoord[IndexTicks]])</l>
+<c>                *-10 for Numbers right under the Ticks</c>
+<l>                disp_text (WindowHandle, XTickValues[IndexTicks], 'image', Height - LowerBorder + 2 - XAxisOffsetPx, LeftBorder-10 + XCoord[IndexTicks], AxesColor, 'box', 'false')</l>
+<l>            else</l>
+<l>                gen_contour_polygon_xld (ContourXTick, [Height - LowerBorder - XAxisOffsetPx + 5,Height - LowerBorder - XAxisOffsetPx], [LeftBorder + XCoord[IndexTicks],LeftBorder + XCoord[IndexTicks]])</l>
+<l>                disp_text (WindowHandle, XTickValues[IndexTicks], 'image', Height - LowerBorder - 2 * TextHeightXTicks - XAxisOffsetPx, LeftBorder + XCoord[IndexTicks], AxesColor, 'box', 'false')</l>
+<l>            endif</l>
+<l>            disp_obj (ContourXTick, WindowHandle)</l>
+<l>        endfor</l>
+<l>    endif</l>
+<c></c>
+<l>    if (YTicks != 'none')</l>
+<c></c>
+<c>        * Display y ticks</c>
+<l>        if (YTicks == 'min_max_origin')</l>
+<c>            * Calculate 'min_max_origin' tick coordinates</c>
+<l>            if (XAxisPosition == YAxisStartValue)</l>
+<l>                YTickValues := [YAxisStartValue,YAxisEndValue]</l>
+<l>            else</l>
+<l>                YTickValues := [YAxisStartValue,XAxisPosition,YAxisEndValue]</l>
+<l>            endif</l>
+<l>        else  </l>
+<c>            * Calculate equidistant tick coordinates</c>
+<l>            YTickStart := ceil(YAxisStartValue / YTicks) * YTicks</l>
+<l>            YTickValues := [YTickStart:YTicks:YAxisEndValue]</l>
+<l>        endif</l>
+<c>        * Remove ticks that are smaller than the y-axis start.</c>
+<l>        Indices := find(YTickValues [&lt;] YAxisStartValue,1)</l>
+<l>        YCoord := (YTickValues - YAxisStartValue) * YScaleFactor</l>
+<l>        YCoord := remove(YCoord,Indices)</l>
+<l>        YTickValues := remove(YTickValues,Indices)</l>
+<c></c>
+<l>        if (FormatY == 'default')</l>
+<l>            TypeTicks := type(YTicks)</l>
+<l>            if (TypeTicks == H_TYPE_STRING)</l>
+<c>                * String ('min_max_origin')</c>
+<c>                * Format depends on actual values</c>
+<l>                TypeTicks := type(YTickValues)</l>
+<l>            endif</l>
+<l>            if (TypeTicks == H_TYPE_INT)</l>
+<c>                * Round to integer</c>
+<l>                YTickValues := int(YTickValues)</l>
+<l>            else</l>
+<c>                * Use floating point numbers</c>
+<l>                YTickValues := YTickValues$'.2f'</l>
+<l>            endif</l>
+<l>        else</l>
+<l>            YTickValues := YTickValues$FormatY</l>
+<l>        endif</l>
+<c>        * Generate and display ticks</c>
+<l>        for IndexTicks := 0 to |YTickValues| - 1 by 1</l>
+<l>            get_string_extents (WindowHandle, YTickValues[IndexTicks], Ascent1, Descent1, TextWidthYTicks, TextHeightYTicks)</l>
+<l>            if (YTickDirection == 'right')</l>
+<l>                gen_contour_polygon_xld (ContourYTick, [Height - LowerBorder - YCoord[IndexTicks],Height - LowerBorder - YCoord[IndexTicks]], [LeftBorder + YAxisOffsetPx,LeftBorder + YAxisOffsetPx + 5])</l>
+<c>                *LeftBorder-15 for small space between Y-axis and Values</c>
+<l>                disp_text (WindowHandle, YTickValues[IndexTicks], 'image', Height - LowerBorder - TextHeightYTicks + 3 - YCoord[IndexTicks], LeftBorder-15 - TextWidthYTicks - 2 + YAxisOffsetPx, AxesColor, 'box', 'false')</l>
+<l>            else</l>
+<l>                gen_contour_polygon_xld (ContourYTick, [Height - LowerBorder - YCoord[IndexTicks],Height - LowerBorder - YCoord[IndexTicks]], [LeftBorder + YAxisOffsetPx - 5,LeftBorder + YAxisOffsetPx])</l>
+<l>                disp_text (WindowHandle, YTickValues[IndexTicks], 'image', Height - LowerBorder - TextHeightYTicks + 3 - YCoord[IndexTicks], LeftBorder + 2 + YAxisOffsetPx, AxesColor, 'box', 'false')</l>
+<l>            endif</l>
+<l>            disp_obj (ContourYTick, WindowHandle)</l>
+<l>        endfor</l>
+<l>    endif</l>
+<l>endif</l>
+<c></c>
+<c>* Display function plot</c>
+<c></c>
+<l>if (Color != 'none')</l>
+<l>    if (XValues != [] and YValues != [])</l>
+<l>        Num := |YValues| / |XValues|</l>
+<c></c>
+<c>        * Iterate over all functions to be displayed</c>
+<l>        for I := 0 to Num - 1 by 1</l>
+<c>            * Select y values for current function</c>
+<l>            YSelected := YValues[I * |XValues|:(I + 1) * |XValues| - 1]</l>
+<c>            * Set color</c>
+<l>            if (Color == [])</l>
+<l>                set_rgb (WindowHandle, Red, Green, Blue)</l>
+<l>            else</l>
+<l>                set_color (WindowHandle, Color[I % |Color|])</l>
+<l>            endif</l>
+<c></c>
+<c>            * Display in different styles</c>
+<c></c>
+<l>            if (Style == 'line' or Style == [])</l>
+<c>                * Line</c>
+<l>                gen_contour_polygon_xld (Contour, Height - LowerBorder - YSelected * YScaleFactor + YAxisStartValue * YScaleFactor, XValues * XScaleFactor + LeftBorder - XAxisStartValue * XScaleFactor)</l>
+<c>                * Clip, if necessary</c>
+<l>                if (Clip == 'yes')</l>
+<l>                    clip_contours_xld (Contour, Contour, UpperBorder, LeftBorder, Height - LowerBorder, Width - RightBorder)</l>
+<l>                endif</l>
+<l>                disp_obj (Contour, WindowHandle)</l>
+<l>            elseif (Style == 'cross')</l>
+<c>                * Cross</c>
+<l>                gen_cross_contour_xld (Cross, Height - LowerBorder - YSelected * YScaleFactor + YAxisStartValue * YScaleFactor, XValues * XScaleFactor + LeftBorder - XAxisStartValue * XScaleFactor, 6, 0.785398)</l>
+<c>                * Clip, if necessary</c>
+<l>                if (Clip == 'yes')</l>
+<l>                    clip_contours_xld (Cross, Cross, UpperBorder, LeftBorder, Height - LowerBorder, Width - RightBorder)</l>
+<l>                endif</l>
+<l>                disp_obj (Cross, WindowHandle)</l>
+<l>            elseif (Style == 'filled')</l>
+<c>                * Filled</c>
+<l>                Y1Selected := [0 + XAxisPosition,YSelected,0 + XAxisPosition]</l>
+<l>                X1Selected := [min(XValues),XValues,max(XValues)]</l>
+<l>                set_draw (WindowHandle, 'fill')</l>
+<l>                gen_region_polygon_filled (Filled, Height - LowerBorder - Y1Selected * YScaleFactor + YAxisStartValue * YScaleFactor, X1Selected * XScaleFactor + LeftBorder - XAxisStartValue * XScaleFactor)</l>
+<c>                * Clip, if necessary</c>
+<l>                if (Clip == 'yes')</l>
+<l>                    clip_region (Filled, Filled, UpperBorder, LeftBorder, Height - LowerBorder, Width - RightBorder)</l>
+<l>                endif</l>
+<l>                disp_obj (Filled, WindowHandle)</l>
+<l>            elseif (Style == 'step')</l>
+<l>                gen_empty_obj (Stair)</l>
+<l>                for Index := 0 to |XValues| - 2 by 1</l>
+<l>                    Row1 := Height - LowerBorder - YSelected[Index] * YScaleFactor + YAxisStartValue * YScaleFactor</l>
+<l>                    Row2 := Height - LowerBorder - YSelected[Index + 1] * YScaleFactor + YAxisStartValue * YScaleFactor</l>
+<l>                    Col1 := XValues[Index] * XScaleFactor + LeftBorder - XAxisStartValue * XScaleFactor</l>
+<l>                    Col2 := XValues[Index + 1] * XScaleFactor + LeftBorder - XAxisStartValue * XScaleFactor</l>
+<l>                    gen_contour_polygon_xld (StairTmp, [Row1,Row1,Row2], [Col1,Col2,Col2])</l>
+<l>                    concat_obj (Stair, StairTmp, Stair)</l>
+<l>                endfor</l>
+<l>                union_adjacent_contours_xld (Stair, Stair, 0.1, 0.1, 'attr_keep')</l>
+<l>                if (Clip == 'yes')</l>
+<l>                    clip_region (Stair, Stair, UpperBorder, LeftBorder, Height - LowerBorder, Width - RightBorder)</l>
+<l>                endif</l>
+<l>                disp_obj (Stair, WindowHandle)</l>
+<l>            else</l>
+<l>                throw ('Unsupported style: ' + Style)</l>
+<l>            endif</l>
+<l>        endfor</l>
+<l>    endif</l>
+<l>endif</l>
+<c></c>
+<c></c>
+<c>* Reset original display settings</c>
+<l>set_part (WindowHandle, PartRow1, PartColumn1, PartRow2, PartColumn2)</l>
+<l>dev_set_window (PreviousWindowHandle)</l>
+<l>set_rgb (WindowHandle, Red, Green, Blue)</l>
+<l>set_draw (WindowHandle, DrawMode)</l>
+<l>set_line_style (WindowHandle, OriginStyle)</l>
+<l>set_system ('clip_region', ClipRegion)</l>
+<l>return ()</l>
+</body>
+<docu id="Plot_Graph_Buffer">
+<parameters>
+<parameter id="Color"/>
+<parameter id="GenParamName"/>
+<parameter id="GenParamValue"/>
+<parameter id="WindowHandle"/>
+<parameter id="XLabel"/>
+<parameter id="XValues"/>
+<parameter id="YLabel"/>
+<parameter id="YValues"/>
+</parameters>
+</docu>
+</procedure>
+</hdevelop>

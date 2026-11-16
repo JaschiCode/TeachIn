@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="25.11.0.0">
+<procedure name="FilesystemInit">
+<interface/>
+<body>
+<c>* FormatLoadPathdefinitions</c>
+<c>* -------------------------------------</c>
+<c></c>
+<l>global tuple App</l>
+<c></c>
+<c>* Create a dictionary for filesystem information</c>
+<l>App.Filesystem := dict{}</l>
+<c></c>
+<c>* Define dirctories</c>
+<l>App.Filesystem.Root := dict{}</l>
+<c></c>
+<c></c>
+<c>* Get current root path</c>
+<l>get_current_dir (DirectoryName)</l>
+<l>DirectoryName := regexp_replace (DirectoryName, ['\\\\', 'replace_all'], '/')</l>
+<l>Splt := split(DirectoryName, '/')</l>
+<l>DirectoryRoot := ''</l>
+<l>for Idx := 0 to |Splt|-2 by 1</l>
+<l>    DirectoryRoot  := DirectoryRoot + Splt[Idx] + '/'</l>
+<l>endfor</l>
+<c></c>
+<c></c>
+<c></c>
+<c>* Define application specific directories, sub-directories and files</c>
+<c></c>
+<l>App.Filesystem.Root.Path := DirectoryRoot</l>
+<c></c>
+<l>Foldername := 'Config'</l>
+<l>FilesystemInitDirectoriesCreate (Foldername, App.Filesystem.Root, false, false, Root)</l>
+<l>Root.Files.Logo     := Root.Path + 'logo.png'</l>
+<l>Root.Files.Settings := Root.Path + 'settings.json'</l>
+<c></c>
+<l>Foldername := 'Engine'</l>
+<l>FilesystemInitDirectoriesCreate (Foldername, App.Filesystem.Root, false, false, Root)</l>
+<l>FilesystemInitDirectoriesCreate ('Procedures', App.Filesystem.Engine, false, true, Root)</l>
+<c></c>
+<l>Foldername := 'Errors'</l>
+<l>FilesystemInitDirectoriesCreate (Foldername, App.Filesystem.Root, false, false, Root)</l>
+<c></c>
+<l>Foldername := 'Format_Template'</l>
+<l>FilesystemInitDirectoriesCreate (Foldername, App.Filesystem.Root, false, false, Root)</l>
+<l>FilesystemInitDirectoriesCreate ('Config', App.Filesystem.Format_Template, false, true, Root)</l>
+<l>Root.Files.CalibrationGlobal := Root.Path + 'calibration.json'</l>
+<c></c>
+<l>Foldername := 'Image_Files'</l>
+<l>FilesystemInitDirectoriesCreate (Foldername, App.Filesystem.Root, false, false, Root)</l>
+<c></c>
+<l>Foldername := 'Lang'</l>
+<l>FilesystemInitDirectoriesCreate (Foldername, App.Filesystem.Root, false, false, Root)</l>
+<c></c>
+<l>Foldername := 'Temp'</l>
+<l>FilesystemInitDirectoriesCreate (Foldername, App.Filesystem.Root, false, false, Root)</l>
+<l>Root.Files.WindowPositioning := Root.Path + 'window_positioning.json'</l>
+<l>Root.Files.ButtonInterfaceToGUI := Root.Path + 'hbtn.txt'</l>
+<l>Root.Files.ButtonInterfaceFromGUI := Root.Path + 'btn.txt'</l>
+<c></c>
+<c></c>
+<c>* Read active format and define format specific directories</c>
+<l>open_file (App.Filesystem.Config.Path + 'currentformat.ini', 'input', FileHandle)</l>
+<l>fread_line (FileHandle, FormatPath, IsEOF)</l>
+<l>close_file (FileHandle)</l>
+<c></c>
+<l>App.Filesystem.Format := dict{}</l>
+<l>App.Filesystem.Format.Path := FormatPath</l>
+<c></c>
+<l>App.Filesystem.Format.Files := dict{}</l>
+<l>App.Filesystem.Format.Files.ProductImage := App.Filesystem.Format.Path + 'ProductImage.tiff'</l>
+<l>App.Filesystem.Format.Files.ProductImageMultiChannel := App.Filesystem.Format.Path + 'ProductImageAllChannels.tiff'</l>
+<c></c>
+<l>App.Filesystem.Format.Prefixes := dict{}</l>
+<l>App.Filesystem.Format.Prefixes.ProductImage := 'ProductImage'</l>
+<c></c>
+<c></c>
+<l>Foldername := 'Config'</l>
+<l>FilesystemInitDirectoriesCreate (Foldername, App.Filesystem.Format, false, true, Root)</l>
+<l>Root.Files.CalibrationLocal        := Root.Path + 'calibration.json'</l>
+<l>Root.Files.Camera                  := Root.Path + 'camera.json'</l>
+<l>Root.Files.ColorClassification     := Root.Path + 'color.class'</l>
+<l>Root.Files.InspectionVisualization := Root.Path + 'inspection_visualization.json'</l>
+<l>Root.Files.MachineTiming           := Root.Path + 'machine_timing.json'</l>
+<l>Root.Files.Misc                    := Root.Path + 'misc.json'</l>
+<l>Root.Files.Mode                    := Root.Path + 'mode.json'</l>
+<l>Root.Files.Plc                     := Root.Path + 'plc.json'</l>
+<l>Root.Files.Roi                     := Root.Path + 'roi.json'</l>
+<l>Root.Files.Shiftregister           := Root.Path + 'shiftregister.json'</l>
+<l>Root.Files.TabletInspection        := Root.Path + 'tablet_inspection.json'</l>
+<c></c>
+<l>Foldername := 'FormatData'</l>
+<l>FilesystemInitDirectoriesCreate (Foldername, App.Filesystem.Format, false, true, Root)</l>
+<c></c>
+<l>Foldername := 'Images_InProcessControl'</l>
+<l>FilesystemInitDirectoriesCreate (Foldername, App.Filesystem.Format, false, true, Root)</l>
+<c></c>
+<l>* Foldername := 'InProcessControlimages'</l>
+<l>* FilesystemInitDirectoriesCreate (Foldername, App.Filesystem.Format, false, true, Root)</l>
+<c></c>
+<l>Foldername := 'Images_ProductTeachIn'</l>
+<l>FilesystemInitDirectoriesCreate (Foldername, App.Filesystem.Format, false, true, Root)</l>
+<c></c>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="FilesystemInit">
+<parameters/>
+</docu>
+</procedure>
+</hdevelop>

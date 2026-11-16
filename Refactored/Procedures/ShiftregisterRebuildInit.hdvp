@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="25.11.0.0">
+<procedure name="ShiftregisterRebuildInit">
+<interface/>
+<body>
+<c>* ShiftregisterRebuildInit</c>
+<c>* -------------------------------------------------</c>
+<c>* Information to rebuild the shiftregister</c>
+<c></c>
+<c>* Status or TriggerRebuild:</c>
+<c>*    -1 = Just initialized</c>
+<c>*     0 = Do nothing in shiftregister (normal operation)</c>
+<c>*     1 = Rebuild shiftregister</c>
+<c>*    &gt;1 = New request for building shiftregister</c>
+<c></c>
+<c>* TriggerKill:</c>
+<c>*     0 = Do nothing</c>
+<c>*     1 = Kill shiftregister</c>
+<c></c>
+<c>* StartIndex | EndIndex:</c>
+<c>*     Index to start and end rebuilding</c>
+<c></c>
+<l>global tuple App</l>
+<c></c>
+<l>App.Shiftregister.Rebuild := dict{}</l>
+<l>App.Shiftregister.Rebuild.Status     := -1</l>
+<l>App.Shiftregister.Rebuild.Kill       := -1</l>
+<l>App.Shiftregister.Rebuild.StartIndex := -1</l>
+<l>App.Shiftregister.Rebuild.EndIndex   := -1</l>
+<c></c>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="ShiftregisterRebuildInit">
+<parameters/>
+</docu>
+</procedure>
+</hdevelop>

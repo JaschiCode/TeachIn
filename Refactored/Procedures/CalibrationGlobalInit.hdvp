@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="25.11.0.0">
+<procedure name="CalibrationGlobalInit">
+<interface/>
+<body>
+<c>* CalibrationGlobalInit</c>
+<c>* ---------------------------------------------</c>
+<c>* Get xy-resolution from general settings and not from format</c>
+<c></c>
+<l>global tuple App</l>
+<c></c>
+<l>read_dict (App.Filesystem.Format_Template.Config.Files.CalibrationGlobal, [], [], App.Format.CalibrationGlobal)</l>
+<c></c>
+<l>CalibrationGlobalGet_PixToMM_XY ()</l>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="CalibrationGlobalInit">
+<parameters/>
+</docu>
+</procedure>
+</hdevelop>

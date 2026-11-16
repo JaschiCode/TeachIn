@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="25.11.0.0">
+<procedure name="SensorGrabImageConvertLongToMultiChannelImage">
+<interface>
+<io>
+<par name="Image" base_type="iconic" dimension="0"/>
+</io>
+<oo>
+<par name="ImageMultiChannel" base_type="iconic" dimension="0"/>
+</oo>
+</interface>
+<body>
+<c>* SensorGrabImageConvertLongToMultiChannelImage</c>
+<c>* ---------------------------------------------------------</c>
+<c></c>
+<l>FirstTopLight_FollowedByDownlight := 0</l>
+<c></c>
+<l>get_image_size (Image, Image_Width, Image_Height)</l>
+<l>crop_part (Image, ImagePart, [0,(Image_Height/2)], [0,0], [Image_Width,Image_Width], [(Image_Height/2),(Image_Height/2)])</l>
+<c></c>
+<c>* Use image from siso framegrabber. </c>
+<c>* The image is double length. </c>
+<c>* Upper half is hsv image top light, lower half is monochrome bottom light. </c>
+<c>* Third channel of bottom light image is with mean filter </c>
+<l>if(FirstTopLight_FollowedByDownlight == 1)</l>
+<c>    * First toplight, then backlight    </c>
+<l>    select_obj (ImagePart, ImageTop, 1)</l>
+<l>    select_obj (ImagePart, ImageBottom, 2)</l>
+<l>else</l>
+<c>    * First backlight, then toplight</c>
+<l>    select_obj (ImagePart, ImageTop, 2)</l>
+<l>    select_obj (ImagePart, ImageBottom, 1)</l>
+<l>endif</l>
+<c></c>
+<l>decompose3 (ImageTop, ImageTop_HSV_H, ImageTop_HSV_S, ImageTop_HSV_V)</l>
+<l>decompose3 (ImageBottom, ImageBottom_Monochrome, ImageBottom_Monochrome_UV, ImageBottom_Monochrome_Mean)</l>
+<l>compose5 (ImageTop_HSV_H, ImageTop_HSV_S, ImageTop_HSV_V, ImageBottom_Monochrome, ImageBottom_Monochrome_UV, ImageMultiChannel)</l>
+<c>            </c>
+<l>SensorGetFirstPixel (ImageMultiChannel)</l>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="SensorGrabImageConvertLongToMultiChannelImage">
+<parameters>
+<parameter id="Image"/>
+<parameter id="ImageMultiChannel"/>
+</parameters>
+</docu>
+</procedure>
+</hdevelop>

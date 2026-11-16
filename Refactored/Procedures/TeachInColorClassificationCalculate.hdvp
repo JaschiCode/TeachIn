@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="25.11.0.0">
+<procedure name="TeachInColorClassificationCalculate">
+<interface>
+<io>
+<par name="Image" base_type="iconic" dimension="0"/>
+</io>
+<ic>
+<par name="InnerColorMedian" base_type="ctrl" dimension="0"/>
+<par name="MessageToDisplay" base_type="ctrl" dimension="0"/>
+<par name="IsFirstClassificationStep" base_type="ctrl" dimension="0"/>
+<par name="ChannelSelector" base_type="ctrl" dimension="0"/>
+</ic>
+</interface>
+<body>
+<c>* TeachInColorClassificationCalculate</c>
+<c>* ---------------------------------------------------</c>
+<c></c>
+<l>global tuple App</l>
+<c></c>
+<l>WindowHandle := App.Visualization.Windows.[App.Status.Camera.ID]</l>
+<c></c>
+<l>NumberOfClasses := 3</l>
+<l>InnerRegion     := App.TeachIn.ColorClassification.InnerRegion</l>
+<l>OuterRegion     := App.TeachIn.ColorClassification.OuterRegion</l>
+<l>Background      := App.TeachIn.ColorClassification.Background</l>
+<c></c>
+<c>* Get values from format</c>
+<l>ColourLearning_NumHidden                   := App.Format.TabletInspection.TeachIn.V_ColourLearning_NumHidden.Value</l>
+<l>ColourLearning_Tolerance                   := App.Format.TabletInspection.TeachIn.V_ColourLearning_Tolerance.Value</l>
+<l>ColourLearning_MedianTrainImage_FilterSize := App.Format.TabletInspection.TeachIn.V_ColourLearning_MedianTrainImage_FilterSize.Value</l>
+<l>ColourLearning_MaxIterations               := App.Format.TabletInspection.TeachIn.V_ColourLearning_MaxIterations.Value</l>
+<c></c>
+<c>* Inner Region</c>
+<l>copy_obj (InnerRegion, Classes, 1, 1)</l>
+<l>if (InnerColorMedian == 1)</l>
+<c>    * Filter the selected area to get more stable results for learning</c>
+<l>    reduce_domain (Image, Classes, ImageReduced)</l>
+<l>    median_image (ImageReduced, ImageMedian, 'circle', 2, 'mirrored')</l>
+<l>    overpaint_gray (Image, ImageMedian)</l>
+<l>endif</l>
+<c></c>
+<c>* Outer Region</c>
+<l>concat_obj (InnerRegion, OuterRegion, Classes)</l>
+<c>* Filter the selected area to get more stabel results for learning</c>
+<l>reduce_domain (Image, OuterRegion, ImageReduced)</l>
+<l>median_image (ImageReduced, ImageMedian, 'circle', 3, 'mirrored')</l>
+<c></c>
+<c>* Background</c>
+<l>concat_obj (Classes, Background, Classes)</l>
+<c>* Filter the selected area to get more stabel results for learning</c>
+<l>reduce_domain (Image, Background, ImageReduced)</l>
+<l>median_image (ImageReduced, ImageMedian, 'circle', 3, 'mirrored')</l>
+<l>overpaint_gray (Image, ImageMedian)</l>
+<c></c>
+<c></c>
+<l>TeachInSelectAndDisplayMultiChannelImage (App.TeachIn.ImageOrig, App.TeachIn.ImageToLearnOn, ImageDisplay, ChannelSelector, 1, 1, 1)</l>
+<l>disp_text (WindowHandle, MessageToDisplay, 'window', 'top', 'left', 'blue', ['box_color','box_padding'], ['#ffffff77',5])</l>
+<c></c>
+<c></c>
+<c>* Classification preperation</c>
+<c>* ----------------------------------------------</c>
+<c>* Create the classifier and add the samples</c>
+<l>set_system ('parallelize_operators', 'true')</l>
+<c></c>
+<l>create_class_mlp (3, ColourLearning_NumHidden, 3, 'softmax', 'normalization', 3, 42, MLPHandle)</l>
+<l>set_rejection_params_class_mlp (MLPHandle, 'sampling_strategy', 'hyperbox_around_all_classes')</l>
+<l>set_rejection_params_class_mlp (MLPHandle, 'hyperbox_tolerance', ColourLearning_Tolerance)</l>
+<c>* filter the image a bit</c>
+<l>if (ColourLearning_MedianTrainImage_FilterSize &gt;=1)</l>
+<l>    median_image (Image, ImageForTraining, 'circle', ColourLearning_MedianTrainImage_FilterSize, 'mirrored')</l>
+<l>else</l>
+<l>    copy_obj (Image, ImageForTraining, 1, -1)</l>
+<l>endif</l>
+<l>add_samples_image_class_mlp (ImageForTraining, Classes, MLPHandle)</l>
+<c></c>
+<c>* Train the classifier</c>
+<l>train_class_mlp (MLPHandle, ColourLearning_MaxIterations, 1, 0.01, Error, ErrorLog)</l>
+<c></c>
+<c>* Creat look-up table</c>
+<l>create_class_lut_mlp (MLPHandle, [], [], ColourClassificationHandle)</l>
+<l>classify_image_class_lut (Image, ClassRegions, ColourClassificationHandle)</l>
+<c></c>
+<l>region_to_mean (ClassRegions, Image, ImageClass)</l>
+<l>disp_obj (ImageClass, WindowHandle)</l>
+<l>select_obj (ClassRegions, TabletClassified, 1)</l>
+<l>set_color (WindowHandle, 'magenta')</l>
+<l>disp_obj (TabletClassified, WindowHandle)</l>
+<l>select_obj (ClassRegions, Classified_PrintOrMirror, 2)</l>
+<l>set_color (WindowHandle, 'cyan')</l>
+<l>disp_obj (Classified_PrintOrMirror, WindowHandle)</l>
+<c></c>
+<l>connection (TabletClassified, ConnectedRegions)</l>
+<l>select_shape (ConnectedRegions, Tablets, 'area', 'and', 6000, 9999999)</l>
+<l>union1 (Tablets, Tablets)</l>
+<l>if (not IsFirstClassificationStep)</l>
+<c>    * build up new classificator</c>
+<l>    clear_class_lut (ColourClassificationHandle)</l>
+<l>    gen_empty_obj (NewClasses)</l>
+<l>    count_obj (Classes, NumberOfClasses)</l>
+<l>    concat_obj (NewClasses, Tablets, NewClasses)</l>
+<l>    if (NumberOfClasses&gt;1)</l>
+<l>        for Index := 2 to NumberOfClasses by 1</l>
+<l>            select_obj (Classes, ObjectSelected, Index)</l>
+<l>            concat_obj (NewClasses, ObjectSelected, NewClasses)</l>
+<l>        endfor</l>
+<l>    endif</l>
+<l>    create_class_mlp (3, 10, 3, 'softmax', 'principal_components', 3, 42, MLPHandle)</l>
+<l>    set_rejection_params_class_mlp (MLPHandle, 'sampling_strategy', 'hyperbox_around_all_classes')</l>
+<l>    set_rejection_params_class_mlp (MLPHandle, 'hyperbox_tolerance', ColourLearning_Tolerance)</l>
+<l>    add_samples_image_class_mlp (Image, NewClasses, MLPHandle)</l>
+<l>    train_class_mlp (MLPHandle, 200, 1, 0.01, Error, ErrorLog)</l>
+<l>    create_class_lut_mlp (MLPHandle, [], [], ColourClassificationHandle)</l>
+<l>    classify_image_class_lut (ImageMedian, ClassRegions, ColourClassificationHandle)</l>
+<l>    region_to_mean (ClassRegions, Image, ImageClass)</l>
+<l>endif</l>
+<l>disp_obj (ImageClass, WindowHandle)</l>
+<l>set_draw (WindowHandle, 'margin')</l>
+<l>set_color (WindowHandle, 'yellow')</l>
+<l>select_obj (ClassRegions, Classified_Tablets, 1)</l>
+<l>disp_obj (Classified_Tablets, WindowHandle)</l>
+<c></c>
+<l>set_system ('parallelize_operators', 'false')</l>
+<c></c>
+<c>* Write the classificator handle to harddisk</c>
+<l>FilenameColorClassificator := App.Filesystem.Format.Config.Files.ColorClassification</l>
+<l>write_class_mlp (MLPHandle, FilenameColorClassificator)</l>
+<c></c>
+<l>App.TeachIn.ColorClassification.Handle := MLPHandle</l>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="TeachInColorClassificationCalculate">
+<parameters>
+<parameter id="ChannelSelector"/>
+<parameter id="Image"/>
+<parameter id="InnerColorMedian"/>
+<parameter id="IsFirstClassificationStep"/>
+<parameter id="MessageToDisplay"/>
+</parameters>
+</docu>
+</procedure>
+</hdevelop>

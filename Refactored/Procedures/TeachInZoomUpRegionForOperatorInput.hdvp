@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="25.11.0.0">
+<procedure name="TeachInZoomUpRegionForOperatorInput">
+<interface>
+<ic>
+<par name="HelpTextString" base_type="ctrl" dimension="0"/>
+<par name="ChannelSelector" base_type="ctrl" dimension="0"/>
+</ic>
+</interface>
+<body>
+<c>* TeachInZoomUpRegionForOperatorInput</c>
+<c>* ----------------------------------------------------------------------</c>
+<c></c>
+<l>global tuple App</l>
+<c></c>
+<l>WindowHandle := App.Visualization.Windows.[App.Status.Camera.ID]</l>
+<c></c>
+<l>Btn1 := App.Language.Keys.HDEV_Cancel</l>
+<l>Btn2 := App.Language.Keys.HDEV_PictureSelection</l>
+<l>Btn3 := App.Language.Keys.HDEV_LineProfile</l>
+<l>Btn4 := App.Language.Keys.HDEV_OkNext</l>
+<l>TeachInButtonsInterfaceViaFile (0, Btn1, Btn2, Btn3, Btn4, 0, 0, 0, 0, HelpTextString, 0, 0, 0, 0)</l>
+<c></c>
+<l>TeachInSelectAndDisplayMultiChannelImage (App.TeachIn.ImageOrig, ImageSelectedChannel, ImageDisplay, ChannelSelector, 1, 1, 1)</l>
+<l>Image := ImageSelectedChannel</l>
+<c></c>
+<l>wait_seconds (0.3)</l>
+<c></c>
+<l>InitPositionRow := 500</l>
+<l>InitPositionCol := 1000</l>
+<l>SizeHorizontal  := 300</l>
+<l>SizeVertical    := 300</l>
+<l>TeachInUserIORectangleRegionSet (Image, RectMain, InitPositionRow, InitPositionCol, SizeHorizontal, SizeVertical, ChannelSelector, ExternalIO_BtnPressed, Row1, Col1, Row2, Col2)</l>
+<c></c>
+<l>if(ExternalIO_BtnPressed == 1)</l>
+<c>    * Cancel</c>
+<l>    TeachInSelectAndDisplayMultiChannelImage (App.TeachIn.ImageOrig, ImageSelectedChannel, ImageDisplay, ChannelSelector, 1, 1, 1)</l>
+<l>    App.TeachIn.SwitchCondition := 9999</l>
+<l>    App.TeachIn.ContinueFlag := 1</l>
+<l>    wait_seconds (0.3)</l>
+<l>    return()</l>
+<l>endif</l>
+<c></c>
+<l>if(ExternalIO_BtnPressed == 2)</l>
+<c>    * Go back to image selection - in case a bad image was selected for color teach in</c>
+<l>    TeachInSelectAndDisplayMultiChannelImage (App.TeachIn.ImageOrig, ImageSelectedChannel, ImageDisplay, ChannelSelector, 1, 1, 1)</l>
+<l>    App.TeachIn.SwitchCondition := 10</l>
+<l>    App.TeachIn.ContinueFlag := 1</l>
+<l>    wait_seconds (0.3)</l>
+<l>    return()</l>
+<l>endif</l>
+<c></c>
+<l>set_part (WindowHandle, Row1, Col1, Row2, Col2)</l>
+<l>TeachInSelectAndDisplayMultiChannelImage (App.TeachIn.ImageOrig, ImageSelectedChannel, ImageDisplay, ChannelSelector, 0, 1, 0)</l>
+<c></c>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="TeachInZoomUpRegionForOperatorInput">
+<parameters>
+<parameter id="ChannelSelector"/>
+<parameter id="HelpTextString"/>
+</parameters>
+</docu>
+</procedure>
+</hdevelop>

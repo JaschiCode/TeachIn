@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="25.11.0.0">
+<procedure name="TeachInSegmentationFilterRegionsCuttingROI">
+<interface>
+<ic>
+<par name="ProcessingThreadID" base_type="ctrl" dimension="0"/>
+</ic>
+</interface>
+<body>
+<c>* TeachInSegmentationFilterRegionsCuttingROI</c>
+<c>* ----------------------------------------------------------</c>
+<c>* Remove objects in eject box for TeachIn process</c>
+<c>* Can be necessary due to tracks may have holes there, this results in poor measurements</c>
+<c></c>
+<c></c>
+<c>* Get variables from dictionary</c>
+<l>ImageMultiChannel := App.Inspection.Threads.[ProcessingThreadID].Images.MultiChannel</l>
+<l>LanesROIsUnion    := App.Inspection.Threads.[ProcessingThreadID].Regions.Lanes.ROIsUnion</l>
+<l>EjectROIsUnion    := App.Inspection.Threads.[ProcessingThreadID].Regions.Ejects.ROIsUnion</l>
+<l>RegionTablets     := App.Inspection.Threads.[ProcessingThreadID].Regions.Tablets.Segmented</l>
+<c></c>
+<c>* Just for teach in remove objects in ejectboxes</c>
+<l>difference (RegionTablets, EjectROIsUnion, RegionTablets)</l>
+<l>difference (LanesROIsUnion, EjectROIsUnion, LanesROIsUnion)</l>
+<c></c>
+<l>GetObjects_UpperLower0_LeftRight1_Both2_Lower3 := 0</l>
+<l>SegmentationFilterRegionsRemoveTabletsOnBorderAndInEjectbox (ImageMultiChannel, LanesROIsUnion, RegionTablets, RegionTabletsOnBorder, GetObjects_UpperLower0_LeftRight1_Both2_Lower3)</l>
+<c></c>
+<l>difference (RegionTablets, RegionTabletsOnBorder, RegionTablets)</l>
+<c></c>
+<c>* Set variables to dictionary</c>
+<l>App.Inspection.Threads.[ProcessingThreadID].Regions.Lanes.ROIsUnion   := LanesROIsUnion</l>
+<l>App.Inspection.Threads.[ProcessingThreadID].Regions.Tablets.Segmented := RegionTablets</l>
+<c></c>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="TeachInSegmentationFilterRegionsCuttingROI">
+<parameters>
+<parameter id="ProcessingThreadID"/>
+</parameters>
+</docu>
+</procedure>
+</hdevelop>

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="25.11.0.0">
+<procedure name="InspectionSplitIntoSingleTabletsRemoveRegionsThatCrossTheBorder">
+<interface>
+<io>
+<par name="Image" base_type="iconic" dimension="0"/>
+<par name="RegionTablets" base_type="iconic" dimension="0"/>
+<par name="LanesROIs" base_type="iconic" dimension="0"/>
+</io>
+<oo>
+<par name="RegionTabletsWithoutTabletsOnBorder" base_type="iconic" dimension="0"/>
+<par name="RegionTabletsToRemove" base_type="iconic" dimension="0"/>
+</oo>
+</interface>
+<body>
+<c>* InspectionSplitIntoSingleTabletsRemoveRegionsThatCrossTheBorder</c>
+<c>* -------------------------------------------------------------------</c>
+<c></c>
+<l>global tuple App</l>
+<c></c>
+<c>* Get variables from dictionary</c>
+<l>TabletLength := App.Format.TabletInspection.TeachIn.V_ProductLength_InMovementDirection.Value</l>
+<c></c>
+<c>* Get objects all around</c>
+<l>GetObjects_UpperLower0_LeftRight1_Both2_Lower3 := 2 </l>
+<l>SegmentationFilterRegionsRemoveTabletsOnBorderAndInEjectbox (Image, LanesROIs, RegionTablets, RegionTabletsOnBorder, 2)</l>
+<c></c>
+<l>BorderObject_DirectRemoval_Or_CuttingBasedOnProjectionActive := 1</l>
+<l>if (BorderObject_DirectRemoval_Or_CuttingBasedOnProjectionActive &gt;= 1 or BorderObject_DirectRemoval_Or_CuttingBasedOnProjectionActive &lt; 0)</l>
+<l>    RegionTabletsToRemove := RegionTabletsOnBorder</l>
+<l>else</l>
+<c>    * Select objects that are in the range of partition_dynamic</c>
+<l>    select_shape (RegionTabletsOnBorder, RegionTabletsOnBorder, 'height', 'and', TabletLength*0.7, 1e6)</l>
+<l>    SegmentationFilterRegionsTabletsCuttingBasedOnProjection (ObjectsOnBorder)</l>
+<l>    gSegmentedObjectsCutting_BasedOnProjection (Image, LanesROIs, ObjectsOnBorder_ForCutting, RemainingObject, RegionTabletsToRemove, TabletWidth)</l>
+<l>endif</l>
+<l>difference (RegionTablet, RegionTabletsToRemove, RegionTablet)</l>
+<l>select_shape (RegionTabletsOnBorder, RegionTabletsOnBorder, 'height', 'and', 0, TabletLength* 0.7)</l>
+<l>difference (RegionTablet, RegionTabletsOnBorder, RegionTabletsToRemove)</l>
+<l>select_shape (RegionTabletsToRemove, RegionTabletsToRemove, 'area', 'and', 1, 1e6)</l>
+<c></c>
+<c></c>
+<c></c>
+<l>return ()</l>
+<c></c>
+</body>
+<docu id="InspectionSplitIntoSingleTabletsRemoveRegionsThatCrossTheBorder">
+<parameters>
+<parameter id="Image"/>
+<parameter id="LanesROIs"/>
+<parameter id="RegionTablets"/>
+<parameter id="RegionTabletsToRemove"/>
+<parameter id="RegionTabletsWithoutTabletsOnBorder"/>
+</parameters>
+</docu>
+</procedure>
+</hdevelop>

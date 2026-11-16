@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="25.11.0.0">
+<procedure name="TeachInGuiStringWrite">
+<interface>
+<ic>
+<par name="StringToWriteOnGUI" base_type="ctrl" dimension="0"/>
+<par name="Btn1Text" base_type="ctrl" dimension="0"/>
+<par name="Btn2Text" base_type="ctrl" dimension="0"/>
+</ic>
+</interface>
+<body>
+<c>* TeachInGuiStringWrite</c>
+<c>* ---------------------------------------------</c>
+<c></c>
+<l>global tuple App</l>
+<c></c>
+<l>WindowHandle := App.Visualization.Windows.[App.Status.Camera.ID]</l>
+<c></c>
+<c></c>
+<l>GUILanguageToUse := 0 //standard language is english</l>
+<c></c>
+<l>if (App.System.DebugInHalcon)</l>
+<l>    disp_text (WindowHandle, StringToWriteOnGUI[GUILanguageToUse], 'window', 'top', 'left', 'blue', ['box_color','box_padding'], ['#ffffff77',5])</l>
+<l>endif</l>
+<c></c>
+<l>TeachInButtonsInterfaceViaFile (0, Btn1Text, Btn2Text, 0, 0, 1, 1, 0, 0, StringToWriteOnGUI, 0, 0, 0, 0)</l>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="TeachInGuiStringWrite">
+<parameters>
+<parameter id="Btn1Text"/>
+<parameter id="Btn2Text"/>
+<parameter id="StringToWriteOnGUI"/>
+</parameters>
+</docu>
+</procedure>
+</hdevelop>

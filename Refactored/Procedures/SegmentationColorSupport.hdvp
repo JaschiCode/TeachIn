@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="25.11.0.0">
+<procedure name="SegmentationColorSupport">
+<interface>
+<io>
+<par name="ImageHSV" base_type="iconic" dimension="0"/>
+<par name="ImageRed" base_type="iconic" dimension="0"/>
+<par name="ImageGreen" base_type="iconic" dimension="0"/>
+<par name="ImageBlue" base_type="iconic" dimension="0"/>
+<par name="RegionLanesROIs" base_type="iconic" dimension="0"/>
+<par name="RegionSegmentedIn" base_type="iconic" dimension="0"/>
+</io>
+<oo>
+<par name="RegionSegmented" base_type="iconic" dimension="0"/>
+<par name="RegionColorSupport" base_type="iconic" dimension="0"/>
+</oo>
+</interface>
+<body>
+<c>* SegmentationColorSupport</c>
+<c>* ----------------------------------------------------------------------</c>
+<c></c>
+<l>global tuple App</l>
+<c></c>
+<c>* Initialize output variables</c>
+<l>RegionSegmented := RegionSegmentedIn</l>
+<l>gen_empty_obj (RegionColorSupport)</l>
+<c></c>
+<c>* Get values from format</c>
+<l>Segmentation_ColorSupport_Threshold_RedMin := App.Format.TabletInspection.Segmentation.V_Segmentation_ColourSupport_Threshold_RedMin.Value</l>
+<l>Segmentation_ColorSupport_Threshold_RedMax := App.Format.TabletInspection.Segmentation.V_Segmentation_ColourSupport_Threshold_RedMax.Value</l>
+<c></c>
+<l>Segmentation_ColorSupport_Threshold_Min                     := App.Format.TabletInspection.Segmentation.V_Segmentation_ColourSupport_Threshold_Min.Value</l>
+<l>Segmentation_ColorSupport_Threshold_Max                     := App.Format.TabletInspection.Segmentation.V_Segmentation_ColourSupport_Threshold_Max.Value</l>
+<l>Segmentation_ColorSupport_AreaToSelect_MinSize              := App.Format.TabletInspection.Segmentation.V_Segmentation_ColourSupport_AreaToSelect_MinSize.Value</l>
+<l>Segmentation_ColorSupport_OpeningAfterSegmentation_MaskSize := App.Format.TabletInspection.Segmentation.V_Segmentation_ColourSupport_OpeningAfterSegmentation_MaskSize.Value</l>
+<c></c>
+<c></c>
+<c>* todo: test if colour supported segmentation still works</c>
+<l>    get_image_size (ImageHSV, ImageHSVWidth, _)</l>
+<l>    if(|ImageHSVWidth| &gt; 0)  </l>
+<c>        * Side for HSV color support segmentation</c>
+<l>        decompose3 (ImageHSV, ImageHue, ImageSaturation, ImageValue)</l>
+<c>        * H-Channel</c>
+<l>        SegmentationColorSupportSegmentAndFilterOneChannel (ImageHue, RegionLanesROIs, RegionHue, Segmentation_ColorSupport_Threshold_RedMin, Segmentation_ColorSupport_Threshold_RedMax, Segmentation_ColorSupport_OpeningAfterSegmentation_MaskSize, Segmentation_ColorSupport_AreaToSelect_MinSize)</l>
+<c>        * S-Channel</c>
+<l>        SegmentationColorSupportSegmentAndFilterOneChannel (ImageHue, RegionLanesROIs, RegionSaturation, Segmentation_ColorSupport_Threshold_Min, Segmentation_ColorSupport_Threshold_Max, Segmentation_ColorSupport_OpeningAfterSegmentation_MaskSize, Segmentation_ColorSupport_AreaToSelect_MinSize)</l>
+<c>        * Merge data from prior segmentations</c>
+<l>        union2 (RegionHue, RegionSaturation, RegionHSV)</l>
+<l>        union2 (RegionSegmented, RegionHSV, RegionSegmented)</l>
+<c>        * morphological operation can be useful if there is a small gap within segementations</c>
+<l>        dilation_rectangle1 (RegionSegmented, RegionSegmented, 3, 3)</l>
+<l>        erosion_rectangle1 (RegionSegmented, RegionSegmented, 3, 3)</l>
+<l>    endif</l>
+<c></c>
+<c></c>
+<c>* Create YUV image</c>
+<l>trans_from_rgb (ImageRed, ImageGreen, ImageBlue, ImageY, ImageU, ImageV, 'yuv')</l>
+<l>compose3 (ImageY, ImageU, ImageV, ImageYUV)</l>
+<c></c>
+<l>* get_image_size (ImageYUV, ImageYUVWidth, _)</l>
+<l>* if (|ImageYUVWidth| == 0)</l>
+<l>*     decompose3 (Image, Red, Green, Blue)</l>
+<l>*     trans_from_rgb (Red, Green, Blue, YUV_Y, YUV_U, YUV_V, 'yuv')</l>
+<l>* else</l>
+<l>*     decompose3 (ImageYUV, YUV_Y, YUV_U, YUV_V)</l>
+<l>* endif</l>
+<c></c>
+<c>* Todo Testwise for Abbott</c>
+<l>* decompose3 (Image, Red, Green, Blue)</l>
+<c></c>
+<c>* Red Channel</c>
+<l>SegmentationColorSupportSegmentAndFilterOneChannel (ImageRed, RegionLanesROIs, RegionRed, Segmentation_ColorSupport_Threshold_RedMin, Segmentation_ColorSupport_Threshold_RedMax, Segmentation_ColorSupport_OpeningAfterSegmentation_MaskSize, Segmentation_ColorSupport_AreaToSelect_MinSize)</l>
+<l>union2 (RegionSegmented, RegionRed, RegionSegmented)</l>
+<c></c>
+<c>* V-Channel</c>
+<l>SegmentationColorSupportSegmentAndFilterOneChannel (ImageY, RegionLanesROIs, RegionV, [Segmentation_ColorSupport_Threshold_Min, 255], [0, Segmentation_ColorSupport_Threshold_Max], Segmentation_ColorSupport_OpeningAfterSegmentation_MaskSize, Segmentation_ColorSupport_AreaToSelect_MinSize)</l>
+<c></c>
+<c>* U-Channel</c>
+<l>SegmentationColorSupportSegmentAndFilterOneChannel (ImageU, RegionLanesROIs, RegionU, [Segmentation_ColorSupport_Threshold_Min, 255], [0, Segmentation_ColorSupport_Threshold_Max], Segmentation_ColorSupport_OpeningAfterSegmentation_MaskSize, Segmentation_ColorSupport_AreaToSelect_MinSize)</l>
+<l>union2 (RegionV, RegionU, RegionColorSupport)</l>
+<l>union2 (RegionSegmented, RegionColorSupport, RegionSegmented)</l>
+<c></c>
+<c>* Morphological operation can be useful if there is a small gap within segmentations</c>
+<l>dilation_rectangle1 (RegionSegmented, RegionSegmented, 3, 3)</l>
+<l>erosion_rectangle1 (RegionSegmented, RegionSegmented, 3, 3)</l>
+<c></c>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="SegmentationColorSupport">
+<parameters>
+<parameter id="ImageBlue"/>
+<parameter id="ImageGreen"/>
+<parameter id="ImageHSV"/>
+<parameter id="ImageRed"/>
+<parameter id="RegionColorSupport"/>
+<parameter id="RegionLanesROIs"/>
+<parameter id="RegionSegmented"/>
+<parameter id="RegionSegmentedIn"/>
+</parameters>
+</docu>
+</procedure>
+</hdevelop>

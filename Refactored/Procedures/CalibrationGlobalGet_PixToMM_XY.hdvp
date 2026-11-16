@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="25.11.0.0">
+<procedure name="CalibrationGlobalGet_PixToMM_XY">
+<interface/>
+<body>
+<c>* CalibrationGlobalGet_PixToMM_XY</c>
+<c>* ------------------------------------------------------------</c>
+<c>* Get xy-resolution </c>
+<c></c>
+<l>global tuple App</l>
+<l>global tuple vector(3) gCalibration_VTCamera_VTLane_VTPixToMM_XY</l>
+<c></c>
+<l>NumberOfConnectedCameras := |App.ROIs.NumberOfPos|</l>
+<l>gCalibration_VTCamera_VTLane_VTPixToMM_XY.at(0).at(0).at(0) := []</l>
+<c></c>
+<c>* Load number of roi positions per cam</c>
+<l>for Index_Cams := 0 to NumberOfConnectedCameras-1 by 1</l>
+<c>    </c>
+<l>    LanesCount := App.ROIs.NumberOfPos[Index_Cams]</l>
+<l>    for Index_ROINumberPos := 0 to LanesCount-1 by 1</l>
+<c></c>
+<l>        CalibX_PixToMM := real(App.Format.CalibrationGlobal.Calibration.['Calib_Cam_' + Index_Cams].['V_CalibX_PixToMM_' + Index_ROINumberPos].Value)</l>
+<l>        CalibY_PixToMM := real(App.Format.CalibrationGlobal.Calibration.['Calib_Cam_' + Index_Cams].['V_CalibY_PixToMM_' + Index_ROINumberPos].Value)</l>
+<c></c>
+<l>        gCalibration_VTCamera_VTLane_VTPixToMM_XY.at(Index_Cams).at(Index_ROINumberPos).at(0) := CalibX_PixToMM</l>
+<l>        gCalibration_VTCamera_VTLane_VTPixToMM_XY.at(Index_Cams).at(Index_ROINumberPos).at(1) := CalibY_PixToMM</l>
+<l>    endfor</l>
+<l>endfor</l>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="CalibrationGlobalGet_PixToMM_XY">
+<parameters/>
+</docu>
+</procedure>
+</hdevelop>

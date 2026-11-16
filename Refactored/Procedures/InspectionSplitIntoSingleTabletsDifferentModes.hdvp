@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="25.11.0.0">
+<procedure name="InspectionSplitIntoSingleTabletsDifferentModes">
+<interface>
+<io>
+<par name="RegionTablet" base_type="iconic" dimension="0"/>
+</io>
+<oo>
+<par name="RegionTabletIndividual" base_type="iconic" dimension="0"/>
+</oo>
+<ic>
+<par name="ProcessingThreadID" base_type="ctrl" dimension="0"/>
+<par name="IndexLane" base_type="ctrl" dimension="0"/>
+</ic>
+</interface>
+<body>
+<c>* InspectionSplitIntoSingleTabletsDifferentModes</c>
+<c>* -----------------------------------------------------</c>
+<c>* There are 3 Splitting mode levels:</c>
+<c>* "1" uses distance transform and remove objects on border directly</c>
+<c>* "0" uses partitioning and cut objects on border based on projection</c>
+<c>* "-1" uses no partitioning and removes objects on border directly</c>
+<c></c>
+<l>global tuple App</l>
+<c></c>
+<l>count_seconds (TimeStart)</l>
+<c></c>
+<c>* Get variables from dictionary</c>
+<l>ImageHSV                   := App.Inspection.Threads.[ProcessingThreadID].Images.TopLight.HSV.AllChannel</l>
+<l>TabletLength               := App.Format.TabletInspection.TeachIn.V_ProductLength_InMovementDirection</l>
+<l>PreprocessingOpeningWidth  := App.Format.TabletInspection.Segmentation.V_PreprocessingOpeningWidth.Value</l>
+<l>PreprocessingOpeningHeight := App.Format.TabletInspection.Segmentation.V_PreprocessingOpeningHeight.Value</l>
+<l>ProductSplittingMode       := App.Format.TabletInspection.Segmentation.V_ProductSplittingMode.Value</l>
+<l>PreprocessingMinAreaFilter := App.Format.TabletInspection.Segmentation.V_PreprocessingMinAreaFilter.Value</l>
+<c></c>
+<c>* Todo: Should this be moved to format?</c>
+<l>TransportDirectionHorizontalOrVertical := 'horizontal'</l>
+<c></c>
+<c></c>
+<c>* Do some morphological filtering</c>
+<l>if ((PreprocessingOpeningWidth &gt; 0) and (PreprocessingOpeningHeight # 0))</l>
+<l>    opening_rectangle1 (RegionTablet, RegionTablet, PreprocessingOpeningWidth, PreprocessingOpeningHeight)</l>
+<l>endif</l>
+<c></c>
+<l>PreprocessingClosingWidth := 22</l>
+<l>if(PreprocessingClosingWidth &gt; 0)</l>
+<l>    closing_circle (RegionTablet, RegionTablet, 4)</l>
+<l>endif</l>
+<c></c>
+<l>PreprocessingFillUpArea := 600</l>
+<l>if(PreprocessingFillUpArea &gt; 0)</l>
+<l>    fill_up_shape (RegionTablet, RegionTablet, 'area', 1, PreprocessingFillUpArea)</l>
+<l>endif</l>
+<c></c>
+<l>connection (RegionTablet, RegionTablet)</l>
+<l>select_shape (RegionTablet, RegionTablet, 'area', 'and', PreprocessingMinAreaFilter, 1e6)</l>
+<c></c>
+<l>if (ProductSplittingMode == -1)</l>
+<c>    * "-1" = Do nothing and go directly to removal of border objects</c>
+<l>    RegionTabletIndividual := RegionTablet</l>
+<l>else</l>
+<l>    if (ProductSplittingMode &gt;= 1)</l>
+<c>        * "1" = Use distance transform and remove objects on border directly</c>
+<l>        ++++ todo: JH</l>
+<l>        gDistanceTransformRegionSeperation (RegionTablet, ImageHSV, Tablet_Individual_ConcatOut, ProductSplittingMode1_SeperationThreshold, ContinueOutside, Time_Needed)</l>
+<l>        select_shape (Tablet_Individual_ConcatOut, Tablet_Individual_ConcatOut, 'area', 'and', PreprocessingMinAreaFilter, 99999999)</l>
+<l>        gHorizontalRelationOfRegions (Tablet_Individual_ConcatOut, Tablet_Individual_ConcatOut, RegionsInRelation_Vector)</l>
+<c>   </c>
+<l>    else </l>
+<c>        * "0" = Use partitioning and cut objects on border based on projection</c>
+<c>        * Mode via partition dynamic</c>
+<c>        * Try to segment every individual tablet if product stream is horizontal</c>
+<l>        ++++ todo: JH</l>
+<l>        if (TransportDirectionHorizontalOrVertical = 'horizontal')</l>
+<l>            set_system ('clip_region', 'false')</l>
+<l>            get_image_size (ImageHSV, Width, Height)</l>
+<l>            hom_mat2d_identity (HomMat)</l>
+<l>            hom_mat2d_identity (HomMat2DIdentity)</l>
+<l>            hom_mat2d_rotate (HomMat2DIdentity, rad(90), Height/2, Width/2, HomMat2DRotate)</l>
+<l>            affine_trans_region (RegionTablet, RegionTablet, HomMat2DRotate, 'nearest_neighbor')</l>
+<l>        endif  </l>
+<l>        partition_dynamic (RegionTablet, Tablet_Individual, TabletLength, 30) </l>
+<c>        </c>
+<l>        if (TransportDirectionHorizontalOrVertical = 'horizontal')</l>
+<l>            hom_mat2d_identity (HomMat2DIdentity)</l>
+<l>            hom_mat2d_rotate (HomMat2DIdentity, rad(-90), Height/2, Width/2, HomMat2DRotate)</l>
+<l>            affine_trans_region (Tablet_Individual, Tablet_Individual, HomMat2DRotate, 'nearest_neighbor')</l>
+<l>            set_system ('clip_region', 'true')</l>
+<l>        endif</l>
+<c>        * </c>
+<l>        fill_up (Tablet_Individual, Tablet_Individual)</l>
+<l>        concat_obj (Tablet_Individual_ConcatOut, Tablet_Individual, Tablet_Individual_ConcatOut)</l>
+<c>        </c>
+<c>        * ToDo - reuniting can only reunite thre parts to one by running it two times in a row. </c>
+<c>        * this is not effective. It could be better to have a table to check what components </c>
+<c>        * should be merged and select it</c>
+<l>*         gReuniteObjectsThatHaveBeenDevidedInSegmentation (Tablet_Individual_ConcatOut, Tablet_Individual_ConcatOut, FurtherReunionStepNecessary)</l>
+<l>        gReuniteObjectsThatHaveBeenDevidedInSegmentation (Tablet_Individual_ConcatOut, Tablet_Individual_ConcatOut, FurtherReunionStepNecessary)</l>
+<l>    endif</l>
+<l>endif</l>
+<c></c>
+<c></c>
+<l>count_seconds (TimeEnd)</l>
+<l>Time_Needed := (TimeEnd- TimeStart) * 1000.0</l>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="InspectionSplitIntoSingleTabletsDifferentModes">
+<parameters>
+<parameter id="IndexLane"/>
+<parameter id="ProcessingThreadID"/>
+<parameter id="RegionTablet"/>
+<parameter id="RegionTabletIndividual"/>
+</parameters>
+</docu>
+</procedure>
+</hdevelop>

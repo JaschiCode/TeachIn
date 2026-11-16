@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="25.11.0.0">
+<procedure name="PlcCommunication360">
+<interface>
+<ic>
+<par name="LineNumberToSignal" base_type="ctrl" dimension="0"/>
+<par name="ShiftregisterEjectPort" base_type="ctrl" dimension="0"/>
+<par name="ShiftregisterGoodPort" base_type="ctrl" dimension="0"/>
+<par name="CriticalInspectionResultFound" base_type="ctrl" dimension="0"/>
+</ic>
+<oc>
+<par name="Communication" base_type="ctrl" dimension="0"/>
+</oc>
+</interface>
+<body>
+<c>* PlcCommunication360</c>
+<c>* -----------------------------------------------------------------------------</c>
+<c>* Special workflow for TabletSecure 360.</c>
+<c>* Build communication block to µC (Microcontroller)</c>
+<c></c>
+<l>global tuple App</l>
+<c></c>
+<c>* Initialize output variables</c>
+<l>Communication := []</l>
+<c></c>
+<l>ProductFound := 0</l>
+<l>Debug := 0</l>
+<c></c>
+<l>CommunicationByte0 := [App.Plc.Status.WatchDog, App.Status.Camera.Ready, 0, 0, 0, 0, 0, 0] // WatchDog only</l>
+<l>CommunicationByte1 := [0, 0, 0, 0, 0, 0, 0, 0] // Lane number only</l>
+<l>CommunicationByte2 := [0, 0, 0, 0, 0, 0, 0, 0] // Bad information - value 2 if set</l>
+<l>CommunicationByte3 := [0, 0, 0, 0, 0, 0, 0, 0] // Good information - value 2 if set</l>
+<l>* CommunicationByte4 := [0, 0, 0, 0, 0, 0, 0, 0] // machine clock -&gt; is added later. is here to dexcribe ful communication block</l>
+<c></c>
+<c>* Find eject lane</c>
+<l>CommunicationByte1[LineNumberToSignal] := 1</l>
+<l>* tuple_add (Shiftregister_SpecifyGoodPort, Shiftregister_SpecifyEjectPort, BothPorts)</l>
+<l>* tuple_greater_equal_elem (BothPorts, 1, Greatereq) </l>
+<l>* CommunicationByte1 := Greatereq</l>
+<c></c>
+<c>* Check whether it is good or bad information</c>
+<l>if (sum(ShiftregisterEjectPort) != 0)</l>
+<l>    if (CriticalInspectionResultFound)</l>
+<l>        CommunicationByte2 := [0, 1, 0, 0, 0, 0, 0, 1] //indicate critical error on most significant bit</l>
+<l>    else</l>
+<l>        CommunicationByte2 := [0, 1, 0, 0, 0, 0, 0, 0]</l>
+<l>    endif</l>
+<l>    ProductFound := 1</l>
+<l>endif</l>
+<c></c>
+<l>if (sum(ShiftregisterGoodPort) != 0)</l>
+<l>    CommunicationByte3 := [0, 1, 0, 0, 0, 0, 0, 0]</l>
+<l>    ProductFound := 1</l>
+<l>endif</l>
+<l>Communication := [CommunicationByte0, CommunicationByte2, CommunicationByte1, CommunicationByte3]</l>
+<c></c>
+<c>* Test - to send converted block to plc</c>
+<l>if (ProductFound and Debug)</l>
+<l>    gPLC_MS_Tuple_ConvertBits2Bytes (Communication, SendTuple, Bytes, ErrorConversion)</l>
+<l>*     SendTuple[2] := 31</l>
+<l>    send_data (App.Plc.Socket.Client[0], 'C' + |SendTuple|, SendTuple, []) </l>
+<l>*     stop()  </l>
+<l>endif</l>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="PlcCommunication360">
+<parameters>
+<parameter id="Communication"/>
+<parameter id="CriticalInspectionResultFound"/>
+<parameter id="LineNumberToSignal"/>
+<parameter id="ShiftregisterEjectPort"/>
+<parameter id="ShiftregisterGoodPort"/>
+</parameters>
+</docu>
+</procedure>
+</hdevelop>

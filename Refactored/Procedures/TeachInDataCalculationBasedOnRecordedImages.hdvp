@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="25.11.0.0">
+<procedure name="TeachInDataCalculationBasedOnRecordedImages">
+<interface>
+<ic>
+<par name="HelpTextString" base_type="ctrl" dimension="0"/>
+<par name="ChannelSelector" base_type="ctrl" dimension="0"/>
+</ic>
+</interface>
+<body>
+<c>* TeachInDataCalculationBasedOnRecordedImages</c>
+<c>* ---------------------------------------------------------</c>
+<c></c>
+<l>global tuple App</l>
+<l>global tuple gStopAtProcess</l>
+<c></c>
+<l>gen_empty_obj (EmptyObject)</l>
+<c></c>
+<c></c>
+<c>* Get values from format</c>
+<l>Calibration_Active                             := App.Format.CalibrationLocal.General.V_FeatureActive.Value</l>
+<l>Calibration_TeachIn_Active                     := App.Format.CalibrationLocal.General.V_TeachIn_Active.Value</l>
+<l>CalibrationObject_MeasureSystemAnalyses_Active := App.Format.CalibrationLocal.General.V_CalibrationObject_MeasureSystemAnalyses_Active.Value</l>
+<c></c>
+<l>TeachInSelectAndDisplayMultiChannelImage (App.TeachIn.ImageOrig, ImageSelectedChannel, ImageDisplay, ChannelSelector, 1, 1, 1)</l>
+<l>Image := ImageSelectedChannel</l>
+<c></c>
+<c></c>
+<l>Btn1 := App.Language.Keys.HDEV_Cancel</l>
+<l>Btn2 := App.Language.Keys.HDEV_TeachInStopCalculation</l>
+<l>TeachInButtonsInterfaceViaFile (0, Btn1, Btn2, 0, 0, 0, 0, 0, 0, HelpTextString, 0, 0, 0, 0)</l>
+<c></c>
+<l>* InitShiftregister (ImageToLearnOn, ShiftRegisterVector_Good_Bad_ObjectsLastFrame_ThreadVector, gLanesPerThreadsVector, ShiftregisterVector_ObjectMovement_ThreadVector)</l>
+<c></c>
+<c></c>
+<c></c>
+<c>* Generate data types for the same process one line as it is in the processing environment</c>
+<l>* gShiftRegisterVector_Good_Bad_ObjectsLastFrame_ThreadVector := ShiftRegisterVector_Good_Bad_ObjectsLastFrame_ThreadVector</l>
+<l>* gColourClassificationHandle := []</l>
+<l>* gShiftregisterVector_ObjectMovement_ThreadVector := ShiftregisterVector_ObjectMovement_ThreadVector</l>
+<l>* gWindowVector.at(0) := WindowHandle</l>
+<c>* generation end</c>
+<c></c>
+<c></c>
+<l>* gColourClassificationHandle := ColourClassificationHandle</l>
+<l>Calculation_Colour_Mean_Red_tpl   := []</l>
+<l>Calculation_Colour_Mean_Green_tpl := []</l>
+<l>Calculation_Colour_Mean_Blue_tpl  := []</l>
+<l>Calculation_Width_tpl             := []</l>
+<l>Calculation_Length_tpl            := []</l>
+<l>Calculation_Area_tpl              := []</l>
+<l>* StopLoop := 0</l>
+<l>* gProductionLoopCounter := 0</l>
+<l>Firstloop := 1</l>
+<l>* create_color_trans_lut ('hsv', 'from_rgb', 8, gColorTransLUTHandle)</l>
+<l>ThreadId := 0</l>
+<l>* UseMultipleColourscpaces := dict_Camera.General.V_Camera_UseMultipleColourscpaces.Value</l>
+<c></c>
+<c></c>
+<c>* init shiftregister data</c>
+<l>* gShiftregister_Init (ImageOrig, gShiftRegisterVector_Good_Bad_ObjectsLastFrame_Thread_CameraVector.at(Index), gShiftregister_Iconic_Cameras_Threads_Lanes_Data.at(Index), gShiftregister_VCamera_VThread_VLane_IImagePartsPerObject.at(Index), gShiftregister_VCamera_VThread_VLane_VMeasuredFeatures_IRegionPerFeature.at(Index), gLanesPerThreadsVector, gShiftregisterVector_ObjectMovement_Thread_CameraVector.at(Index), gShiftregister_Tuple_Cameras_Threads_Lanes_Data.at(Index), gShiftregister_VCamera_VThread_VLane_VMeasureFeature_TResult_TValue.at(Index), gShiftregister_VCamera_VThread_VLane_VImagePartsOffset_TRow_TColumn.at(Index))</l>
+<c></c>
+<c>* For calibration or measure system analyses collect data, other wise reset shiftregister every frame</c>
+<l>Calibration_StoreAccumulatedData := 0</l>
+<l>if(CalibrationObject_MeasureSystemAnalyses_Active or CalibrationObject_MeasureSystemAnalyses_Active)</l>
+<l>    Calibration_StoreAccumulatedData := 1</l>
+<l>endif</l>
+<c></c>
+<c></c>
+<l>while (true)</l>
+<l>    if (not Calibration_StoreAccumulatedData)</l>
+<c>        * Init shiftregister data</c>
+<l>        ShiftregisterInit ()</l>
+<l>*         gShiftregister_Init (App.TeachIn.ImageOrig, gShiftRegisterVector_Good_Bad_ObjectsLastFrame_Thread_CameraVector.at(Index), gShiftregister_Iconic_Cameras_Threads_Lanes_Data.at(Index), gShiftregister_VCamera_VThread_VLane_IImagePartsPerObject.at(Index), gShiftregister_VCamera_VThread_VLane_VMeasuredFeatures_IRegionPerFeature.at(Index), gLanesPerThreadsVector, gShiftregisterVector_ObjectMovement_Thread_CameraVector.at(Index), gShiftregister_Tuple_Cameras_Threads_Lanes_Data.at(Index), gShiftregister_VCamera_VThread_VLane_VMeasureFeature_TResult_TValue.at(Index), gShiftregister_VCamera_VThread_VLane_VImagePartsOffset_TRow_TColumn.at(Index))</l>
+<l>    endif</l>
+<c>    </c>
+<l>    dev_set_color ('cyan')</l>
+<c>    </c>
+<c>    * Get image from framegrabber or load from disk</c>
+<l>    SensorAcquisition (Image, ImageCap, NoMore_ImageLoadedFromDisk, Framegrabber_ChunkData, Camera_DeviceNumberUsedForGrabbing, TimeNeeded, Grab_Time_Needed)</l>
+<c>   </c>
+<l>    App.Sensor.GrabImageMetaData := dict{}</l>
+<l>    App.Sensor.GrabImageMetaData.Camera_DeviceNumberUsedForGrabbing := Camera_DeviceNumberUsedForGrabbing</l>
+<l>    App.Sensor.GrabImageMetaData.GrabLoopCounter := 0</l>
+<c>    </c>
+<l>    if (App.Status.StopProcessingExit )</l>
+<l>        if (Firstloop = 1)</l>
+<l>            Firstloop := 0</l>
+<l>        else</l>
+<l>            break</l>
+<l>        endif </l>
+<l>    endif</l>
+<c>    </c>
+<l>    if (Camera_DeviceNumberUsedForGrabbing = 'ProductImage0000.tif') </l>
+<c>        * Skip image that was used for teach so only production data is used</c>
+<l>        continue</l>
+<l>    endif</l>
+<c>    </c>
+<l>    Shiftregister_ObjectMovement := 0</l>
+<l>    gen_empty_obj (ShiftRegister_ObjectsInLastFrame)</l>
+<l>    gen_empty_obj (Shiftregister_BadObjects)</l>
+<l>    gen_empty_obj (Shiftregister_GoodObjects)</l>
+<c>    </c>
+<l>    Image := App.TeachIn.ImageOrig</l>
+<c></c>
+<c>    </c>
+<l>    get_image_size (Image, Width, _)</l>
+<l>    if (Width = [])</l>
+<l>        break</l>
+<l>    endif</l>
+<c>    </c>
+<l>    Shiftregister_RemoveBadRegionsInEjectBox := 0</l>
+<l>*     global def object vector(4) gShiftRegisterVector_Good_Bad_ObjectsLastFrame_Thread_CameraVector</l>
+<l>*     gShiftRegisterVector_Good_Bad_ObjectsLastFrame_Thread_CameraVector.at(0).at(0).at(0).at(0) := EmptyObject</l>
+<l>*     gShiftregisterVector_ObjectMovement_Thread_CameraVector.at(0).at(0).at(0) := [0,0,0,0,0,0]</l>
+<c>    </c>
+<l>    CameraID := App.Status.Camera.ID</l>
+<l>    ThreadID := 0</l>
+<l>    LaneID   := App.ThreadManagement.Threads.[ThreadID][0]</l>
+<l>    App.Shiftregister.Cameras.[CameraID].Threads.[ThreadID].Lanes.[LaneID].ObjectMovement := [0, 0, 0, 0, 0, 0]</l>
+<l>    App.Shiftregister.Cameras.[CameraID].Threads.[ThreadID].Lanes.[LaneID].Good_Bad_ObjectsLastFrame := EmptyObject</l>
+<c>    </c>
+<c>    * when starting up shiftregister is automatically filled for a few frames</c>
+<l>*     Shiftregister_TriggerVector_Rebuild_Kill := [0,0]</l>
+<l>*     gProcessingLoopcounter.at(CameraId) := gProductionLoopCounter</l>
+<l>*     gShiftregister_RebuildDataVector.at(CameraId).at(0) := [2,1]</l>
+<l>    App.Shiftregister.Rebuild.Status     := 0</l>
+<l>    App.Shiftregister.Rebuild.Kill       := 0</l>
+<l>    App.Shiftregister.Rebuild.StartIndex := -1</l>
+<l>    App.Shiftregister.Rebuild.EndIndex   := -1</l>
+<c>    </c>
+<l>*     ShiftregisterRebuildCalc (TriggerRebuild, TriggerKill, StepWidthNumberFramesToRebuild)</l>
+<l>*     Shiftregister_RebuildCalc (Shiftregister_TriggerVector_Rebuild_Kill[0], Shiftregister_TriggerVector_Rebuild_Kill[1], gProcessingLoopcounter.at(CameraId), \
+                               gShiftregister_RebuildDataVector.at(CameraId), 8, gShiftregister_RebuildDataVector.at(CameraId))</l>
+<c>    </c>
+<l>*     gTablet0VariablesValues[16]:= App.Format.TabletInspection.TeachIn.V_ProductLength_InMovementDirection</l>
+<c>    </c>
+<c>    </c>
+<c>    </c>
+<l>*     TeachInMode := 1</l>
+<l>    gLocalCameraNumberUsed := 0</l>
+<l>    gWorkOnFramegrabber_Enable := 0</l>
+<l>    gMachineStateDespriptors := []</l>
+<l>    gMachineStateValues := []</l>
+<l>    gShiftregisterDescriptors := []</l>
+<l>    gShiftregisterValues := []</l>
+<c>    </c>
+<l>*     gen_empty_obj (ThreadUpstreamProcessingResult0)</l>
+<l>*     gen_empty_obj (ThreadUpstreamProcessingResult1)</l>
+<l>    gMiddleThreadActive := 0</l>
+<l>    VIThreadUpstreamProcessingResult.at(0) := EmptyObject</l>
+<c>    **************************************************************************  </c>
+<l>    if (gStopAtProcess)   </l>
+<l>        stop()            </l>
+<l>        gStopAtProcess := 0</l>
+<l>    endif   </l>
+<c>    </c>
+<c>    </c>
+<c>    * Use specific dictionary to handle results of lines in thread</c>
+<l>    ProcessingThreadID := 0</l>
+<c>    </c>
+<l>    App.Inspection := dict{}</l>
+<l>    App.Inspection.Threads := dict{}</l>
+<l>    App.Inspection.Threads.[ProcessingThreadID] := dict{}</l>
+<c>    </c>
+<l>    InspectionProcessOneLine (Image, ProcessingThreadID, ChannelSelector)</l>
+<c>    </c>
+<l>    gProcessOneLine (Image, gRinnenROIs.at((gLocalCameraNumberUsed)), gEjectROIs.at((gLocalCameraNumberUsed)), gShiftRegisterVector_Good_Bad_ObjectsLastFrame_Thread_CameraVector.at(CameraId).at(ProcessingThread), gShiftregister_Iconic_Cameras_Threads_Lanes_Data.at(CameraId).at(ProcessingThread), gShiftregister_VCamera_VThread_VLane_IImagePartsPerObject.at(CameraId).at(ProcessingThread), gShiftregister_VCamera_VThread_VLane_VMeasuredFeatures_IRegionPerFeature.at(CameraId).at(ProcessingThread), VIThreadUpstreamProcessingResult, ImageOrig_RGB.at(CameraId).at(ProcessingThread), ImageOrig_Sequencer_RGB.at(CameraId).at(ProcessingThread), gShiftRegisterVector_Good_Bad_ObjectsLastFrame_Thread_CameraVector.at(CameraId).at(ProcessingThread), gErrorObjectVector_Colour_Width_Diameter_Spots_Area_Length_ThreadVector.at(ProcessingThread), gGoodObjectVector_TabletIndividual_WidthGood_ThreadVector.at(ProcessingThread), gShiftregister_VCamera_VThread_VLane_IImagePartsPerObject.at(CameraId).at(ProcessingThread), gShiftregister_VCamera_VThread_VLane_VMeasuredFeatures_IRegionPerFeature.at(CameraId).at(ProcessingThread), gErrorObjectDataToStore_VCamera_VThread_VLane_IImagePartsPerObject.at(CameraId).at(ProcessingThread), gErrorObjectDataToStore_VCamera_VThread_VLane_IRegionPerFeature.at(CameraId).at(ProcessingThread), gShiftregister_VCamera_VThread_VEjectROI_Adapted.at(CameraId).at(ProcessingThread), gProducts_IMeasuredRegionsPerFeature.at(CameraId).at(ProcessingThread), gLanesPerThreadsVector.at(ProcessingThread), gColourClassificationHandle, gShiftregisterVector_ObjectMovement_Thread_CameraVector.at(CameraId).at(ProcessingThread), ProcessingThread, gWorkOnFramegrabber_Enable, gWindowVector.at(CameraId), Shiftregister_RemoveBadRegionsInEjectBox, gShiftregister_RebuildDataVector.at(CameraId).at(0), TeachInMode, gShiftregister_Tuple_Cameras_Threads_Lanes_Data.at(CameraId).at(ProcessingThread), gShiftregister_VCamera_VThread_VLane_VMeasureFeature_TResult_TValue.at(CameraId).at(ProcessingThread), gShiftregister_VCamera_VThread_VLane_VImagePartsOffset_TRow_TColumn.at(CameraId).at(ProcessingThread), gCalibration_VTCamera_VTLane_VTPixToMM_XY.at(Camera_DeviceNumberUsedForGrabbing), GrabImageMetaData, TimeNeeded_Processing, gShiftregister_EjectFoundPerLine_Vector.at(ProcessingThread), gShiftregister_EjectGoodFoundPerLine_Vector.at(ProcessingThread), gShiftregister_EjectObjectInMovementUncompensatedEjectFound_Vector.at(ProcessingThread), gShiftregister_CriticalInspectionResultFoundPerLine_Vector.at(ProcessingThread), gShiftregisterVector_ObjectMovement_Thread_CameraVector.at(CameraId).at(ProcessingThread), gShiftregister_EjectPositionMovementCompensationVector.at(CameraId).at(ProcessingThread), Calculation_Colour_Mean_Red_Vector.at(ProcessingThread), Calculation_Colour_Mean_Green_Vector.at(ProcessingThread), Calculation_Colour_Mean_Blue_Vector.at(ProcessingThread), Calculation_Width_Vector.at(ProcessingThread), Calculation_Length_Vector.at(ProcessingThread), Calculation_Area_Vector.at(ProcessingThread), gShiftregister_VCamera_VThread_VLane_VMeasureFeature_TResult_TValue.at(CameraId).at(ProcessingThread), gShiftregister_VCamera_VThread_VLane_VImagePartsOffset_TRow_TColumn.at(CameraId).at(ProcessingThread), gShiftregister_VThread_VLane_IndicesInEjectBoxFound.at(ProcessingThread), gErrorObjectDataToStore_VCamera_VThread_VLane_VMeasureFeature_TResult_TValue.at(CameraId).at(ProcessingThread), gErrorObjectDataToStore_VCamera_VThread_VLane_VImagePartsOffset_TRow_TColumn.at(CameraId).at(ProcessingThread), gProducts_VT_MeasureResult_MeasureValues, Calculation_FeatureAllValues)</l>
+<l>    gCalibration_TeachIn_CollectData (gProducts_IMeasuredRegionsPerFeature.at(CameraId).at(ProcessingThread), ImageOrig_RGB, gRinnenROIs, gEjectROIs, Calibration_StoreAccumulatedData, Calibration_TeachIn_Active, CalibrationObject_MeasureSystemAnalyses_Active, gROI_NumberOfPos, gProducts_VT_MeasureResult_MeasureValues, Camera_DeviceNumberUsedForGrabbing, gErrorObjectDataToStore_VCamera_VThread_VLane_VMeasureFeature_TResult_TValue.at(CameraId).at(ProcessingThread), Calibration_VCamera_VLane_VMeasureFeature_TResult_TValue, Calibration_VCamera_VLane_VMeasureFeature_TResult_TValue)</l>
+<c>    </c>
+<l>    if (Calibration_StoreAccumulatedData = 1)</l>
+<c>        * get information if product was found in eject box and remove data from shiftregister</c>
+<l>        EjectGoodBad := [gShiftregister_EjectFoundPerLine_Vector.at(ProcessingThread), gShiftregister_EjectGoodFoundPerLine_Vector.at(ProcessingThread)]</l>
+<l>        tuple_sum (EjectGoodBad, EjectGoodBad)</l>
+<l>        if (EjectGoodBad &gt;0)</l>
+<c>            * chack at what roi position to reduce</c>
+<l>            tuple_greater_equal_elem (gShiftregister_EjectFoundPerLine_Vector.at(ProcessingThread) , 1, Greatereq)</l>
+<l>            tuple_find (Greatereq, 1, ROIToRemoveFrom)</l>
+<l>            if(ROIToRemoveFrom = -1) // if not bad queue it must be good queue </l>
+<l>                tuple_greater_equal_elem (gShiftregister_EjectGoodFoundPerLine_Vector.at(ProcessingThread) , 1, Greatereq)</l>
+<l>                tuple_find (Greatereq, 1, ROIToRemoveFrom)  </l>
+<l>            endif</l>
+<c>            </c>
+<l>            gEjectQueue.at(CameraId)[0] := ROIToRemoveFrom</l>
+<l>*             stop() </l>
+<c>            * EjectROIToRemoveFrom needs to be handled slightly different compared to doproccessing. Otherwise indexing goes wrong</c>
+<l>            EjectROIToRemoveFrom := ProcessingThread</l>
+<c>            *                     gShiftRegister_RemoveDataFromLine (gEjectROIs.at((gLocalCameraNumberUsed)), Image, ShiftRegisterVector_Good_Bad_ObjectsLastFrame_Thread_CameraVector, Shiftregister_VThread_VLane_IImagePartsPerObject, Shiftregister_VThread_VLane_VMeasuredFeatures_IRegionPerFeature, Shiftregister_VCamera_VThread_VEjectROI_Adapted.at(CameraId), ShiftRegisterVector_Good_Bad_ObjectsLastFrame_Thread_CameraVector, Shiftregister_VThread_VLane_IImagePartsPerObject, Shiftregister_VThread_VLane_VMeasuredFeatures_IRegionPerFeature, EjectROIToRemoveFrom, Shiftregister_EjectPositionMovementCompensationVector.at(CameraId), gLanesPerThreadsVector, Shiftregister_VCamera_VThread_VLane_VMeasureFeature_TResult_TValue.at(CameraId), Shiftregister_VCamera_VThread_VLane_VImagePartsOffset_TRow_TColumn.at(CameraId), Shiftregister_VThread_VLane_IndicesInEjectBoxFound, Active360Inspection, TimeNeeded_ShiftRegister, Shiftregister_VCamera_VThread_VLane_VMeasureFeature_TResult_TValue.at(CameraId), Shiftregister_VCamera_VThread_VLane_VImagePartsOffset_TRow_TColumn.at(CameraId))</c>
+<l>            gShiftRegister_RemoveDataFromLine (gEjectROIs.at((gLocalCameraNumberUsed)), ImageOrig_RGB.at(CameraId).at(0), gShiftRegisterVector_Good_Bad_ObjectsLastFrame_Thread_CameraVector.at(CameraId), gShiftregister_VCamera_VThread_VLane_IImagePartsPerObject.at(CameraId), gShiftregister_VCamera_VThread_VLane_VMeasuredFeatures_IRegionPerFeature.at(CameraId), gShiftregister_VCamera_VThread_VEjectROI_Adapted.at(CameraId), gShiftRegisterVector_Good_Bad_ObjectsLastFrame_Thread_CameraVector.at(CameraId), gShiftregister_VCamera_VThread_VLane_IImagePartsPerObject.at(CameraId), gShiftregister_VCamera_VThread_VLane_VMeasuredFeatures_IRegionPerFeature.at(CameraId), gEjectQueue.at(CameraId)[0], gShiftregister_EjectPositionMovementCompensationVector.at(CameraId), gLanesPerThreadsVector, gShiftregister_VCamera_VThread_VLane_VMeasureFeature_TResult_TValue.at(CameraId), gShiftregister_VCamera_VThread_VLane_VImagePartsOffset_TRow_TColumn.at(CameraId), gShiftregister_VThread_VLane_IndicesInEjectBoxFound, TimeNeeded_ShiftRegister, gShiftregister_VCamera_VThread_VLane_VMeasureFeature_TResult_TValue.at(CameraId), gShiftregister_VCamera_VThread_VLane_VImagePartsOffset_TRow_TColumn.at(CameraId))</l>
+<l>        endif </l>
+<l>    endif</l>
+<c>    </c>
+<c>    </c>
+<c>    **************************************************************************            </c>
+<l>    gVisuDevWindowOrNonDevWindow := 0</l>
+<l>    set_window_param (WindowHandle, 'flush', 'false')</l>
+<l>    gSelectAndDisplay_MultichannelImage (ImageOrig, Image_SelectedChannels, Segmentation_SelectSegmentationImage_BottomLight0_TopLight1_UVLight2, 1, 1)</l>
+<l>    VisualisationOfObjectRegions (ImageOrig_RGB.at(CameraId).at(ProcessingThread), gRinnenROIs.at(CameraId), gEjectROIs.at(CameraId), \
+                                  gGoodObjectVector_TabletIndividual_WidthGood_ThreadVector, gErrorObjectVector_Colour_Width_Diameter_Spots_Area_Length_ThreadVector, \
+                                  gWindowVector.at(CameraId), gShiftregister_EjectFoundPerLine_Vector, gVisuDevWindowOrNonDevWindow, \
+                                  gShiftregister_EjectPositionMovementCompensationVector.at(CameraId), VisualisationTime)</l>
+<c>    </c>
+<l>    convert_vector_to_tuple (Calculation_Colour_Mean_Red_Vector, Calculation_Colour_Mean_Red)</l>
+<l>    Calculation_Colour_Mean_Red_tpl := [Calculation_Colour_Mean_Red_tpl, Calculation_Colour_Mean_Red]</l>
+<c></c>
+<l>    convert_vector_to_tuple (Calculation_Colour_Mean_Green_Vector, Calculation_Colour_Mean_Green)</l>
+<l>    Calculation_Colour_Mean_Green_tpl := [Calculation_Colour_Mean_Green_tpl, Calculation_Colour_Mean_Green]</l>
+<c></c>
+<l>    convert_vector_to_tuple (Calculation_Colour_Mean_Blue_Vector, Calculation_Colour_Mean_Blue)</l>
+<l>    Calculation_Colour_Mean_Blue_tpl := [Calculation_Colour_Mean_Blue_tpl, Calculation_Colour_Mean_Blue]</l>
+<c></c>
+<l>    convert_vector_to_tuple (Calculation_Width_Vector, Calculation_Width)</l>
+<l>    Calculation_Width_tpl := [Calculation_Width_tpl, Calculation_Width]</l>
+<c>    </c>
+<l>    convert_vector_to_tuple (Calculation_Length_Vector, Calculation_Length)</l>
+<l>    Calculation_Length_tpl := [Calculation_Length_tpl, Calculation_Length]</l>
+<c>    </c>
+<l>    convert_vector_to_tuple (Calculation_Area_Vector, Calculation_Area)</l>
+<l>    Calculation_Area_tpl := [Calculation_Area_tpl, Calculation_Area]</l>
+<c>    *</c>
+<l>    gen_rectangle1 (RectangleOK, Height-299, Width/2-230, Height-1, Width/2+230)</l>
+<c>    </c>
+<l>    dev_get_system ('engine_environment', EnvironmentIsHDevelop)</l>
+<l>    if (EnvironmentIsHDevelop = 'HDevelop') </l>
+<l>        dev_disp_text (gProductionLoopCounter, 'window', 'top', 'left', 'blue', ['box_color','box_padding'], ['#ffffff77',5])</l>
+<l>        dev_set_color ('red')</l>
+<l>        dev_display (RectangleOK)</l>
+<l>        VisualizeInMiddleOfRegion_String (ImageOrig, RectangleOK, WindowHandle, dict_MessagesInLocalLanguage.HDEV_TeachInStopCalculation, 'black')</l>
+<l>    endif</l>
+<c>    </c>
+<l>    flush_buffer (WindowHandle)</l>
+<l>    set_window_param (WindowHandle, 'flush', 'true')</l>
+<l>    Btn1 := dict_MessagesInLocalLanguage.HDEV_Cancel</l>
+<l>    Btn2 := dict_MessagesInLocalLanguage.HDEV_TeachInStopCalculation</l>
+<l>    Btn9HelpText := dict_MessagesInLocalLanguage.HDEV_TeachInWhileCalculationHint + ' ' + dict_MessagesInLocalLanguage.HDEV_PictureNumber + ': ' + (gProductionLoopCounter+1)</l>
+<l>    ButtonsIntervaceViaFile_COPY_1 (InterfaceToGuiFileAndPath, 0, Btn1, Btn2, 0, 0, 0, 0, 0, 0, Btn9HelpText, 0, 0, 0, 0)</l>
+<l>    UserIO_MonitorFile_GetBtnPress (InterfaceFromGuiFileAndPath, BtnPressed)</l>
+<c>    </c>
+<l>    dev_error_var (ErrorVar, 1)</l>
+<l>    dev_set_check ('~give_error')</l>
+<l>    get_mposition (WindowHandle, Row, Column, Button)</l>
+<l>    Error := ErrorVar</l>
+<l>    dev_set_check ('give_error')</l>
+<l>    if (Error = 2 or BtnPressed #[])</l>
+<l>        if (EnvironmentIsHDevelop = 'HDevelop')</l>
+<l>            if(BtnPressed = 2) // was in hdvelop but someone presse in gui the button</l>
+<l>                IsInside := 0</l>
+<l>            else</l>
+<l>                test_region_point (RectangleOK, Row, Column, IsInside)</l>
+<l>            endif</l>
+<l>        else</l>
+<l>            IsInside := 0</l>
+<l>        endif</l>
+<l>        if (IsInside = 1 or BtnPressed = 2)</l>
+<l>            if (gProductionLoopCounter &gt; 0)</l>
+<l>                break</l>
+<l>            endif</l>
+<l>        endif</l>
+<l>        if (BtnPressed = 1)</l>
+<l>            Exitcondition := 1</l>
+<l>            break</l>
+<l>        endif</l>
+<l>    endif</l>
+<l>endwhile</l>
+<c>*</c>
+<l>if (SwitchIdx &lt; |Switch_List|)</l>
+<l>    SwitchIdx := SwitchIdx + 1</l>
+<l>endif   </l>
+<c></c>
+<c></c>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="TeachInDataCalculationBasedOnRecordedImages">
+<parameters>
+<parameter id="ChannelSelector"/>
+<parameter id="HelpTextString"/>
+</parameters>
+</docu>
+</procedure>
+</hdevelop>

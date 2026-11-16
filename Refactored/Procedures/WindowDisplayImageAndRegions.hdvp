@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="25.11.0.0">
+<procedure name="WindowDisplayImageAndRegions">
+<interface/>
+<body>
+<c>* WindowDisplayImageAndRegions</c>
+<c>* ----------------------------------------------------</c>
+<c></c>
+<l>global tuple App</l>
+<c></c>
+<l>RinnenROIs   := App.ROIs.Lanes.[App.Status.Camera.ID]</l>
+<l>EjectROIs    := App.ROIs.Ejects.[App.Status.Camera.ID]</l>
+<l>WindowHandle := App.Visualization.Windows.[App.Status.Camera.ID]</l>
+<c></c>
+<l>ChannelSelector := 1</l>
+<l>TeachInSelectAndDisplayMultiChannelImage (App.Visualization.ProductImage, ImageSelectedChannel, ImageDisplay, ChannelSelector, 1, 1, 1)</l>
+<c></c>
+<l>set_color (WindowHandle, 'blue')</l>
+<l>disp_region (RinnenROIs, WindowHandle)</l>
+<l>set_color (WindowHandle, 'gray')</l>
+<l>disp_region (EjectROIs, WindowHandle)</l>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="WindowDisplayImageAndRegions">
+<parameters/>
+</docu>
+</procedure>
+</hdevelop>

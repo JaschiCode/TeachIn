@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="25.11.0.0">
+<procedure name="InspectionSegmentationRollsShiftMean">
+<interface>
+<ic>
+<par name="GapsCenterTopLight" base_type="ctrl" dimension="0"/>
+<par name="GapsCenterBackLight" base_type="ctrl" dimension="0"/>
+</ic>
+<oc>
+<par name="ShiftMean" base_type="ctrl" dimension="0"/>
+</oc>
+</interface>
+<body>
+<c>* InspectionSegmentationRollsShiftMean</c>
+<c>* ----------------------------------------------------------------</c>
+<c></c>
+<c>* Initialize output variables</c>
+<l>ShiftMean := []</l>
+<c></c>
+<l>if (|GapsCenterBackLight| &gt; 0 and |GapsCenterTopLight| &gt; 0)</l>
+<c>    </c>
+<c>    * Concept is to calculate for every element in image backlight a corrosponding minimal distance (if not bigger then x) and get mean of all results</c>
+<l>    GapDistances_Found := []</l>
+<c>    </c>
+<l>    for Index_Cnt := 0 to |GapsCenterBackLight| -1 by 1</l>
+<l>        GapBackLight := GapsCenterBackLight[Index_Cnt]</l>
+<l>        Gaps := GapsCenterTopLight - gen_tuple_const (|GapsCenterTopLight|, GapBackLight)</l>
+<c>        </c>
+<c>        * Eliminate all negative values in gaps</c>
+<l>        GapsGreater := Gaps [&gt;=] -5    </l>
+<l>        IndRemove := find (GapsGreater, 0)</l>
+<l>        Gaps := remove (Gaps, IndRemove)</l>
+<l>        Gaps := sort (Gaps)</l>
+<l>        MinGap := []</l>
+<l>        if (|Gaps| &gt; 0)</l>
+<l>            MinGap := Gaps[0]</l>
+<l>        endif</l>
+<l>        if(MinGap &lt; 30 and  MinGap &gt; -5) </l>
+<c>            * Spec here the min and max movement of roll (-5 up to 30)</c>
+<l>            GapDistance := MinGap</l>
+<l>            GapDistances_Found := [GapDistances_Found, GapDistance]</l>
+<l>        endif</l>
+<l>    endfor</l>
+<c>    </c>
+<l>    if(|GapDistances_Found| &gt; 0)</l>
+<l>        ShiftMean := round(mean (GapDistances_Found))</l>
+<l>    endif</l>
+<c> </c>
+<l>endif</l>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="InspectionSegmentationRollsShiftMean">
+<parameters>
+<parameter id="GapsCenterBackLight"/>
+<parameter id="GapsCenterTopLight"/>
+<parameter id="ShiftMean"/>
+</parameters>
+</docu>
+</procedure>
+</hdevelop>

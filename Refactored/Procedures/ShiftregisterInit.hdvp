@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="25.11.0.0">
+<procedure name="ShiftregisterInit">
+<interface/>
+<body>
+<c>* ShiftregisterInit</c>
+<c>* ------------------------------------------</c>
+<c>* The data description for the ShiftRegisterVector_Good_Bad_ObjectsLastFrame_ThreadVector is as follows:</c>
+<c>* First Dimenstion: camera specific- data in relation to cameras - done in loop outside this procedure</c>
+<c>* Second Dimension: thread specific- data is in relation to processes that operate individual lanes</c>
+<c>* Third dimension: lane specific- data is in relation to lanes that hold data for shift register</c>
+<c>* Fourth dimension: shift register specific- data is in relation to good and bad objects in shift register as well as the objects that were found in the last frame,</c>
+<c></c>
+<l>global tuple App</l>
+<c></c>
+<l>gen_empty_obj (EmptyObject)</l>
+<c></c>
+<l>App.Shiftregister := dict{}</l>
+<c></c>
+<l>App.Shiftregister.Cameras := dict{}</l>
+<l>App.Shiftregister.Cameras.[App.Status.Camera.ID] := dict{}</l>
+<c></c>
+<l>App.Shiftregister.Cameras.[App.Status.Camera.ID].CriticalResultFound := false</l>
+<c></c>
+<l>App.Shiftregister.Cameras.[App.Status.Camera.ID].Threads := dict{}</l>
+<c></c>
+<c>* Shiftregister for good bad results for lanes in threads</c>
+<l>get_dict_param (App.ThreadManagement.Threads, 'keys', [], Threads)</l>
+<l>for IdxThread := 0 to |Threads|-1 by 1</l>
+<l>    App.Shiftregister.Cameras.[App.Status.Camera.ID].Threads.[Threads[IdxThread]] := dict{}</l>
+<l>    App.Shiftregister.Cameras.[App.Status.Camera.ID].Threads.[Threads[IdxThread]].Lanes := dict{}</l>
+<c>    </c>
+<l>    Lanes := App.ThreadManagement.Threads.[IdxThread]</l>
+<l>    for IdxLane := 0 to |Lanes|-1 by 1</l>
+<l>        App.Shiftregister.Cameras.[App.Status.Camera.ID].Threads.[Threads[IdxThread]].Lanes.[Lanes[IdxLane]] := dict{}</l>
+<l>        App.Shiftregister.Cameras.[App.Status.Camera.ID].Threads.[Threads[IdxThread]].Lanes.[Lanes[IdxLane]].Results := dict{}</l>
+<l>        for IdxGoodBad := 0 to 1 by 1</l>
+<l>            App.Shiftregister.Cameras.[App.Status.Camera.ID].Threads.[Threads[IdxThread]].Lanes.[Lanes[IdxLane]].Results.[IdxGoodBad] := dict{}</l>
+<l>            App.Shiftregister.Cameras.[App.Status.Camera.ID].Threads.[Threads[IdxThread]].Lanes.[Lanes[IdxLane]].Results.[IdxGoodBad].GoodBadValue  := []</l>
+<l>            App.Shiftregister.Cameras.[App.Status.Camera.ID].Threads.[Threads[IdxThread]].Lanes.[Lanes[IdxLane]].Results.[IdxGoodBad].GoodBadObject := EmptyObject</l>
+<l>        endfor</l>
+<l>    endfor</l>
+<l>endfor</l>
+<c></c>
+<c>* Shiftregister_VThread_VLane_VMeasureFeature_TResult_TValue</c>
+<l>for IdxThread := 0 to |Threads|-1 by 1</l>
+<c>    </c>
+<l>    Lanes := App.ThreadManagement.Threads.[IdxThread]</l>
+<c></c>
+<l>    for IdxLane := 0 to |Lanes|-1 by 1</l>
+<c></c>
+<l>        App.Shiftregister.Cameras.[App.Status.Camera.ID].Threads.[Threads[IdxThread]].Lanes.[Lanes[IdxLane]].GoodBadObjectsLastFrame := dict{}</l>
+<l>        for IdxFrame := 0 to 3 by 1</l>
+<l>            App.Shiftregister.Cameras.[App.Status.Camera.ID].Threads.[Threads[IdxThread]].Lanes.[Lanes[IdxLane]].GoodBadObjectsLastFrame.[IdxFrame] := EmptyObject</l>
+<l>        endfor</l>
+<c>        </c>
+<l>        App.Shiftregister.Cameras.[App.Status.Camera.ID].Threads.[Threads[IdxThread]].Lanes.[Lanes[IdxLane]].ObjectMovement := []</l>
+<c>        </c>
+<l>        App.Shiftregister.Cameras.[App.Status.Camera.ID].Threads.[Threads[IdxThread]].Lanes.[Lanes[IdxLane]].MeasureFeature := dict{}</l>
+<l>        App.Shiftregister.Cameras.[App.Status.Camera.ID].Threads.[Threads[IdxThread]].Lanes.[Lanes[IdxLane]].MeasureFeature.TResult_TValue := dict{}</l>
+<l>        App.Shiftregister.Cameras.[App.Status.Camera.ID].Threads.[Threads[IdxThread]].Lanes.[Lanes[IdxLane]].MeasureFeature.TResult_TValue.[0] := []</l>
+<c>        </c>
+<l>        App.Shiftregister.Cameras.[App.Status.Camera.ID].Threads.[Threads[IdxThread]].Lanes.[Lanes[IdxLane]].MeasureFeature.IImagePartsPerObject := EmptyObject</l>
+<l>        App.Shiftregister.Cameras.[App.Status.Camera.ID].Threads.[Threads[IdxThread]].Lanes.[Lanes[IdxLane]].MeasureFeature.VImagePartsOffset_TRow_TColumn := []</l>
+<l>        App.Shiftregister.Cameras.[App.Status.Camera.ID].Threads.[Threads[IdxThread]].Lanes.[Lanes[IdxLane]].MeasureFeature.IRegionPerFeature := EmptyObject</l>
+<l>    endfor</l>
+<l>endfor</l>
+<c></c>
+<c></c>
+<c>* Add information about status of rebuild shiftregister content</c>
+<l>ShiftregisterRebuildInit ()</l>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="ShiftregisterInit">
+<parameters/>
+</docu>
+</procedure>
+</hdevelop>
