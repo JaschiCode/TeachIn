@@ -33,7 +33,7 @@
 <c></c>
 <l>get_image_size (ImageValue, ImageWidth, _)</l>
 <l>if (|ImageWidth| &gt; 0)</l>
-<c>* RGB-Kanaele fuer die Farbhilfe aus dem TopLight-HSV-Bild erzeugen.</c>
+<c>* Build RGB channels from the valid TopLight HSV image for optional color support.</c>
 <l>    trans_to_rgb (ImageHue, ImageValue, ImageSaturation, ImageRed, ImageGreen, ImageBlue, 'hls')</l>
 <l>    reduce_domain (ImageValue, LanesROIsUnion, ImageValueReduced)</l>
 <c>    </c>
@@ -47,7 +47,7 @@
 <l>        ImageForProductOnRollMeasurement := App.Inspection.Threads.[ProcessingThreadID].Images.BackLight.Mono</l>
 <l>        break</l>
 <l>    case 2: </l>
-<c>        * TopLight UV </c>
+<c>        * Align roll-gap regions and row coordinates with the UV image before measurement.</c>
 <l>        if (|ShiftMean| == 0)</l>
 <l>            ShiftMean := 0</l>
 <l>        endif</l>
@@ -73,12 +73,12 @@
 <l>    for IdxLane := 0 to NumLanes-1 by 1</l>
 <l>        select_obj (LanesROIs, LanesROI, IdxLane+1) </l>
 <c>        </c>
-<c>        * todo: replace by ROIs given by FPGA</c>
+<c>        * TODO: Replace measurement-based ROIs with FPGA-provided ROIs when available.</c>
 <l>        InspectionSegmentationFindProductOnRolls (ImageForProductOnRollMeasurement, LanesROI, ProcessingThreadID, IdxLane)</l>
 <l>    endfor</l>
 <l>    union1 (App.Inspection.Threads.[ProcessingThreadID].Regions.Tablets.ROIs, App.Inspection.Threads.[ProcessingThreadID].Regions.Tablets.ROIsUnion)</l>
 <c>    </c>
-<c>    * Segment the tablet regions with dynamic threshold or without</c>
+<c>    * Segment the tablet ROIs using either dynamic or fixed thresholding.</c>
 <l>    if(SegmentationDynThresholdActive)</l>
 <l>        InspectionSegmentationDynThreshold (ProcessingThreadID, TimeNeeded)</l>
 <l>    else</l>
@@ -91,15 +91,16 @@
 <l>    if (ColorSupportIsActive)</l>
 <l>        SegmentationColorSupport (ImageHSV, ImageRed, ImageGreen, ImageBlue, LanesROIsUnion, RegionSegmentedUnion, RegionSegmented, RegionColorSupport)</l>
 <l>    else</l>
-<c>        * Ohne aktive Farbhilfe die Basissegmentierung unveraendert weitergeben.</c>
+<c>        * Preserve the base segmentation when color support is disabled.</c>
 <l>        RegionSegmented := RegionSegmentedUnion</l>
 <l>    endif</l>
 <c>       </c>
 <c>    </c>
 <l>else</l>
-<c>    * Ohne gueltiges TopLight-Bild bleibt die Segmentierung leer.</c>
+<c>    * Keep segmentation empty when the TopLight image is unavailable.</c>
 <l>endif</l>
 <c></c>
+<c>* Connect and filter the final regions, including any color-support additions.</c>
 <l>connection (RegionSegmented, RegionSegmented)</l>
 <l>select_shape (RegionSegmented, RegionSegmented, 'area', 'and', AreaMin, 1e6)</l>
 <c></c>
@@ -117,3 +118,4 @@
 </parameters>
 </docu>
 </procedure>
+</hdevelop>
