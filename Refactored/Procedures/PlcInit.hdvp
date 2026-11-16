@@ -69,15 +69,15 @@
 <l>    endfor</l>
 <l>    Ind := find(App.Plc.Socket.Client, -1)</l>
 <l>    if (|Ind| == 0 or Ind &lt; 0)</l>
-<l>        PLC_FailedToConnect := 0</l>
+<l>        App.Plc.Status.FailedToConnect := false</l>
 <l>    endif</l>
 <l>else</l>
-<c>    * Work offline if WorkOnPlcEnable is not set to true</c>
+<c>    * Offline-Betrieb ist kein Verbindungsfehler.</c>
 <l>    App.Plc.Socket.Client := []</l>
 <l>    for IdxPlc := 0 to |App.Plc.Socket.Ip|-1 by 1</l>
 <l>        App.Plc.Socket.Client[IdxPlc] := -1</l>
 <l>    endfor</l>
-<l>    PLC_FailedToConnect := 0</l>
+<l>    App.Plc.Status.FailedToConnect := false</l>
 <l>endif</l>
 <c></c>
 <l>return ()</l>
