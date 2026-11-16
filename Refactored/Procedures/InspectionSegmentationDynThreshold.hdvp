@@ -4,14 +4,11 @@
 <interface>
 <ic>
 <par name="ProcessingThreadID" base_type="ctrl" dimension="0"/>
-</ic>
-<oc>
 <par name="TimeNeeded" base_type="ctrl" dimension="0"/>
-</oc>
+</ic>
 </interface>
 <body>
 <c>* InspectionSegmentationDynThreshold</c>
-<c>* ------------------------------------------------------------------------------------------</c>
 <c>* This procedure receives positions of spaces between the rolls (assembly line)</c>
 <c>* For every position, a line is placed to search for edges ([0, 1] or [1, 0] transitions)</c>
 <c>* The edge positions are used to create rectangles around capsules</c>
@@ -27,6 +24,13 @@
 <l>Image            := App.Inspection.Threads.[ProcessingThreadID].Images.TopLight.HSV.Value</l>
 <l>TabletsROIsUnion := App.Inspection.Threads.[ProcessingThreadID].Regions.Tablets.ROIsUnion</l>
 <l>AreaMin          := App.Format.TabletInspection.Segmentation.V_Segmentation_SmallestSingleObjectFilter_Area_Min.Value</l>
+<l>get_dict_param (App.Inspection.Threads.[ProcessingThreadID].Segmentation, 'key_exists', 'TabletsAvailable', TabletsAvailableExists)</l>
+<l>gen_empty_obj (Reg)</l>
+<l>if (TabletsAvailableExists)</l>
+<l>    TabletsAvailable := App.Inspection.Threads.[ProcessingThreadID].Segmentation.TabletsAvailable</l>
+<l>else</l>
+<l>    TabletsAvailable := 0</l>
+<l>endif</l>
 <c></c>
 <c>* Parameters for image processing</c>
 <l>DynThreshold := 8      // threshold for dynamic threshold</l>
@@ -41,6 +45,7 @@
 <c>******************************************</c>
 <c>* Image Processing</c>
 <c>******************************************</c>
+<l>if (TabletsAvailable)</l>
 <c>* Bin for dark areas because of incident light</c>
 <l>reduce_domain (Image, TabletsROIsUnion, ImageReduced)</l>
 <l>mean_image (ImageReduced, ImageMean, MeanSize, MeanSize)</l>
@@ -77,7 +82,7 @@
 <l>union1 (Reg, Reg)</l>
 <l>connection (Reg, Reg)</l>
 <l>select_shape (Reg, Reg, ['area', 'height', 'width'], 'and', [AreaMin, HeightSelect2, HeightSelect2], [1e6, 1e6, 1e6]) // last clean up</l>
-<c></c>
+<l>endif</l>
 <c></c>
 <c>* Set variables to dictionary</c>
 <l>App.Inspection.Threads.[ProcessingThreadID].Regions.Tablets.Segmented := Reg</l>
@@ -85,9 +90,7 @@
 <l>count_seconds (TimeEnd)</l>
 <l>TimeNeeded := (TimeEnd - TimeStart) * 1000.0</l>
 <c></c>
-<c></c>
 <l>return ()</l>
-<c></c>
 </body>
 <docu id="InspectionSegmentationDynThreshold">
 <parameters>
@@ -96,4 +99,3 @@
 </parameters>
 </docu>
 </procedure>
-</hdevelop>
