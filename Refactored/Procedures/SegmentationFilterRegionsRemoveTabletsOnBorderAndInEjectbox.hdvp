@@ -15,73 +15,58 @@
 </ic>
 </interface>
 <body>
-<c>* TeachInRemoveTabletsOnBorderAndInEjectbox</c>
-<c>* --------------------------------------------------</c>
-<c></c>
-<l>global tuple App</l>
+<c>* SegmentationFilterRegionsRemoveTabletsOnBorderAndInEjectbox</c>
+<c>* ------------------------------------------------------------</c>
+<c>* Liefert ganze Tablet-Objekte, die den gewaehlten Lane-Rand beruehren.</c>
 <c></c>
 <l>gen_empty_obj (EmptyObject)</l>
-<c></c>
-<c></c>
-<c>* Initialize output variables</c>
 <l>RegionTabletsOnBorder := EmptyObject</l>
 <c></c>
-<c></c>
-<c>* First generate on ROI on upper and lower level an region. Objects that are in that region are selected. </c>
-<c>* remove regions on the edge of the RinnenROI</c>
-<c></c>
-<c>* Ensure that region to handle is inside image</c>
-<c>* if operator selected a too big ROI the functionality is not given</c>
+<c>* Lane-ROIs auf die Bilddomain begrenzen.</c>
 <l>get_domain (Image, Domain)</l>
-<l>intersection (RegionLanes, Domain, RegionLanes)</l>
+<l>intersection (RegionLanes, Domain, RegionLanesInsideImage)</l>
 <c></c>
+<c>* Den zu pruefenden Randstreifen aus der Erosion der Lane-ROIs bestimmen.</c>
 <l>switch (GetObjects_UpperLower0_LeftRight1_Both2_Lower3)</l>
 <l>case 0:</l>
-<c>    * Upper and lower objects</c>
-<l>    erosion_rectangle1 (RegionLanes, LanesROIsErosion, 1, 30)</l>
+<l>    erosion_rectangle1 (RegionLanesInsideImage, LanesROIsErosion, 1, 30)</l>
 <l>    break</l>
 <l>case 1:</l>
-<c>    * Left and right objects    </c>
-<l>    erosion_rectangle1 (RegionLanes, LanesROIsErosion, 30, 1)</l>
+<l>    erosion_rectangle1 (RegionLanesInsideImage, LanesROIsErosion, 30, 1)</l>
 <l>    break</l>
 <l>case 2:</l>
-<c>    * Left right upper and lower objects</c>
-<l>    erosion_rectangle1 (RegionLanes, LanesROIsErosion, 30, 30)</l>
+<l>    erosion_rectangle1 (RegionLanesInsideImage, LanesROIsErosion, 30, 30)</l>
 <l>    break</l>
 <l>case 3:</l>
-<c>    * Lower objects only</c>
 <l>    get_image_size (Image, RegionWidth, RegionHeight)</l>
-<l>    gen_rectangle1 (LowerPortionRectangle, RegionHeight - 30, 0, RegionHeight, RegionWidth) </l>
-<l>    difference (RegionLanes, LowerPortionRectangle, LanesROIsEroded)</l>
-<l>    intersection (RegionLanes, LowerPortionRectangle, RegionIntersection1)</l>
+<l>    gen_rectangle1 (LowerPortionRectangle, RegionHeight - 30, 0, RegionHeight, RegionWidth)</l>
+<l>    difference (RegionLanesInsideImage, LowerPortionRectangle, LanesROIsErosion)</l>
 <l>    break</l>
 <l>default:</l>
-<c>    * Left right upper and lower objects</c>
-<l>    erosion_rectangle1 (RegionLanes, LanesROIsErosion, 30, 1)</l>
+<l>    erosion_rectangle1 (RegionLanesInsideImage, LanesROIsErosion, 30, 1)</l>
 <l>    break</l>
 <l>endswitch</l>
+<l>difference (RegionLanesInsideImage, LanesROIsErosion, LaneBorder)</l>
 <c></c>
-<l>difference (RegionLanes, LanesROIsErosion, LanesROIsUnion_OneLine)</l>
-<c></c>
-<l>difference (LanesROIsUnion_OneLine, RegionTablets, RegionDifference)</l>
-<l>symm_difference (RegionDifference, LanesROIsUnion_OneLine, LinesWithRegionsOnBorder)</l>
-<l>intersection (RegionTablets, LinesWithRegionsOnBorder, RegionIntersection)</l>
-<l>count_obj (RegionIntersection, RegionIntersection_Number)</l>
-<l>for IndexLoop := 1 to RegionIntersection_Number by 1</l>
-<l>    select_obj (RegionIntersection, RegionIntersection_Selected, IndexLoop)</l>
-<l>    get_region_runs (RegionIntersection_Selected, Row, ColumnBegin, ColumnEnd)</l>
-<l>    if (Row # [])  </l>
-<l>        get_region_index (RegionTablets, Row[0], ColumnBegin[0], Index)</l>
-<l>        select_obj (RegionTablets, ObjectsOnBorderFound, Index)</l>
-<l>        concat_obj (ObjectsOnBorder, ObjectsOnBorderFound, ObjectsOnBorder)</l>
-<c>        *Get the index for output</c>
-<l>        ObjectsOnBorder_Index := [ObjectsOnBorder_Index, Index]</l>
+<c>* Schnittbereiche auf dem Rand den vollstaendigen Tablet-Objekten zuordnen.</c>
+<l>intersection (RegionTablets, LaneBorder, TabletsOnBorderPartial)</l>
+<l>count_obj (TabletsOnBorderPartial, NumberOfBorderParts)</l>
+<l>RegionTabletsOnBorderIndices := []</l>
+<l>for IndexPart := 1 to NumberOfBorderParts by 1</l>
+<l>    select_obj (TabletsOnBorderPartial, TabletBorderPart, IndexPart)</l>
+<l>    get_region_runs (TabletBorderPart, Row, ColumnBegin, ColumnEnd)</l>
+<l>    if (Row # [])</l>
+<l>        get_region_index (RegionTablets, Row[0], ColumnBegin[0], TabletIndex)</l>
+<l>        tuple_equal_elem (RegionTabletsOnBorderIndices, TabletIndex, IndexAlreadyAdded)</l>
+<l>        tuple_sum (IndexAlreadyAdded, NumberAlreadyAdded)</l>
+<l>        if (NumberAlreadyAdded = 0)</l>
+<l>            tuple_concat (RegionTabletsOnBorderIndices, TabletIndex, RegionTabletsOnBorderIndices)</l>
+<l>        endif</l>
 <l>    endif</l>
 <l>endfor</l>
-<c></c>
-<c></c>
-<c>* to check all objects on border in one go instead of a loop</c>
-<c>* ElementwiseComparisonTestRegionIndex_1 (RegionIntersection, Tablet_Individual_Concat, ObjectsOnBorder, IndexOfObject)</c>
+<l>if (RegionTabletsOnBorderIndices # [])</l>
+<l>    select_obj (RegionTablets, RegionTabletsOnBorder, RegionTabletsOnBorderIndices)</l>
+<l>endif</l>
 <c></c>
 <l>return ()</l>
 </body>
