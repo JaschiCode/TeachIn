@@ -1,0 +1,72 @@
+{
+  "V_EndlessLoopForTestingEngine": {
+    "$type": "Boolean",
+    "Category": "mode_cat",
+    "Access": "Developer",
+    "Value": false
+  },
+  "V_MachineEnableInspectionSignal_RunProductionDirectly": {
+    "$type": "Boolean",
+    "Category": "mode_cat",
+    "Access": "Developer",
+    "Value": false
+  },
+  "V_CriticalInspectionResultStopsSystem": {
+    "$type": "Boolean",
+    "Category": "mode_cat",
+    "Access": "Developer",
+    "Value": true
+  },
+  "V_SystemDebugEjectAndStopOverride": {
+    "$type": "Boolean",
+    "Category": "mode_cat",
+    "Access": "Developer",
+    "Value": false
+  },
+  "V_SaveAllImagesWithinOperation": {
+    "$type": "Boolean",
+    "Category": "mode_cat",
+    "Access": "Developer",
+    "Value": false
+  },
+  "V_TeachInMode": {
+    "$type": "Boolean",
+    "Category": "mode_cat",
+    "Access": "Developer",
+    "Value": true
+  },
+  "V_RealTimeMode": {
+    "$type": "Boolean",
+    "Category": "mode_cat",
+    "Access": "Developer",
+    "Value": false
+  },
+  "V_IPCMode": {
+    "$type": "Boolean",
+    "Category": "mode_cat",
+    "Access": "Developer",
+    "Value": false
+  },
+  "V_DebugCollectProcessimagesOnCameraOne": {
+    "$type": "Integer",
+    "Category": "mode_cat",
+    "Access": "Developer",
+    "Value": 0,
+    "Min": 0,
+    "Max": 1500
+  },
+  "V_DebugCollectProcessimagesOnCamera_SpecifyCameraNumber": {
+    "$type": "Integer",
+    "Category": "mode_cat",
+    "Access": "Developer",
+    "Value": 1,
+    "Min": 1,
+    "Max": 4
+  },
+  "V_FunctionTestMode_Active": {
+    "$type": "Boolean",
+    "Category": "unused",
+    "Access": "Developer",
+    "Value": false
+  }
+}

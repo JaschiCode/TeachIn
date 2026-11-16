@@ -1,0 +1,333 @@
+{
+  "$type": "Settings",
+  "SystemId": "Meliscout-BS-1",
+  "Language": "de",
+  "Font": "Microsoft Sans Serif, 12pt",
+  "rootPath": "C:\\SortSecure\\",
+  "languagePath": "C:\\SortSecure\\lang\\",
+  "batchPath": "C:\\SortSecure\\batch\\",
+  "auditPath": "C:\\SortSecure\\audit\\",
+  "binPath": "C:\\SortSecure\\bin\\",
+  "errorsPath": "C:\\SortSecure\\errors\\",
+  "configPath": "C:\\SortSecure\\config\\",
+  "formatTemplatePath": "C:\\SortSecure\\format_template\\",
+  "formatPath": "C:\\SortSecure\\format\\",
+  "imagePath": "C:\\SortSecure\\image_files\\",
+  "tempPath": "C:\\SortSecure\\temp\\",
+  "helpPath": "C:\\SortSecure\\help\\",
+  "exportPath": "C:\\SortSecure\\export\\",
+  "backupPath": "C:\\SortSecure\\backup\\",
+  "awgPath": "C:\\SortSecure\\awg\\hdvp\\",
+  "productionLineName": "Linie Test",
+  "dateFormat": "yyyy-MM-dd",
+  "timeFormat": "HH:mm:ss.fff",
+  "opcUaUri": "opc.tcp://holodeck:49320",
+  "opcUaRootObject": "Meliscout.CountSecure_1",
+  "ChallengeTestTimeout": "00:00:05",
+  "PasswordUseUpperLowercaseCharacters": {
+    "$type": "Boolean",
+    "Value": false,
+    "Access": "Developer",
+    "Category": "userManagement_cat"
+  },
+  "PasswordUseAlphanumericalCharacters": {
+    "$type": "Boolean",
+    "Value": false,
+    "Access": "Developer",
+    "Category": "userManagement_cat"
+  },
+  "MinutesToAutomaticLogout": {
+    "$type": "Integer",
+    "Value": 9998,
+    "Max": 2147483647,
+    "Min": 0,
+    "Access": "Developer",
+    "Category": "userManagement_cat"
+  },
+  "LoginRequired": {
+    "$type": "Boolean",
+    "Value": true,
+    "Access": "Developer",
+    "Category": "userManagement_cat"
+  },
+  "IPCModeAvailable": {
+    "$type": "Boolean",
+    "Value": false,
+    "Access": "Developer",
+    "Category": "buttons_cat"
+  },
+  "FormatselectionAvailable": {
+    "$type": "Boolean",
+    "Value": true,
+    "Access": "Developer",
+    "Category": "buttons_cat"
+  },
+  "LiveImageAvailable": {
+    "$type": "Boolean",
+    "Value": true,
+    "Access": "Developer",
+    "Category": "buttons_cat"
+  },
+  "LoadImageFromDiskAvailable": {
+    "$type": "Boolean",
+    "Value": false,
+    "Access": "Developer",
+    "Category": "buttons_cat"
+  },
+  "HardwareButtonsAvailable": {
+    "$type": "Boolean",
+    "Value": true,
+    "Access": "Developer",
+    "Category": "buttons_cat"
+  },
+  "TestButtonAvailable": {
+    "$type": "Boolean",
+    "Value": false,
+    "Access": "Developer",
+    "Category": "buttons_cat"
+  },
+  "HelpButtonAvailable": {
+    "$type": "Boolean",
+    "Value": false,
+    "Access": "Developer",
+    "Category": "buttons_cat"
+  },
+  "EmptyTracksButtonAvailable": {
+    "$type": "Boolean",
+    "Value": false,
+    "Access": "All",
+    "Category": "buttons_cat"
+  },
+  "FormatChangesForceOperatorComment": {
+    "$type": "Boolean",
+    "Value": false,
+    "Access": "All",
+    "Category": "buttons_cat"
+  },
+  "FormatValidation": {
+    "$type": "Boolean",
+    "Value": true,
+    "Access": "Developer",
+    "Category": "buttons_cat"
+  },
+  "ActivateOPCUA": {
+    "$type": "Boolean",
+    "Value": false,
+    "Access": "Developer",
+    "Category": "buttons_cat"
+  },
+  "ShowSimulationMES": {
+    "$type": "Boolean",
+    "Value": false,
+    "Access": "All",
+    "Category": "buttons_cat"
+  },
+  "ForceShutdownSystem": {
+    "$type": "Boolean",
+    "Value": true,
+    "Access": "Developer",
+    "Category": "system_cat"
+  },
+  "ForceProductionStop": {
+    "$type": "Boolean",
+    "Value": true,
+    "Access": "Developer",
+    "Category": "system_cat"
+  },
+  "PreventStandby": {
+    "$type": "Boolean",
+    "Value": true,
+    "Access": "Developer",
+    "Category": "system_cat"
+  },
+  "PreventScreensaver": {
+    "$type": "Boolean",
+    "Value": false,
+    "Access": "All"
+  },
+  "FormatVersionControlActive": {
+    "$type": "Boolean",
+    "Value": false,
+    "Access": "All"
+  },
+  "SetCameraVisuHorizontal": {
+    "$type": "Boolean",
+    "Value": true,
+    "Access": "All"
+  },
+  "ShowLight": {
+    "$type": "Boolean",
+    "Value": true,
+    "Access": "Developer",
+    "Category": "plcStatusIndicators_cat"
+  },
+  "ShowVacuum": {
+    "$type": "Boolean",
+    "Value": false,
+    "Access": "Developer",
+    "Category": "plcStatusIndicators_cat"
+  },
+  "ShowRogueProduct": {
+    "$type": "Boolean",
+    "Value": false,
+    "Access": "Developer",
+    "Category": "plcStatusIndicators_cat"
+  },
+  "ShowCheckEjection": {
+    "$type": "Boolean",
+    "Value": false,
+    "Access": "Developer",
+    "Category": "plcStatusIndicators_cat"
+  },
+  "ShowSeriesFault": {
+    "$type": "Boolean",
+    "Value": false,
+    "Access": "Developer",
+    "Category": "plcStatusIndicators_cat"
+  },
+  "ShowUpstreamMachine": {
+    "$type": "Boolean",
+    "Value": false,
+    "Access": "Developer",
+    "Category": "plcStatusIndicators_cat"
+  },
+  "ShowCameraStatus": {
+    "$type": "Boolean",
+    "Value": false,
+    "Access": "Developer",
+    "Category": "plcStatusIndicators_cat"
+  },
+  "ShowEjectionCounters": {
+    "$type": "Boolean",
+    "Value": false,
+    "Access": "Developer",
+    "Category": "plcStatusIndicators_cat"
+  },
+  "ShowGoodCounters": {
+    "$type": "Boolean",
+    "Value": false,
+    "Access": "Developer",
+    "Category": "plcStatusIndicators_cat"
+  },
+  "ShowCounterIDs": {
+    "$type": "Boolean",
+    "Value": false,
+    "Access": "Developer",
+    "Category": "plcStatusIndicators_cat"
+  },
+  "ShowInspectionRunning": {
+    "$type": "Boolean",
+    "Value": false,
+    "Access": "Developer",
+    "Category": "plcStatusIndicators_cat"
+  },
+  "ShowVibratorRunning": {
+    "$type": "Boolean",
+    "Value": false,
+    "Access": "Developer",
+    "Category": "plcStatusIndicators_cat"
+  },
+  "ShowMachineBypass": {
+    "$type": "Boolean",
+    "Value": false,
+    "Access": "Developer",
+    "Category": "plcStatusIndicators_cat"
+  },
+  "ShowEjectionBinFull": {
+    "$type": "Boolean",
+    "Value": false,
+    "Access": "Developer",
+    "Category": "plcStatusIndicators_cat"
+  },
+  "ShowPLCConnection": {
+    "$type": "Boolean",
+    "Value": false,
+    "Access": "Developer",
+    "Category": "plcStatusIndicators_cat"
+  },
+  "ShowPLCStatus": {
+    "$type": "Boolean",
+    "Value": false,
+    "Access": "Developer",
+    "Category": "plcStatusIndicators_cat"
+  },
+  "CameraSetupAvailable": {
+    "$type": "Boolean",
+    "Value": false,
+    "Access": "Nobody",
+    "Category": "configTabs_cat"
+  },
+  "UserManagementAvailable": {
+    "$type": "Boolean",
+    "Value": true,
+    "Access": "Developer",
+    "Category": "configTabs_cat"
+  },
+  "AuditTrailAvailable": {
+    "$type": "Boolean",
+    "Value": true,
+    "Access": "Developer",
+    "Category": "configTabs_cat"
+  },
+  "BatchLogAvailable": {
+    "$type": "Boolean",
+    "Value": true,
+    "Access": "Developer",
+    "Category": "configTabs_cat"
+  },
+  "FormatPresetsAvailable": {
+    "$type": "Boolean",
+    "Value": true,
+    "Access": "Developer",
+    "Category": "configTabs_cat"
+  },
+  "AdvancedSettingsAvailable": {
+    "$type": "Boolean",
+    "Value": false,
+    "Access": "Nobody",
+    "Category": "configTabs_cat"
+  },
+  "SoftwareSettingsAvailable": {
+    "$type": "Boolean",
+    "Value": true,
+    "Access": "Developer",
+    "Category": "configTabs_cat"
+  },
+  "LanguageSelectionAvailable": {
+    "$type": "Boolean",
+    "Value": true,
+    "Access": "Developer",
+    "Category": "language_cat"
+  },
+  "Usergroup_MaintenanceAvailable": {
+    "$type": "Boolean",
+    "Value": true,
+    "Access": "Developer",
+    "Category": "userGroups_cat"
+  },
+  "Usergroup_AdministratorAvailable": {
+    "$type": "Boolean",
+    "Value": true,
+    "Access": "Developer",
+    "Category": "userGroups_cat"
+  },
+  "Usergroup_SupervisorAvailable": {
+    "$type": "Boolean",
+    "Value": true,
+    "Access": "Developer",
+    "Category": "userGroups_cat"
+  },
+  "Usergroup_OperatorAvailable": {
+    "$type": "Boolean",
+    "Value": true,
+    "Access": "Developer",
+    "Category": "userGroups_cat"
+  },
+  "Administrator_AdministrativeTasksOnly": {
+    "$type": "Boolean",
+    "Value": false,
+    "Access": "Developer",
+    "Category": "userGroups_cat"
+  },
+  "ConfigReadSuccess": true
+}

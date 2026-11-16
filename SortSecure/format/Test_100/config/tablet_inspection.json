@@ -1,0 +1,1152 @@
+{
+  "General": {
+    "V_Inspection_360Machine_Active": {
+      "$type": "Boolean",
+      "Comment": "Entfernen",
+      "Category": "360_cat",
+      "Access": "Developer",
+      "Value": 1
+    }
+  },
+  "TeachIn": {
+    "V_ProductLength_InMovementDirection": {
+      "$type": "Integer",
+      "Category": "teachin_cat",
+      "Access": "Developer",
+      "Value": 149,
+      "Max": 500,
+      "Min": 1
+    },
+    "V_ColourLearning_Tolerance": {
+      "$type": "Integer",
+      "Category": "teachin_cat",
+      "Access": "Developer",
+      "Value": 15,
+      "Max": 100,
+      "Min": 1
+    },
+    "V_ColourLearning_MaxIterations": {
+      "$type": "Integer",
+      "Category": "teachin_cat",
+      "Access": "Developer",
+      "Value": 100,
+      "Max": 1000,
+      "Min": 1
+    },
+    "V_ColourLearning_NumHidden": {
+      "$type": "Integer",
+      "Category": "teachin_cat",
+      "Access": "Developer",
+      "Value": 10,
+      "Max": 1000,
+      "Min": 1
+    },
+    "V_ColourLearning_MedianTrainImage_FilterSize": {
+      "$type": "Integer",
+      "Category": "teachin_cat",
+      "Access": "Developer",
+      "Value": 0,
+      "Max": 10,
+      "Min": 0
+    },
+    "V_IgnoreObjectsInEjectboxesForTeachIn": {
+      "$type": "Boolean",
+      "Category": "pli_uv_cat",
+      "Access": "Developer",
+      "Value": 0
+    }
+  },
+  "Segmentation": {
+    "V_SegmentationThreshold": {
+      "$type": "Integer",
+      "Category": "360_cat",
+      "Access": "Supervisor",
+      "Value": 60,
+      "Max": 255,
+      "Min": 0
+    },
+    "V_Segmentation_ColourSupport_Active": {
+      "$type": "Boolean",
+      "Category": "inspection_cat",
+      "Access": "Supervisor",
+      "Value": 0
+    },
+    "V_Segmentation_ColourSupport_Threshold_Min": {
+      "$type": "Integer",
+      "Category": "inspection_cat",
+      "Access": "Supervisor",
+      "Value": 85,
+      "Max": 255,
+      "Min": 0
+    },
+    "V_Segmentation_ColourSupport_Threshold_Max": {
+      "$type": "Integer",
+      "Category": "inspection_cat",
+      "Access": "Supervisor",
+      "Value": 190,
+      "Max": 255,
+      "Min": 0
+    },
+    "V_Segmentation_ColourSupport_OpeningAfterSegmentation_MaskSize": {
+      "$type": "Integer",
+      "Category": "inspection_cat",
+      "Access": "Supervisor",
+      "Value": 15,
+      "Max": 50,
+      "Min": 0
+    },
+    "V_Segmentation_ColourSupport_AreaToSelect_MinSize": {
+      "$type": "Integer",
+      "Category": "inspection_cat",
+      "Access": "Supervisor",
+      "Value": 1,
+      "Max": 10000,
+      "Min": 1
+    },
+    "V_Segmentation_ColourSupport_Threshold_RedMin": {
+      "$type": "Integer",
+      "Category": "inspection_cat",
+      "Access": "Supervisor",
+      "Value": 90,
+      "Max": 255,
+      "Min": 0
+    },
+    "V_Segmentation_ColourSupport_Threshold_RedMax": {
+      "$type": "Integer",
+      "Category": "inspection_cat",
+      "Access": "Supervisor",
+      "Value": 0,
+      "Max": 255,
+      "Min": 0
+    },
+    "V_Segmentation_ColourSupport_Threshold_GreenMin": {
+      "$type": "Integer",
+      "Category": "inspection_cat",
+      "Access": "Supervisor",
+      "Value": 0,
+      "Max": 255,
+      "Min": 0
+    },
+    "V_Segmentation_ColourSupport_Threshold_GreenMax": {
+      "$type": "Integer",
+      "Category": "inspection_cat",
+      "Access": "Supervisor",
+      "Value": 0,
+      "Max": 255,
+      "Min": 0
+    },
+    "V_Segmentation_ColourSupport_Threshold_BlueMin": {
+      "$type": "Integer",
+      "Category": "inspection_cat",
+      "Access": "Supervisor",
+      "Value": 0,
+      "Max": 255,
+      "Min": 0
+    },
+    "V_Segmentation_ColourSupport_Threshold_BlueMax": {
+      "$type": "Integer",
+      "Category": "inspection_cat",
+      "Access": "Supervisor",
+      "Value": 0,
+      "Max": 255,
+      "Min": 0
+    },
+    "V_Segmentation_SmallestSingleObjectFilter_Area_Min": {
+      "$type": "Integer",
+      "Category": "inspection_cat",
+      "Access": "Supervisor",
+      "Value": 20000,
+      "Max": 30000,
+      "Min": 1
+    },
+    "V_Segmentation_DarkOnBright0_BrightOnDark1": {
+      "$type": "Boolean",
+      "Category": "360_cat",
+      "Access": "Supervisor",
+      "Value": 1
+    },
+    "V_Segmentation_DynThreshold_Active": {
+      "$type": "Boolean",
+      "Category": "inspection_cat",
+      "Access": "Developer",
+      "Value": 0
+    },
+    "V_Segmentation_SelectSegmentationImage_BottomLight0_TopLight1_UVLight2": {
+      "$type": "Integer",
+      "Category": "360_cat",
+      "Access": "Developer",
+      "Value": 1,
+      "Max": 2,
+      "Min": 0
+    },
+    "V_AreaClassification_ColourOrMonochrome": {
+      "$type": "Enum",
+      "Category": "inspection_cat",
+      "Access": "Developer",
+      "Value": "colour",
+      "Values": "colour,monochrome"
+    },
+    "V_PreprocessingOpeningWidth": {
+      "$type": "Integer",
+      "Category": "inspection_cat",
+      "Access": "Developer",
+      "Value": 12,
+      "Max": 33,
+      "Min": 1
+    },
+    "V_PreprocessingOpeningHeight": {
+      "$type": "Integer",
+      "Category": "inspection_cat",
+      "Access": "Developer",
+      "Value": 12,
+      "Max": 33,
+      "Min": 1
+    },
+    "V_PreprocessingMinAreaFilter": {
+      "$type": "Integer",
+      "Category": "inspection_cat",
+      "Access": "Supervisor",
+      "Value": 20000,
+      "Max": 50000,
+      "Min": 1
+    },
+    "V_ProductSplittingMode": {
+      "$type": "Integer",
+      "Category": "inspection_cat",
+      "Access": "Developer",
+      "Value": -1,
+      "Max": 1,
+      "Min": -1
+    },
+    "V_ProductSplittingMode1_SeperationThreshold": {
+      "$type": "Integer",
+      "Category": "inspection_cat",
+      "Access": "Supervisor",
+      "Value": 6,
+      "Max": 10,
+      "Min": 4
+    }
+  },
+  "Backgroundcheck": {
+    "V_FeatureActive": {
+      "$type": "Boolean",
+      "Category": "inspection_cat",
+      "Access": "Supervisor",
+      "Value": 0
+    },
+    "V_Segmentation_HueMin": {
+      "$type": "Integer",
+      "Category": "inspection_cat",
+      "Access": "Supervisor",
+      "Value": 0,
+      "Max": 255,
+      "Min": 0
+    },
+    "V_Segmentation_HueMax": {
+      "$type": "Integer",
+      "Category": "inspection_cat",
+      "Access": "Supervisor",
+      "Value": 255,
+      "Max": 255,
+      "Min": 0
+    },
+    "V_Segmentation_SaturationMin": {
+      "$type": "Integer",
+      "Category": "inspection_cat",
+      "Access": "Supervisor",
+      "Value": 0,
+      "Max": 255,
+      "Min": 0
+    },
+    "V_Segmentation_SaturationMax": {
+      "$type": "Integer",
+      "Category": "inspection_cat",
+      "Access": "Supervisor",
+      "Value": 255,
+      "Max": 255,
+      "Min": 0
+    }
+  },
+  "CounterCheckControl": {
+    "V_TabletsInEjectPosition_ErosionCircle": {
+      "$type": "Integer",
+      "Category": "inspection_cat",
+      "Access": "Developer",
+      "Value": 12,
+      "Max": 32,
+      "Min": 0
+    }
+  },
+  "Measure_ProductLength": {
+    "V_FeatureActive": {
+      "$type": "Boolean",
+      "Category": "geometry_cat",
+      "Access": "Developer",
+      "Value": 1
+    },
+    "V_Length_Min": {
+      "$type": "Double",
+      "Category": "geometry_cat",
+      "Access": "Supervisor",
+      "Value": 398,
+      "Max": 600,
+      "Min": 1
+    },
+    "V_Length_Max": {
+      "$type": "Double",
+      "Category": "geometry_cat",
+      "Access": "Supervisor",
+      "Value": 429,
+      "Max": 600,
+      "Min": 1
+    },
+    "V_NumberOfDetectionsLeadToEject": {
+      "$type": "Integer",
+      "Category": "geometry_cat",
+      "Access": "Supervisor",
+      "Value": 5,
+      "Max": 16,
+      "Min": -16
+    },
+    "V_CriticalDefectActive": {
+      "$type": "Boolean",
+      "Category": "geometry_cat",
+      "Access": "Developer",
+      "Value": 0
+    }
+  },
+  "Measure_ProductWidth": {
+    "V_FeatureActive": {
+      "$type": "Boolean",
+      "Category": "geometry_cat",
+      "Access": "Developer",
+      "Value": 1
+    },
+    "V_Width_Min": {
+      "$type": "Double",
+      "Category": "geometry_cat",
+      "Access": "Supervisor",
+      "Value": 140,
+      "Max": 500,
+      "Min": 1
+    },
+    "V_Width_Max": {
+      "$type": "Double",
+      "Category": "geometry_cat",
+      "Access": "Supervisor",
+      "Value": 158,
+      "Max": 500,
+      "Min": 1
+    },
+    "V_NumberOfDetectionsLeadToEject": {
+      "$type": "Integer",
+      "Category": "geometry_cat",
+      "Access": "Supervisor",
+      "Value": 5,
+      "Max": 16,
+      "Min": -16
+    },
+    "V_CriticalDefectActive": {
+      "$type": "Boolean",
+      "Category": "geometry_cat",
+      "Access": "Developer",
+      "Value": 0
+    }
+  },
+  "Measure_ProductDiameter": {
+    "V_FeatureActive": {
+      "$type": "Boolean",
+      "Category": "geometry_cat",
+      "Access": "Developer",
+      "Value": 0
+    },
+    "V_Diameter_Min": {
+      "$type": "Integer",
+      "Category": "geometry_cat",
+      "Access": "Developer",
+      "Value": 0,
+      "Max": 500,
+      "Min": 1
+    },
+    "V_Diameter_Max": {
+      "$type": "Integer",
+      "Category": "geometry_cat",
+      "Access": "Developer",
+      "Value": 0,
+      "Max": 500,
+      "Min": 1
+    },
+    "V_NumberOfDetectionsLeadToEject": {
+      "$type": "Integer",
+      "Category": "geometry_cat",
+      "Access": "Developer",
+      "Value": 4,
+      "Max": 16,
+      "Min": -16
+    },
+    "V_CriticalDefectActive": {
+      "$type": "Boolean",
+      "Category": "geometry_cat",
+      "Access": "Developer",
+      "Value": 0
+    }
+  },
+  "Measure_ProductArea": {
+    "V_FeatureActive": {
+      "$type": "Boolean",
+      "Category": "geometry_cat",
+      "Access": "Developer",
+      "Value": 1
+    },
+    "V_Area_Min": {
+      "$type": "Integer",
+      "Category": "geometry_cat",
+      "Access": "Supervisor",
+      "Value": 44225,
+      "Max": 150000,
+      "Min": 500
+    },
+    "V_Area_Max": {
+      "$type": "Integer",
+      "Category": "geometry_cat",
+      "Access": "Supervisor",
+      "Value": 58000,
+      "Max": 150000,
+      "Min": 500
+    },
+    "V_NumberOfDetectionsLeadToEject": {
+      "$type": "Integer",
+      "Category": "geometry_cat",
+      "Access": "Supervisor",
+      "Value": 4,
+      "Max": 16,
+      "Min": -16
+    },
+    "V_CriticalDefectActive": {
+      "$type": "Boolean",
+      "Category": "geometry_cat",
+      "Access": "Developer",
+      "Value": 0
+    }
+  },
+  "Measure_ProductColour1": {
+    "V_FeatureActive": {
+      "$type": "Boolean",
+      "Category": "color_cat",
+      "Access": "Developer",
+      "Value": 1
+    },
+    "V_Colour1_Min": {
+      "$type": "Integer",
+      "Category": "color_cat",
+      "Access": "Supervisor",
+      "Value": 22,
+      "Max": 255,
+      "Min": 0
+    },
+    "V_Colour1_Max": {
+      "$type": "Integer",
+      "Category": "color_cat",
+      "Access": "Supervisor",
+      "Value": 28,
+      "Max": 255,
+      "Min": 0
+    },
+    "V_NumberOfDetectionsLeadToEject": {
+      "$type": "Integer",
+      "Category": "color_cat",
+      "Access": "Supervisor",
+      "Value": 4,
+      "Max": 16,
+      "Min": -16
+    },
+    "V_CriticalDefectActive": {
+      "$type": "Boolean",
+      "Category": "color_cat",
+      "Access": "Developer",
+      "Value": 0
+    }
+  },
+  "Measure_ProductColour2": {
+    "V_FeatureActive": {
+      "$type": "Boolean",
+      "Category": "color_cat",
+      "Access": "Developer",
+      "Value": 1
+    },
+    "V_Colour2_Min": {
+      "$type": "Integer",
+      "Category": "color_cat",
+      "Access": "Supervisor",
+      "Value": 240,
+      "Max": 255,
+      "Min": 0
+    },
+    "V_Colour2_Max": {
+      "$type": "Integer",
+      "Category": "color_cat",
+      "Access": "Supervisor",
+      "Value": 255,
+      "Max": 255,
+      "Min": 0
+    },
+    "V_NumberOfDetectionsLeadToEject": {
+      "$type": "Integer",
+      "Category": "color_cat",
+      "Access": "Supervisor",
+      "Value": 4,
+      "Max": 16,
+      "Min": -16
+    },
+    "V_CriticalDefectActive": {
+      "$type": "Boolean",
+      "Category": "color_cat",
+      "Access": "Developer",
+      "Value": 0
+    }
+  },
+  "Measure_ProductColour3": {
+    "V_FeatureActive": {
+      "$type": "Boolean",
+      "Category": "color_cat",
+      "Access": "Developer",
+      "Value": 1
+    },
+    "V_Colour3_Min": {
+      "$type": "Integer",
+      "Category": "color_cat",
+      "Access": "Supervisor",
+      "Value": 108,
+      "Max": 255,
+      "Min": 0
+    },
+    "V_Colour3_Max": {
+      "$type": "Integer",
+      "Category": "color_cat",
+      "Access": "Supervisor",
+      "Value": 200,
+      "Max": 255,
+      "Min": 0
+    },
+    "V_NumberOfDetectionsLeadToEject": {
+      "$type": "Integer",
+      "Category": "color_cat",
+      "Access": "Supervisor",
+      "Value": 4,
+      "Max": 16,
+      "Min": -16
+    },
+    "V_CriticalDefectActive": {
+      "$type": "Boolean",
+      "Category": "color_cat",
+      "Access": "Developer",
+      "Value": 0
+    }
+  },
+  "Measure_ProductSpot": {
+    "V_FeatureActive": {
+      "$type": "Boolean",
+      "Category": "color_cat",
+      "Access": "Supervisor",
+      "Value": 1
+    },
+    "V_Spot_Min": {
+      "$type": "Integer",
+      "Category": "color_cat",
+      "Access": "Supervisor",
+      "Value": 0,
+      "Max": 0,
+      "Min": 0
+    },
+    "V_Spot_Max": {
+      "$type": "Integer",
+      "Category": "color_cat",
+      "Access": "Supervisor",
+      "Value": 35,
+      "Max": 1000,
+      "Min": 0
+    },
+    "V_ErosionFilterCircleOnDetection": {
+      "$type": "Double",
+      "Category": "color_cat",
+      "Access": "Developer",
+      "Value": 1,
+      "Max": 25.5,
+      "Min": 0
+    },
+    "V_MirrorRemoveActive": {
+      "$type": "Boolean",
+      "Category": "color_cat",
+      "Access": "Developer",
+      "Value": 0
+    },
+    "V_DetectionOffsetFromProductSide_Horizontal": {
+      "$type": "Integer",
+      "Category": "color_cat",
+      "Access": "Developer",
+      "Value": 3,
+      "Max": 100,
+      "Min": 0
+    },
+    "V_ErosionFilterSegmentedProductOuterHull": {
+      "$type": "Integer",
+      "Category": "color_cat",
+      "Access": "Supervisor",
+      "Value": 35,
+      "Max": 70,
+      "Min": 0
+    },
+    "V_NumberOfDetectionsLeadToEject": {
+      "$type": "Integer",
+      "Category": "color_cat",
+      "Access": "Supervisor",
+      "Value": 2,
+      "Max": 16,
+      "Min": -16
+    },
+    "V_CriticalDefectActive": {
+      "$type": "Boolean",
+      "Category": "color_cat",
+      "Access": "Developer",
+      "Value": 0
+    }
+  },
+  "Measure_ProductSymmetry": {
+    "V_FeatureActive": {
+      "$type": "Boolean",
+      "Category": "geometry_cat",
+      "Access": "Developer",
+      "Value": 0
+    },
+    "V_SymmetryMinArea": {
+      "$type": "Integer",
+      "Category": "geometry_cat",
+      "Access": "Developer",
+      "Value": 0,
+      "Max": 10000,
+      "Min": 0
+    },
+    "V_SymmetryMaxArea": {
+      "$type": "Integer",
+      "Category": "geometry_cat",
+      "Access": "Developer",
+      "Value": 850,
+      "Max": 10000,
+      "Min": 1
+    },
+    "V_NumberOfDetectionsLeadToEject": {
+      "$type": "Integer",
+      "Category": "geometry_cat",
+      "Access": "Developer",
+      "Value": 4,
+      "Max": 16,
+      "Min": -16
+    },
+    "V_CriticalDefectActive": {
+      "$type": "Boolean",
+      "Category": "geometry_cat",
+      "Access": "Developer",
+      "Value": 0
+    }
+  },
+  "Measure_ProductPrint": {
+    "V_FeatureActive": {
+      "$type": "Boolean",
+      "Category": "geometry_cat",
+      "Access": "Developer",
+      "Value": 0
+    },
+    "V_PrintSegmentColorHueMin": {
+      "$type": "Integer",
+      "Category": "geometry_cat",
+      "Access": "Developer",
+      "Value": 0,
+      "Max": 255,
+      "Min": 0
+    },
+    "V_PrintSegmentColorHueMax": {
+      "$type": "Integer",
+      "Category": "geometry_cat",
+      "Access": "Developer",
+      "Value": 0,
+      "Max": 255,
+      "Min": 0
+    },
+    "V_PrintSegmentColorSaturationMin": {
+      "$type": "Integer",
+      "Category": "geometry_cat",
+      "Access": "Developer",
+      "Value": 70,
+      "Max": 255,
+      "Min": 0
+    },
+    "V_PrintSegmentColorSaturationMax": {
+      "$type": "Integer",
+      "Category": "geometry_cat",
+      "Access": "Developer",
+      "Value": 160,
+      "Max": 255,
+      "Min": 0
+    },
+    "V_Print_Segmentation_MinAreaFilter": {
+      "$type": "Integer",
+      "Category": "geometry_cat",
+      "Access": "Developer",
+      "Value": 7,
+      "Max": 500,
+      "Min": 0
+    },
+    "V_Print_Segmentation_Morphology_ErosionNegative_DilationPositive": {
+      "$type": "Integer",
+      "Category": "geometry_cat",
+      "Access": "Developer",
+      "Value": 2,
+      "Max": 20,
+      "Min": -20
+    },
+    "V_Print_Segmentation_Dyn0Classification1": {
+      "$type": "Boolean",
+      "Category": "geometry_cat",
+      "Access": "Developer",
+      "Value": 1
+    },
+    "V_Print_Segmentation_SkeletonActive": {
+      "$type": "Boolean",
+      "Category": "geometry_cat",
+      "Access": "Developer",
+      "Value": 0
+    },
+    "V_Print_Segmentation_DynThreshold_ContrastOffset": {
+      "$type": "Integer",
+      "Category": "geometry_cat",
+      "Access": "Developer",
+      "Value": 35,
+      "Max": 50,
+      "Min": 10
+    },
+    "V_PrintMinArea": {
+      "$type": "Integer",
+      "Category": "geometry_cat",
+      "Access": "Developer",
+      "Value": 1500,
+      "Max": 10000,
+      "Min": 1
+    },
+    "V_PrintMaxArea": {
+      "$type": "Integer",
+      "Category": "geometry_cat",
+      "Access": "Developer",
+      "Value": 3000,
+      "Max": 10000,
+      "Min": 1
+    },
+    "V_NumberOfDetectionsLeadToEject": {
+      "$type": "Integer",
+      "Category": "geometry_cat",
+      "Access": "Developer",
+      "Value": -1,
+      "Max": 16,
+      "Min": -16
+    },
+    "V_CriticalDefectActive": {
+      "$type": "Boolean",
+      "Category": "geometry_cat",
+      "Access": "Developer",
+      "Value": 0
+    }
+  },
+  "Measure_ProductPRV": {
+    "V_FeatureActive": {
+      "$type": "Boolean",
+      "Category": "pli_uv_cat",
+      "Access": "Supervisor",
+      "Value": 0
+    },
+    "V_PRV_Min": {
+      "$type": "Integer",
+      "Category": "pli_uv_cat",
+      "Access": "Supervisor",
+      "Value": 3,
+      "Max": 3,
+      "Min": 1
+    },
+    "V_PRV_Max": {
+      "$type": "Integer",
+      "Category": "pli_uv_cat",
+      "Access": "Supervisor",
+      "Value": 3,
+      "Max": 3,
+      "Min": 1
+    },
+    "V_PRV_RegionErosion": {
+      "$type": "Integer",
+      "Category": "pli_uv_cat",
+      "Access": "Supervisor",
+      "Value": 41,
+      "Max": 100,
+      "Min": 1
+    },
+    "V_PRV_VarThresh_MaskWidth": {
+      "$type": "Integer",
+      "Category": "pli_uv_cat",
+      "Access": "Supervisor",
+      "Value": 3,
+      "Max": 100,
+      "Min": 1
+    },
+    "V_PRV_VarThresh_MaskHeight": {
+      "$type": "Integer",
+      "Category": "pli_uv_cat",
+      "Access": "Supervisor",
+      "Value": 25,
+      "Max": 100,
+      "Min": 1
+    },
+    "V_PRV_VarThresh_StdDevScale": {
+      "$type": "Double",
+      "Category": "unused",
+      "Access": "Developer",
+      "Value": 0.8,
+      "Max": 1,
+      "Min": -1
+    },
+    "V_PRV_VarThresh_AbsThreshold": {
+      "$type": "Integer",
+      "Category": "pli_uv_cat",
+      "Access": "Supervisor",
+      "Value": 130,
+      "Max": 255,
+      "Min": 0
+    },
+    "V_PRV_VarThresh_LightDark": {
+      "$type": "Integer",
+      "Category": "unused",
+      "Access": "Developer",
+      "Value": 2,
+      "Max": 3,
+      "Min": 0
+    },
+    "V_PRV_OpeningRect_Width": {
+      "$type": "Double",
+      "Category": "pli_uv_cat",
+      "Access": "Supervisor",
+      "Value": 1.5,
+      "Max": 50,
+      "Min": 1
+    },
+    "V_PRV_OpeningRect_Height": {
+      "$type": "Double",
+      "Category": "pli_uv_cat",
+      "Access": "Supervisor",
+      "Value": 1.5,
+      "Max": 50,
+      "Min": 1
+    },
+    "V_PRV_DilationRect_Width": {
+      "$type": "Integer",
+      "Category": "unused",
+      "Access": "Developer",
+      "Value": 11,
+      "Max": 50,
+      "Min": 1
+    },
+    "V_PRV_DilationRect_Height": {
+      "$type": "Integer",
+      "Category": "unused",
+      "Access": "Developer",
+      "Value": 3,
+      "Max": 50,
+      "Min": 1
+    },
+    "V_PRV_ErosionRect_Width": {
+      "$type": "Integer",
+      "Category": "pli_uv_cat",
+      "Access": "Supervisor",
+      "Value": 9,
+      "Max": 50,
+      "Min": 1
+    },
+    "V_PRV_ErosionRect_Height": {
+      "$type": "Integer",
+      "Category": "pli_uv_cat",
+      "Access": "Supervisor",
+      "Value": 3,
+      "Max": 50,
+      "Min": 1
+    },
+    "V_PRV_LineAreaFilterMin": {
+      "$type": "Integer",
+      "Category": "pli_uv_cat",
+      "Access": "Supervisor",
+      "Value": 2750,
+      "Max": 5000,
+      "Min": 1
+    },
+    "V_PRV_LineAngleMax": {
+      "$type": "Integer",
+      "Category": "pli_uv_cat",
+      "Access": "Supervisor",
+      "Value": 45,
+      "Max": 100,
+      "Min": 1
+    },
+    "V_PRV_LineLengthFactorMin": {
+      "$type": "Double",
+      "Category": "pli_uv_cat",
+      "Access": "Supervisor",
+      "Value": 0.65,
+      "Max": 1,
+      "Min": 0.1
+    },
+    "V_NumberOfDetectionsLeadToEject": {
+      "$type": "Integer",
+      "Category": "pli_uv_cat",
+      "Access": "Supervisor",
+      "Value": -4,
+      "Max": 16,
+      "Min": -16
+    },
+    "V_CriticalDefectActive": {
+      "$type": "Boolean",
+      "Category": "pli_uv_cat",
+      "Access": "Developer",
+      "Value": 0
+    }
+  },
+  "Measure_ProductPCC": {
+    "V_FeatureActive": {
+      "$type": "Boolean",
+      "Category": "inspection_cat",
+      "Access": "Supervisor",
+      "Value": 0
+    },
+    "V_PCC_Min": {
+      "$type": "Integer",
+      "Category": "inspection_cat",
+      "Access": "Supervisor",
+      "Value": 1,
+      "Max": 1,
+      "Min": 1
+    },
+    "V_PCC_Max": {
+      "$type": "Integer",
+      "Category": "inspection_cat",
+      "Access": "Supervisor",
+      "Value": 1,
+      "Max": 1,
+      "Min": 1
+    },
+    "V_PCC_RectFactor_Width": {
+      "$type": "Integer",
+      "Category": "inspection_cat",
+      "Access": "Supervisor",
+      "Value": 5,
+      "Max": 100,
+      "Min": 0
+    },
+    "V_PCC_RectFactor_Height": {
+      "$type": "Integer",
+      "Category": "inspection_cat",
+      "Access": "Supervisor",
+      "Value": 9,
+      "Max": 100,
+      "Min": 0
+    },
+    "V_PCC_ErosionRect_Width": {
+      "$type": "Integer",
+      "Category": "inspection_cat",
+      "Access": "Supervisor",
+      "Value": 4,
+      "Max": 100,
+      "Min": 1
+    },
+    "V_PCC_ErosionRect_Height": {
+      "$type": "Integer",
+      "Category": "inspection_cat",
+      "Access": "Supervisor",
+      "Value": 4,
+      "Max": 100,
+      "Min": 1
+    },
+    "V_NumberOfDetectionsLeadToEject": {
+      "$type": "Integer",
+      "Category": "inspection_cat",
+      "Access": "Supervisor",
+      "Value": 4,
+      "Max": 16,
+      "Min": -16
+    },
+    "V_CriticalDefectActive": {
+      "$type": "Boolean",
+      "Category": "inspection_cat",
+      "Access": "Supervisor",
+      "Value": 0
+    }
+  },
+  "Measure_UpperProductWidth": {
+    "V_FeatureActive": {
+      "$type": "Boolean",
+      "Category": "geometry_cat",
+      "Access": "Supervisor",
+      "Value": 1
+    },
+    "V_UpperWidth_Min": {
+      "$type": "Double",
+      "Category": "geometry_cat",
+      "Access": "Supervisor",
+      "Value": 196,
+      "Max": 500,
+      "Min": 1
+    },
+    "V_UpperWidth_Max": {
+      "$type": "Double",
+      "Category": "geometry_cat",
+      "Access": "Supervisor",
+      "Value": 214,
+      "Max": 500,
+      "Min": 1
+    },
+    "V_NumberOfDetectionsLeadToEject": {
+      "$type": "Integer",
+      "Category": "geometry_cat",
+      "Access": "Supervisor",
+      "Value": -4,
+      "Max": 16,
+      "Min": -16
+    },
+    "V_CriticalDefectActive": {
+      "$type": "Boolean",
+      "Category": "geometry_cat",
+      "Access": "Developer",
+      "Value": 0
+    }
+  },
+  "Measure_LowerProductWidth": {
+    "V_FeatureActive": {
+      "$type": "Boolean",
+      "Category": "geometry_cat",
+      "Access": "Supervisor",
+      "Value": 1
+    },
+    "V_LowerWidth_Min": {
+      "$type": "Double",
+      "Category": "geometry_cat",
+      "Access": "Supervisor",
+      "Value": 97,
+      "Max": 500,
+      "Min": 1
+    },
+    "V_LowerWidth_Max": {
+      "$type": "Double",
+      "Category": "geometry_cat",
+      "Access": "Supervisor",
+      "Value": 134,
+      "Max": 500,
+      "Min": 1
+    },
+    "V_NumberOfDetectionsLeadToEject": {
+      "$type": "Integer",
+      "Category": "geometry_cat",
+      "Access": "Supervisor",
+      "Value": -2,
+      "Max": 16,
+      "Min": -16
+    },
+    "V_CriticalDefectActive": {
+      "$type": "Boolean",
+      "Category": "geometry_cat",
+      "Access": "Developer",
+      "Value": 0
+    }
+  },
+  "Measure_ProductOCR": {
+    "V_FeatureActive": {
+      "$type": "Boolean",
+      "Category": "inspection_cat",
+      "Access": "Supervisor",
+      "Value": 0
+    },
+    "V_TargetString": {
+      "$type": "String",
+      "Category": "inspection_cat",
+      "Access": "Supervisor",
+      "Value": "100"
+    },
+    "V_OCR_Min": {
+      "$type": "Integer",
+      "Category": "inspection_cat",
+      "Access": "Supervisor",
+      "Value": 1,
+      "Max": 4,
+      "Min": 1
+    },
+    "V_OCR_Max": {
+      "$type": "Integer",
+      "Category": "inspection_cat",
+      "Access": "Supervisor",
+      "Value": 1,
+      "Max": 4,
+      "Min": 1
+    },
+    "V_NumberOfDetectionsLeadToEject": {
+      "$type": "Integer",
+      "Category": "inspection_cat",
+      "Access": "Supervisor",
+      "Value": -2,
+      "Max": 16,
+      "Min": -16
+    },
+    "V_CriticalDefectActive": {
+      "$type": "Boolean",
+      "Category": "inspection_cat",
+      "Access": "Supervisor",
+      "Value": 0
+    }
+  },
+  "Measure_ProductSpotPCC": {
+    "V_FeatureActive": {
+      "$type": "Boolean",
+      "Category": "inspection_cat",
+      "Access": "Supervisor",
+      "Value": 0
+    },
+    "V_ErosionFilterCircleOnDetection": {
+      "$type": "Double",
+      "Comment": "Comment_V_ErosionFilterCircleOnDetection",
+      "Category": "color_cat",
+      "Access": "Developer",
+      "Value": 1.5,
+      "Max": 25.5,
+      "Min": 0
+    },
+    "V_Spot_Min": {
+      "$type": "Integer",
+      "Category": "color_cat",
+      "Access": "Supervisor",
+      "Value": 0,
+      "Max": 0,
+      "Min": 0
+    },
+    "V_Spot_Max": {
+      "$type": "Integer",
+      "Category": "color_cat",
+      "Access": "Supervisor",
+      "Value": 55,
+      "Max": 1000,
+      "Min": 0
+    },
+    "V_MirrorRemoveActive": {
+      "$type": "Boolean",
+      "Comment": "Comment_V_MirrorRemoveActive",
+      "Category": "color_cat",
+      "Access": "Developer",
+      "Value": 1
+    },
+    "V_CriticalDefectActive": {
+      "$type": "Boolean",
+      "Category": "inspection_cat",
+      "Access": "Supervisor",
+      "Value": 0
+    }
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "Password": {
+    "Expiration": "902.00:00:00",
+    "UpperLowerCase": false,
+    "Alphanumeric": false,
+    "SpecialChars": false,
+    "MinLength": 1,
+    "MaxLength": 16,
+    "HistoryCount": 10
+  },
+  "LocalUser": {
+    "BadLogonLimit": 10
+  },
+  "LocalUserStore": {
+    "UserFile": "C:\\SortSecure\\config\\localUsers.json"
+  },
+  "ActiveDirectoryUser": {
+    "UserGroupAccessMapping": {
+      "Administrator": "Administrator",
+      "Maintenance": "Maintenance",
+      "Supervisor": "Supervisor",
+      "Operator": "Operator"
+    }
+  },
+  "ActiveDirectoryUserStore": {
+    "Domain": "MELISCOUT.COM",
+    "Timeout": 0,
+    "Username": "Meliscout",
+    "Password": "M0e1l2i3s4c5o6u7t8"
+  },
+  "RemoteUserStore": {
+    "IP": "127.0.0.1",
+    "Port": 50000,
+    "Timeout": 0,
+    "Passphrase": "Meliscout"
+  }
+}
+}

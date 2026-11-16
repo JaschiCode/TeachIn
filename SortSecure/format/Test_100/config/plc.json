@@ -1,0 +1,291 @@
+{
+  "General": {
+    "V_WorkOnPLCEnable": {
+      "$type": "Boolean",
+      "Comment": "Comment_V_WorkOnPLCEnable",
+      "Category": "plcGeneral_cat",
+      "Access": "Developer",
+      "Value": true
+    },
+    "V_PLCWatchdog_Bypass": {
+      "$type": "Boolean",
+      "Comment": "Comment_V_PLCWatchdog_Bypass",
+      "Access": "Developer",
+      "Category": "plcGeneral_cat",
+      "Value": false
+    },
+    "V_Num_PLCs": {
+      "$type": "Integer",
+      "Comment": "Comment_V_Num_PLCs",
+      "Access": "Developer",
+      "Category": "plcGeneral_cat",
+      "Value": 1,
+      "Min": 1,
+      "Max": 1
+    },
+    "V_Vacuum_Duration_Tubes_Down": {
+      "$type": "Integer",
+      "Comment": "Comment_V_Vacuum_Duration_Tubes_Down",
+      "Access": "Supervisor",
+      "Category": "plcGeneral_cat",
+      "Value": 70,
+      "Min": 1,
+      "Max": 100
+    },
+    "V_Vacuum_Duration_Delay": {
+      "$type": "Integer",
+      "Comment": "Comment_V_Vacuum_Duration_Delay",
+      "Access": "Supervisor",
+      "Category": "plcGeneral_cat",
+      "Value": 100,
+      "Min": 0,
+      "Max": 5000
+    },
+    "V_Vacuum_Duration": {
+      "$type": "Integer",
+      "Comment": "Comment_V_Vacuum_Duration",
+      "Access": "Supervisor",
+      "Category": "plcGeneral_cat",
+      "Value": 150,
+      "Min": 0,
+      "Max": 5000
+    },
+    "V_Vacuum_Duration_Wait": {
+      "$type": "Integer",
+      "Comment": "Comment_V_Vacuum_Duration_Wait",
+      "Access": "Supervisor",
+      "Category": "plcGeneral_cat",
+      "Value": 10,
+      "Min": 0,
+      "Max": 5000
+    },
+    "V_Vacuum_Duration_Tubes_Rising": {
+      "$type": "Integer",
+      "Comment": "Comment_V_Vacuum_Duration_Tubes_Rising",
+      "Access": "Supervisor",
+      "Category": "plcGeneral_cat",
+      "Value": 300,
+      "Min": 0,
+      "Max": 5000
+    },
+    "V_Vacuum_Duration_Start": {
+      "$type": "Integer",
+      "Comment": "Comment_V_Vacuum_Duration_Start",
+      "Access": "Supervisor",
+      "Category": "plcGeneral_cat",
+      "Value": 1000,
+      "Min": 0,
+      "Max": 5000
+    },
+    "Bypass_Cam_2_Ready": {
+      "$type": "Boolean",
+      "Comment": "Comment_Bypass_Cam_2_Ready",
+      "Access": "Developer",
+      "Category": "plcGeneral_cat",
+      "Value": true
+    },
+    "Bypass_Cam_3_Ready": {
+      "$type": "Boolean",
+      "Comment": "Comment_Bypass_Cam_3_Ready",
+      "Access": "Developer",
+      "Category": "plcGeneral_cat",
+      "Value": true
+    },
+    "Bypass_Cam_4_Ready": {
+      "$type": "Boolean",
+      "Comment": "Comment_Bypass_Cam_4_Ready",
+      "Access": "Developer",
+      "Category": "plcGeneral_cat",
+      "Value": true
+    },
+    "Bypass_Cam_2_WatchDog": {
+      "$type": "Boolean",
+      "Comment": "Comment_Bypass_Cam_2_WatchDog",
+      "Access": "Developer",
+      "Category": "plcGeneral_cat",
+      "Value": true
+    },
+    "Bypass_Cam_3_WatchDog": {
+      "$type": "Boolean",
+      "Comment": "Comment_Bypass_Cam_3_WatchDog",
+      "Access": "Developer",
+      "Category": "plcGeneral_cat",
+      "Value": true
+    },
+    "Bypass_Cam_4_WatchDog": {
+      "$type": "Boolean",
+      "Comment": "Comment_Bypass_Cam_4_WatchDog",
+      "Access": "Developer",
+      "Category": "plcGeneral_cat",
+      "Value": true
+    },
+    "Bypass_ConsecutiveEjection": {
+      "$type": "Boolean",
+      "Comment": "Comment_Bypass_ConsecutiveEjection",
+      "Access": "Developer",
+      "Category": "plcGeneral_cat",
+      "Value": false
+    },
+    "Bypass_CheckEject": {
+      "$type": "Boolean",
+      "Comment": "Comment_Bypass_CheckEject",
+      "Access": "Developer",
+      "Category": "plcGeneral_cat",
+      "Value": false
+    },
+    "Bypass_EjectionBin_1": {
+      "$type": "Boolean",
+      "Comment": "Comment_Bypass_EjectionBin_1",
+      "Access": "Developer",
+      "Category": "plcGeneral_cat",
+      "Value": true
+    },
+    "Bypass_EjectionBin_2": {
+      "$type": "Boolean",
+      "Comment": "Comment_Bypass_EjectionBin_2",
+      "Access": "Developer",
+      "Category": "plcGeneral_cat",
+      "Value": true
+    },
+    "Bypass_RogueProduct": {
+      "$type": "Boolean",
+      "Comment": "Comment_Bypass_RogueProduct",
+      "Access": "Developer",
+      "Category": "plcGeneral_cat",
+      "Value": true
+    },
+    "V_Vacuum_Duration_ProductionEnd": {
+      "$type": "Integer",
+      "Comment": "Comment_V_Vacuum_Duration_ProductionEnd",
+      "Access": "Supervisor",
+      "Category": "plcGeneral_cat",
+      "Value": 500,
+      "Min": 1,
+      "Max": 5000
+    },
+    "V_EjectRetriesValue": {
+      "$type": "Integer",
+      "Comment": "Comment_V_EjectRetriesValue",
+      "Access": "Supervisor",
+      "Category": "plcGeneral_cat",
+      "Value": 5,
+      "Max": 20,
+      "Min": 0
+    },
+    "V_Time_Stop_NoRolls": {
+      "$type": "Integer",
+      "Comment": "Comment_V_Time_Stop_NoRolls",
+      "Access": "Supervisor",
+      "Category": "plcGeneral_cat",
+      "Value": 60,
+      "Min": 1,
+      "Max": 5000
+    },
+    "V_Time_Stop_NoCapsule": {
+      "$type": "Integer",
+      "Comment": "Comment_V_Time_Stop_NoCapsule",
+      "Access": "Supervisor",
+      "Category": "plcGeneral_cat",
+      "Value": 30,
+      "Min": 1,
+      "Max": 5000
+    },
+    "V_Time_Flap_Down": {
+      "$type": "Integer",
+      "Comment": "Comment_V_Time_Flap_Down",
+      "Access": "Supervisor",
+      "Category": "plcGeneral_cat",
+      "Value": 444,
+      "Min": 1,
+      "Max": 5000
+    },
+    "V_Time_Flap_Up": {
+      "$type": "Integer",
+      "Comment": "Comment_V_Time_Flap_Up",
+      "Access": "Supervisor",
+      "Category": "plcGeneral_cat",
+      "Value": 353,
+      "Min": 1,
+      "Max": 5000
+    },
+    "V_Time_EjectionBin_Full": {
+      "$type": "Integer",
+      "Comment": "Comment_V_Time_EjectionBin_Full",
+      "Access": "Supervisor",
+      "Category": "plcGeneral_cat",
+      "Value": 5,
+      "Min": 1,
+      "Max": 5000
+    },
+    "V_Time_Startup_Delay_Vibrator": {
+      "$type": "Integer",
+      "Comment": "Comment_V_Time_Startup_Delay_Vibrator",
+      "Access": "Supervisor",
+      "Category": "plcGeneral_cat",
+      "Value": 1000,
+      "Min": 1,
+      "Max": 5000
+    },
+    "V_EjectCount_Default": {
+      "$type": "Integer",
+      "Comment": "Comment_V_EjectCount_Default",
+      "Access": "Supervisor",
+      "Category": "plcGeneral_cat",
+      "Value": 5000,
+      "Min": 0,
+      "Max": 5000
+    },
+    "Bypass_Cam_1_Ready": {
+      "$type": "Boolean",
+      "Comment": "Comment_Bypass_Cam_1_Ready",
+      "Access": "Developer",
+      "Category": "plcGeneral_cat",
+      "Value": true
+    },
+    "Bypass_Cam_1_WatchDog": {
+      "$type": "Boolean",
+      "Comment": "Comment_Bypass_Cam_1_WatchDog",
+      "Access": "Developer",
+      "Category": "plcGeneral_cat",
+      "Value": true
+    },
+    "Motor_1_MainDrive_Speed_Slow": {
+      "$type": "Integer",
+      "Comment": "Comment_Motor_1_MainDrive_Speed_Slow",
+      "Access": "Supervisor",
+      "Category": "plcGeneral_cat",
+      "Value": 14,
+      "Max": 50,
+      "Min": 0
+    },
+    "Motor_1_MainDrive_Speed_Fast": {
+      "$type": "Integer",
+      "Comment": "Comment_Motor_1_MainDrive_Speed_Fast",
+      "Access": "Supervisor",
+      "Category": "plcGeneral_cat",
+      "Value": 25,
+      "Max": 75,
+      "Min": 0
+    },
+    "Vibrator_Main_Amplitude": {
+      "$type": "Integer",
+      "Comment": "Comment_Vibrator_Main_Amplitude",
+      "Access": "Supervisor",
+      "Category": "plcGeneral_cat",
+      "Value": 36,
+      "Max": 60,
+      "Min": 0
+    }
+  },
+  "PLCs": {
+    "PLC_0": {
+      "V_IP": {
+        "$type": "String",
+        "Comment": "Comment_V_IP",
+        "Access": "Developer",
+        "Category": "plcGeneral_cat",
+        "Value": "192.168.188.96"
+      }
+    }
+  }
+}

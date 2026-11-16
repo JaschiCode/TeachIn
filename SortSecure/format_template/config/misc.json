@@ -1,0 +1,32 @@
+{
+  "V_EjectionWarningThreshold": {
+    "$type": "Integer",
+    "Category": "unused",
+    "Access": "Developer",
+    "Value": 1000,
+    "Min": 0,
+    "Max": 1000
+  },
+  "V_IgnoreMachineError": {
+    "$type": "Boolean",
+    "Category": "plcGeneral_cat",
+    "Access": "Developer",
+    "Value": true
+  },
+  "V_TeachIn_NumberOfImagesToStoreOnDisk": {
+    "$type": "Integer",
+    "Category": "teachin_cat",
+    "Access": "Developer",
+    "Value": 1500,
+    "Min": 1,
+    "Max": 5000
+  },
+  "V_ErrorDetails_MaxNumberToStoreOnDisk": {
+    "$type": "Integer",
+    "Category": "teachin_cat",
+    "Access": "Developer",
+    "Value": 10,
+    "Min": 1,
+    "Max": 50
+  }
+}

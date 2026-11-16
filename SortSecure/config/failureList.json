@@ -1,0 +1,114 @@
+{
+    "Status_EjectionBin": {
+    "$type": "Boolean",
+	"Trigger": 0
+  },
+    "Bypass_EjectionBin": {
+    "$type": "Boolean",
+	"Trigger": 1
+  },  	
+    "Warning_EjectionBin": {
+    "$type": "Boolean",
+	"Trigger": 0
+  },   
+    "Status_Pressure": {
+    "$type": "Boolean",
+	"Trigger": 0
+  },
+    "Bypass_Pressure": {
+    "$type": "Boolean",
+	"Trigger": 1
+  },
+    "Timeout_EjectionFlap_Opened": {
+    "$type": "Boolean",
+	"Trigger": 0
+  },  
+    "Timeout_EjectionFlap_Closed": {
+    "$type": "Boolean",
+	"Trigger": 0
+  },  
+    "Bypass_Timeout_EjectionFlap": {
+    "$type": "Boolean",
+	"Trigger": 1
+  },   
+    "Status_Timer_NoCapsule": {
+    "$type": "Boolean",
+	"Trigger": 0
+  },  
+    "Bypass_Timer_NoCapsule": {
+    "$type": "Boolean",
+	"Trigger": 1
+  }, 
+    "Status_Timer_NoRolls": {
+    "$type": "Boolean",
+	"Trigger": 0
+  },  
+    "Bypass_Timer_NoRolls": {
+    "$type": "Boolean",
+	"Trigger": 1
+  }, 
+    "Status_EjectionFlap_At_Start": {
+    "$type": "Boolean",
+	"Trigger": 0
+  },  
+    "Bypass_EjectionFlap_At_Start": {
+    "$type": "Boolean",
+	"Trigger": 1
+  }, 
+    "Inspection_Running": {
+    "$type": "Boolean",
+	"Trigger": 0
+  },  
+    "Bypass_ProductionRunning": {
+    "$type": "Boolean",
+	"Trigger": 1
+  }, 
+    "Cam_1_WatchDog": {
+    "$type": "Boolean",
+	"Trigger": 0
+  },  
+    "Bypass_Cam_1_WatchDog": {
+    "$type": "Boolean",
+	"Trigger": 1
+  }, 
+    "Status_AWG": {
+    "$type": "Boolean",
+	"Trigger": 0
+  },   
+    "Bypass_AWG": {
+    "$type": "Boolean",
+	"Trigger": 1
+  },   
+    "Emergency_Stop_Status": {
+    "$type": "Boolean",
+	"Trigger": 0
+  },
+    "Status_Release_Next_Machine": {
+    "$type": "Boolean",
+	"Trigger": 0
+  },
+  "Bypass_Release_Next_Machine": {  
+    "$type": "Boolean",
+	"Trigger": 1
+  },  
+  "Status_Counter_Stop_Next_Machine": {
+    "$type": "Boolean",
+	"Trigger": 0
+  },
+    "Status_MotorDrive": {
+    "$type": "Boolean",
+	"Trigger": 0
+  },
+    "Bypass_MotorDrive": {
+    "$type": "Boolean",
+	"Trigger": 1
+  },
+    "Status_Halcon_Error": {
+    "$type": "Boolean",
+	"Trigger": 0
+  },
+    "Bypass_Halcon_Error": {
+    "$type": "Boolean",
+	"Trigger": 1
+  }    
+}

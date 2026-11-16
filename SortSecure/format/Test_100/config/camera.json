@@ -1,0 +1,273 @@
+{
+  "General": {
+    "V_Camera_WorkOnCameraEnable": {
+      "$type": "Boolean",
+      "Category": "cameraGeneral_cat",
+      "Access": "Developer",
+      "Value": false
+    },
+    "V_Camera_NumberOfConnectedCameras": {
+      "$type": "Integer",
+      "Category": "cameraGeneral_cat",
+      "Access": "Developer",
+      "Comment": "Comment_V_Camera_NumberOfConnectedCameras",
+      "Value": 1,
+      "Max": 1,
+      "Min": 1
+    },
+    "V_Camera_UseCameraIOsAsDirectEjectSignals": {
+      "$type": "Integer",
+      "Category": "cameraGeneral_cat",
+      "Access": "Developer",
+      "Value": 0,
+      "Max": 2,
+      "Min": 0
+    },
+    "V_Camera_SelectedForAquisition": {
+      "$type": "Integer",
+      "Category": "cameraGeneral_cat",
+      "Access": "Developer",
+      "Value": 1,
+      "Max": 3,
+      "Min": 1
+    },
+    "V_Camera_InternalTrigger0_External1": {
+      "$type": "Boolean",
+      "Category": "360_cat",
+      "Access": "Supervisor",
+      "Value": true
+    }
+  },
+  "FPGA": {
+    "V_Camera_FPGA_TopLight_MicroSec": {
+      "$type": "Integer",
+      "Category": "360_cat",
+      "Access": "Supervisor",
+      "Value": 100,
+      "Max": 400,
+      "Min": 20
+    },
+    "V_Camera_FPGA_TopLight_SupportBackLight_MicroSec": {
+      "$type": "Integer",
+      "Category": "360_cat",
+      "Access": "Supervisor",
+      "Value": 75,
+      "Max": 400,
+      "Min": 10
+    },
+    "V_Camera_FPGA_BackLight_MicroSec": {
+      "$type": "Integer",
+      "Category": "360_cat",
+      "Access": "Supervisor",
+      "Value": 80,
+      "Max": 400,
+      "Min": 20
+    },
+    "V_Camera_FPGA_UVLight_Gain": {
+      "$type": "Integer",
+      "Category": "360_cat",
+      "Access": "Supervisor",
+      "Value": 4,
+      "Max": 15,
+      "Min": 1
+    },
+    "V_Camera_FPGA_EjectPulseLength_SampleEject_MicroSec": {
+      "$type": "Integer",
+      "Category": "360_cat",
+      "Access": "Developer",
+      "Value": 7500,
+      "Max": 20000,
+      "Min": 0
+    },
+    "V_Camera_FPGA_EjectPulseLength_MicroSec": {
+      "$type": "Integer",
+      "Category": "360_cat",
+      "Access": "Supervisor",
+      "Value": 50000,
+      "Max": 100000,
+      "Min": 1000
+    },
+    "V_Camera_FPGA_EjectPulseLength_Offset_MicroSec_Lane0": {
+      "$type": "Integer",
+      "Category": "360_eject_cat",
+      "Access": "Developer",
+      "Value": 0,
+      "Max": 20000,
+      "Min": -10000
+    },
+    "V_Camera_FPGA_EjectPulseLength_Offset_MicroSec_Lane1": {
+      "$type": "Integer",
+      "Category": "360_eject_cat",
+      "Access": "Developer",
+      "Value": 0,
+      "Max": 20000,
+      "Min": -10000
+    },
+    "V_Camera_FPGA_EjectPulseLength_Offset_MicroSec_Lane2": {
+      "$type": "Integer",
+      "Category": "360_eject_cat",
+      "Access": "Developer",
+      "Value": 0,
+      "Max": 20000,
+      "Min": -10000
+    },
+    "V_Camera_FPGA_EjectPulseLength_Offset_MicroSec_Lane3": {
+      "$type": "Integer",
+      "Category": "360_eject_cat",
+      "Access": "Developer",
+      "Value": 0,
+      "Max": 20000,
+      "Min": -10000
+    },
+    "V_Camera_FPGA_EjectPulseLength_Offset_MicroSec_Lane4": {
+      "$type": "Integer",
+      "Category": "360_eject_cat",
+      "Access": "Developer",
+      "Value": 0,
+      "Max": 20000,
+      "Min": -10000
+    },
+    "V_Camera_FPGA_EjectPulseLength_Offset_MicroSec_Lane5": {
+      "$type": "Integer",
+      "Category": "360_eject_cat",
+      "Access": "Developer",
+      "Value": 0,
+      "Max": 20000,
+      "Min": -10000
+    },
+    "V_Camera_FPGA_EjectPulseLength_Offset_MicroSec_Lane6": {
+      "$type": "Integer",
+      "Category": "360_eject_cat",
+      "Access": "Developer",
+      "Value": 0,
+      "Max": 20000,
+      "Min": -10000
+    },
+    "V_Camera_FPGA_EjectPulseLength_Offset_MicroSec_Lane7": {
+      "$type": "Integer",
+      "Category": "360_eject_cat",
+      "Access": "Developer",
+      "Value": 0,
+      "Max": 20000,
+      "Min": -10000
+    },
+    "V_Camera_FPGA_EjectPulseLength_Offset_MicroSec_Lane8": {
+      "$type": "Integer",
+      "Category": "360_eject_cat",
+      "Access": "Developer",
+      "Value": 0,
+      "Max": 20000,
+      "Min": -10000
+    },
+    "V_Camera_FPGA_EjectPulseLength_Offset_MicroSec_Lane9": {
+      "$type": "Integer",
+      "Category": "360_eject_cat",
+      "Access": "Developer",
+      "Value": 0,
+      "Max": 20000,
+      "Min": -10000
+    },
+    "V_Camera_FPGA_EjectPulseLength_Offset_MicroSec_Lane10": {
+      "$type": "Integer",
+      "Category": "360_eject_cat",
+      "Access": "Developer",
+      "Value": 0,
+      "Max": 20000,
+      "Min": -10000
+    },
+    "V_Camera_FPGA_EjectPulseLength_Offset_MicroSec_Lane11": {
+      "$type": "Integer",
+      "Category": "360_eject_cat",
+      "Access": "Developer",
+      "Value": 0,
+      "Max": 20000,
+      "Min": -10000
+    }
+  },
+  "Cameras": {
+    "Camera_0": {
+      "V_Exposuretime": {
+        "$type": "Integer",
+        "Category": "camera_cat_1",
+        "Access": "Developer",
+        "Value": 400,
+        "Max": 20000,
+        "Min": 20
+      },
+      "V_Gain": {
+        "$type": "Integer",
+        "Category": "camera_cat_1",
+        "Access": "Developer",
+        "Value": 5,
+        "Max": 255,
+        "Min": 0
+      },
+      "V_FPS": {
+        "$type": "Integer",
+        "Category": "camera_cat_1",
+        "Access": "Developer",
+        "Value": 150,
+        "Max": 300,
+        "Min": 1
+      },
+      "V_Debayerpattern": {
+        "$type": "Enum",
+        "Category": "camera_cat_1",
+        "Access": "Developer",
+        "Value": "RGBFromCamera",
+        "Values": "RGBFromCamera,YUVFromCamera,RG,GR,GB,BG"
+      },
+      "V_ImageGrabResolution_Width": {
+        "$type": "Integer",
+        "Category": "camera_cat_1",
+        "Access": "Developer",
+        "Value": 4416,
+        "Max": 5120,
+        "Min": 2
+      },
+      "V_ImageGrabResolution_Height": {
+        "$type": "Integer",
+        "Category": "camera_cat_1",
+        "Access": "Developer",
+        "Value": 3000,
+        "Max": 5120,
+        "Min": 2
+      },
+      "V_ImageGrabOffset_X": {
+        "$type": "Integer",
+        "Category": "camera_cat_1",
+        "Access": "Developer",
+        "Value": 962,
+        "Max": 1918,
+        "Min": 0
+      },
+      "V_ImageGrabOffset_Y": {
+        "$type": "Integer",
+        "Category": "camera_cat_1",
+        "Access": "Developer",
+        "Value": 170,
+        "Max": 1214,
+        "Min": 0
+      },
+      "V_ImageRotation": {
+        "$type": "Enum",
+        "Category": "camera_cat_1",
+        "Access": "Developer",
+        "Value": "0",
+        "Values": "0,90,180,270"
+      },
+      "V_PLC": {
+        "$type": "String",
+        "Access": "Developer",
+        "Category": "camera_cat_1",
+        "Value": "PLC_0"
+      },
+      "V_PLCRemotePort": {
+        "$type": "String",
+        "Access": "Developer",
+        "Category": "camera_cat_1",
+        "Value": "4001"
+      }
+    }
+  }
+}

@@ -1,0 +1,3 @@
+1;Abbruch
+2;Berechnung stopp
+9;Daten werden anhand der aufgezeichneten Bilder berechnet.

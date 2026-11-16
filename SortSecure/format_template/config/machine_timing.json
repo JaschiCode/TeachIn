@@ -1,0 +1,60 @@
+{
+	"V_PulsingForSlowSpeed_Time": {
+		"$type": "Integer",
+		"Category": "cameraGeneral_cat",
+		"Access": "Developer",
+		"Value": 110,
+		"Max": 5000,
+		"Min": 0
+	},
+	"V_WaitFramesAtStartup": {
+		"$type": "Integer",
+		"Category": "cameraGeneral_cat",
+		"Access": "Developer",
+		"Value": 25,
+		"Max": 100,
+		"Min": 0
+	},
+	"WaitFramesAtSlowDownToStopMovement": {
+		"V_FromFullSpeed": {
+			"$type": "Integer",
+			"Category": "cameraGeneral_cat",
+			"Access": "Developer",
+			"Value": 7,
+			"Max": 100,
+			"Min": 0
+		},
+		"V_FromSlowSpeed": {
+			"$type": "Integer",
+			"Category": "cameraGeneral_cat",
+			"Access": "Developer",
+			"Value": 10,
+			"Max": 100,
+			"Min": 0
+		}
+	},
+	"V_WaitFramesAtEjectPipeMovementGoingDownAndUp": {
+		"$type": "Integer",
+		"Category": "cameraGeneral_cat",
+		"Access": "Developer",
+		"Value": 25,
+		"Max": 100,
+		"Min": 0
+	},
+	"V_WaitFramesAfterPulsingForSlowSpeed": {
+		"$type": "Integer",
+		"Category": "cameraGeneral_cat",
+		"Access": "Developer",
+		"Value": 0,
+		"Max": 100,
+		"Min": 0
+	},
+	"V_Eject_WaitFramesBeforeEjectPipe": {
+		"$type": "Integer",
+		"Category": "cameraGeneral_cat",
+		"Access": "Developer",
+		"Value": 0,
+		"Max": 100,
+		"Min": 0
+	}
+}

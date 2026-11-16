@@ -1,0 +1,122 @@
+{
+	"MovementCompensation": {
+		"V_Active": {
+			"$type": "Boolean",
+			"Access": "Developer",
+			"Category": "shiftregister_cat",
+			"Value": false
+		},
+		"V_UpperMax": {
+			"$type": "Integer",
+			"Access": "Developer",
+			"Category": "shiftregister_cat",
+			"Value": 220,
+			"Max": 1000,
+			"Min": 0
+		},
+		"V_LowerMax": {
+			"$type": "Integer",
+			"Access": "Developer",
+			"Category": "shiftregister_cat",
+			"Value": -120,
+			"Max": 0,
+			"Min": -1000
+		},
+		"V_SpeedMax": {
+			"$type": "Integer",
+			"Access": "Developer",
+			"Category": "shiftregister_cat",
+			"Value": 65,
+			"Max": 1000,
+			"Min": 0
+		}
+	},
+	"V_Eject_FixedEjectPosition_RelativeToROI": {
+		"$type": "Integer",
+		"Access": "Developer",
+		"Category": "shiftregister_cat",
+		"Value": 0,
+		"Max": 1000,
+		"Min": 0
+	},
+	"V_Eject_FixedStopPositionForFastProducts_RelativeToROI": {
+		"$type": "Integer",
+		"Access": "Developer",
+		"Category": "shiftregister_cat",
+		"Value": 0,
+		"Max": 0,
+		"Min": -1000
+	},
+	"V_NumberOfColourErrorsForEjectMin": {
+		"$type": "Integer",
+		"Access": "Developer",
+		"Category": "shiftregister_cat",
+		"Value": 5,
+		"Max": 8,
+		"Min": 0
+	},
+	"V_NumberOfErrorsForEjectMin": {
+		"$type": "Integer",
+		"Access": "Developer",
+		"Category": "shiftregister_cat",
+		"Value": 2,
+		"Max": 10,
+		"Min": 0
+	},
+	"V_SaveMeasureFeatureValuesAtRuntime": {
+		"$type": "Boolean",
+		"Access": "Developer",
+		"Category": "shiftregister_cat",
+		"Value": true
+	},
+	"V_SaveMeasureFeatureRegionsAtRuntime": {
+		"$type": "Boolean",
+		"Access": "Developer",
+		"Category": "shiftregister_cat",
+		"Value": true
+	},
+	"V_SaveMeasureFeaturePartImagesAtRuntime": {
+		"$type": "Boolean",
+		"Access": "Supervisor",
+		"Category": "360_cat",
+		"Value": true
+	},
+	"V_CheckForGoodProductDetectionActive": {
+		"$type": "Boolean",
+		"Access": "Developer",
+		"Category": "shiftregister_cat",
+		"Value": true
+	},
+	"V_ObjectsPerTrack_LimitMax": {
+		"$type": "Integer",
+		"Access": "Developer",
+		"Category": "shiftregister_cat",
+		"Value": 250,
+		"Max": 600,
+		"Min": 100
+	},
+	"V_ObjectMovement_MinSpeedToRegisterObjects": {
+		"$type": "Integer",
+		"Access": "Developer",
+		"Category": "shiftregister_cat",
+		"Value": 5,
+		"Max": 12,
+		"Min": 2
+	},
+	"V_ProductOverspeed_DetectionThresholdToStop": {
+		"$type": "Integer",
+		"Access": "Developer",
+		"Category": "shiftregister_cat",
+		"Value": 65,
+		"Max": 120,
+		"Min": -1
+	},
+	"V_ProductOverspeed_CalculationCyclesToMeasureMeanSpeed": {
+		"$type": "Integer",
+		"Access": "Developer",
+		"Category": "shiftregister_cat",
+		"Value": 180,
+		"Max": 1000,
+		"Min": -1
+	}
+}

@@ -1,0 +1,138 @@
+{
+  "V_VisuFontSize": {
+    "$type": "Integer",
+    "Category": "visualization_cat",
+    "Access": "Developer",
+    "Value": 56,
+    "Min": 12,
+    "Max": 58
+  },
+  "V_ShowProcessingTime": {
+    "$type": "Boolean",
+    "Access": "Developer",
+    "Category": "visualization_cat",
+    "Value": true
+  },
+  "V_ShowVisualisationTime": {
+    "$type": "Boolean",
+    "Access": "Developer",
+    "Category": "visualization_cat",
+    "Value": false
+  },
+  "V_ShowPictureNumber": {
+    "$type": "Boolean",
+    "Access": "Developer",
+    "Category": "visualization_cat",
+    "Value": false
+  },
+  "V_ShowCameraNumberUsed": {
+    "$type": "Boolean",
+    "Access": "Developer",
+    "Category": "visualization_cat",
+    "Value": false
+  },
+  "V_ShowResultOK_NOK": {
+    "$type": "Boolean",
+    "Access": "Developer",
+    "Category": "visualization_cat",
+    "Value": false
+  },
+  "V_ShowColour_1": {
+    "$type": "Boolean",
+    "Access": "Developer",
+    "Category": "visualization_cat",
+    "Value": false
+  },
+  "V_ShowColour_2": {
+    "$type": "Boolean",
+    "Access": "Developer",
+    "Category": "visualization_cat",
+    "Value": false
+  },
+  "V_ShowColour_3": {
+    "$type": "Boolean",
+    "Access": "Developer",
+    "Category": "visualization_cat",
+    "Value": false
+  },
+  "V_ShowLength": {
+    "$type": "Boolean",
+    "Access": "Developer",
+    "Category": "visualization_cat",
+    "Value": false
+  },
+  "V_ShowWidth": {
+    "$type": "Boolean",
+    "Access": "Developer",
+    "Category": "visualization_cat",
+    "Value": false
+  },
+  "V_ShowDiameter": {
+    "$type": "Boolean",
+    "Access": "Developer",
+    "Category": "visualization_cat",
+    "Value": false
+  },
+  "V_ShowArea": {
+    "$type": "Boolean",
+    "Access": "Developer",
+    "Category": "visualization_cat",
+    "Value": false
+  },
+  "V_ShowProductSpeed": {
+    "$type": "Boolean",
+    "Access": "Developer",
+    "Category": "visualization_cat",
+    "Value": false
+  },
+  "V_SuppressBadProductVisualisationInEjectBox": {
+    "$type": "Boolean",
+    "Access": "Developer",
+    "Category": "visualization_cat",
+    "Value": true
+  },
+  "V_ShowCounterGood": {
+    "$type": "Boolean",
+    "Access": "Developer",
+    "Category": "visualization_cat",
+    "Value": true
+  },
+  "V_ShowCounterBad": {
+    "$type": "Boolean",
+    "Access": "Developer",
+    "Category": "visualization_cat",
+    "Value": true
+  },
+  "V_ShowProductSpeedMean": {
+    "$type": "Boolean",
+    "Access": "Developer",
+    "Category": "visualization_cat",
+    "Value": false
+  },
+  "V_ShowMachineShiftregister_Index": {
+    "$type": "Boolean",
+    "Access": "Developer",
+    "Category": "visualization_cat",
+    "Value": false
+  },
+  "V_ShowThreadQueue_Bufferlength": {
+    "$type": "Boolean",
+    "Access": "Developer",
+    "Category": "visualization_cat",
+    "Value": false
+  },
+  "V_VisualisationFrequencyDevider_GUI": {
+    "$type": "Integer",
+    "Category": "visualization_cat",
+    "Access": "Developer",
+    "Value": 25,
+    "Min": 0,
+    "Max": 200
+  },
+  "V_ErrorDetailImage_CounterAndIndex_Inpaint": {
+    "$type": "Boolean",
+    "Access": "Developer",
+    "Category": "visualization_cat",
+    "Value": false
+  }
+}

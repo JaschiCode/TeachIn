@@ -1,0 +1,110 @@
+{
+  "ROIs": {
+    "ROI_Cam_0": {
+      "V_Inspection_OffsetTop_UpperROIPosition": {
+        "$type": "Integer",
+        "Category": "roi_cat_1",
+        "Access": "Developer",
+        "Value": 0,
+        "Min": 0,
+        "Max": 1200
+      },
+      "V_Inspection_OffsetTop_LowerROIPosition": {
+        "$type": "Integer",
+        "Category": "roi_cat_1",
+        "Access": "Developer",
+        "Value": 1270,
+        "Min": 0,
+        "Max": 2000
+      },
+      "V_Inspection_OffsetLeft": {
+        "$type": "Integer",
+        "Category": "roi_cat_1",
+        "Access": "Developer",
+        "Value": 0,
+        "Min": 0,
+        "Max": 2000
+      },
+      "V_Inspection_Width": {
+        "$type": "Integer",
+        "Category": "roi_cat_1",
+        "Access": "Developer",
+        "Value": 740,
+        "Min": 0,
+        "Max": 2000
+      },
+      "V_Eject_OffsetTop": {
+        "$type": "Integer",
+        "Category": "roi_cat_1",
+        "Access": "Developer",
+        "Value": 930,
+        "Min": 0,
+        "Max": 2000
+      },
+      "V_Eject_Length": {
+        "$type": "Integer",
+        "Category": "roi_cat_1",
+        "Access": "Developer",
+        "Value": 120,
+        "Min": 0,
+        "Max": 2000
+      },
+      "V_Eject_Width": {
+        "$type": "Integer",
+        "Category": "roi_cat_1",
+        "Access": "Developer",
+        "Value": 740,
+        "Min": 0,
+        "Max": 2000
+      },
+      "V_NumberOfPos": {
+        "$type": "Integer",
+        "Category": "roi_cat_1",
+        "Access": "Developer",
+        "Value": 2,
+        "Min": 1,
+        "Max": 5
+      },
+      "V_Pos_Column_0": {
+        "$type": "Integer",
+        "Category": "roi_cat_1",
+        "Access": "Developer",
+        "Value": 350,
+        "Min": 0,
+        "Max": 2000
+      },
+      "V_Pos_Column_1": {
+        "$type": "Integer",
+        "Category": "roi_cat_1",
+        "Access": "Developer",
+        "Value": 950,
+        "Min": 0,
+        "Max": 2000
+      },
+      "V_Pos_Column_2": {
+        "$type": "Integer",
+        "Category": "roi_cat_1",
+        "Access": "Developer",
+        "Value": 985,
+        "Min": 0,
+        "Max": 2000
+      },
+      "V_Pos_Column_3": {
+        "$type": "Integer",
+        "Category": "roi_cat_1",
+        "Access": "Developer",
+        "Value": 1335,
+        "Min": 0,
+        "Max": 2000
+      },
+      "V_Pos_Column_4": {
+        "$type": "Integer",
+        "Category": "roi_cat_1",
+        "Access": "Developer",
+        "Value": 1695,
+        "Min": 0,
+        "Max": 2000
+      }
+    }
+  }
+}

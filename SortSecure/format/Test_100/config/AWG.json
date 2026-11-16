@@ -1,0 +1,6884 @@
+{
+  "General": {
+    "OffsetX": {
+      "$type": "Integer",
+      "Access": "Developer",
+      "Category": "Lanes_cat",
+      "Max": 2000,
+      "Min": 0,
+      "Value": 20
+    },
+    "OffsetY": {
+      "$type": "Integer",
+      "Access": "Developer",
+      "Category": "Lanes_cat",
+      "Max": 2000,
+      "Min": 0,
+      "Value": 50
+    },
+    "min_amount": {
+      "$type": "Integer",
+      "Access": "Developer",
+      "Category": "Lanes_cat",
+      "Max": 2000,
+      "Min": 0,
+      "Value": 1
+    },
+    "radius": {
+      "$type": "Integer",
+      "Access": "Developer",
+      "Category": "Lanes_cat",
+      "Max": 2000,
+      "Min": 0,
+      "Value": 15
+    },
+    "threshold": {
+      "$type": "Integer",
+      "Access": "Developer",
+      "Category": "Lanes_cat",
+      "Max": 2000,
+      "Min": 0,
+      "Value": 80
+    }
+  },
+  "Lane01": {
+    "Fibre01": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 0
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 92
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 1172
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 1138
+      }
+    },
+    "Fibre02": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 1
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 120
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 1123
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 1138
+      }
+    },
+    "Fibre03": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 2
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 133
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 1074
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 1137
+      }
+    },
+    "Fibre04": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 3
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 136
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 1032
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 1137
+      }
+    },
+    "Fibre05": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 4
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 144
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 979
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 1136
+      }
+    },
+    "Fibre06": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 5
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 138
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 938
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 1134
+      }
+    },
+    "Fibre07": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 6
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 132
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 895
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 1134
+      }
+    },
+    "Fibre08": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 7
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 134
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 849
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 1133
+      }
+    },
+    "Fibre09": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 8
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 162
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 807
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 1132
+      }
+    },
+    "Fibre10": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 9
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 150
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 766
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 1131
+      }
+    }
+  },
+  "Lane02": {
+    "Fibre01": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 10
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 145
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 1073
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 1095
+      }
+    },
+    "Fibre02": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 11
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 129
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 1116
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 1094
+      }
+    },
+    "Fibre03": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 12
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 135
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 1030
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 1094
+      }
+    },
+    "Fibre04": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 13
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 135
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 1158
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 1093
+      }
+    },
+    "Fibre05": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 14
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 133
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 988
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 1093
+      }
+    },
+    "Fibre06": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 15
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 136
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 943
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 1093
+      }
+    },
+    "Fibre07": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 16
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 130
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 900
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 1092
+      }
+    },
+    "Fibre08": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 17
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 132
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 853
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 1090
+      }
+    },
+    "Fibre09": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 18
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 125
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 811
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 1089
+      }
+    },
+    "Fibre10": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 19
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 124
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 766
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 1087
+      }
+    }
+  },
+  "Lane03": {
+    "Fibre01": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 20
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 128
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 1175
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 1050
+      }
+    },
+    "Fibre02": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 21
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 151
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 1130
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 1050
+      }
+    },
+    "Fibre03": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 22
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 154
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 1088
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 1049
+      }
+    },
+    "Fibre04": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 23
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 151
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 1045
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 1049
+      }
+    },
+    "Fibre05": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 24
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 153
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 991
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 1049
+      }
+    },
+    "Fibre06": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 25
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 166
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 944
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 1045
+      }
+    },
+    "Fibre07": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 26
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 156
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 902
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 1043
+      }
+    },
+    "Fibre08": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 27
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 149
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 861
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 1042
+      }
+    },
+    "Fibre09": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 28
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 151
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 821
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 1040
+      }
+    },
+    "Fibre10": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 29
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 139
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 780
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 1038
+      }
+    }
+  },
+  "Lane04": {
+    "Fibre01": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 30
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 139
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 1150
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 1004
+      }
+    },
+    "Fibre02": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 31
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 152
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 1108
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 1003
+      }
+    },
+    "Fibre03": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 32
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 152
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 1067
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 1001
+      }
+    },
+    "Fibre04": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 33
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 159
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 1026
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 999
+      }
+    },
+    "Fibre05": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 34
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 149
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 983
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 997
+      }
+    },
+    "Fibre06": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 35
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 118
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 900
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 997
+      }
+    },
+    "Fibre07": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 36
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 147
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 941
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 993
+      }
+    },
+    "Fibre08": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 37
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 131
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 853
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 993
+      }
+    },
+    "Fibre09": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 38
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 117
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 805
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 991
+      }
+    },
+    "Fibre10": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 39
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 118
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 759
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 990
+      }
+    }
+  },
+  "Lane05": {
+    "Fibre01": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 40
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 142
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 1177
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 956
+      }
+    },
+    "Fibre02": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 41
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 150
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 1134
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 955
+      }
+    },
+    "Fibre03": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 42
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 147
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 1089
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 953
+      }
+    },
+    "Fibre04": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 43
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 138
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 1046
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 952
+      }
+    },
+    "Fibre05": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 44
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 136
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 1002
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 950
+      }
+    },
+    "Fibre06": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 45
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 139
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 961
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 950
+      }
+    },
+    "Fibre07": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 46
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 143
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 919
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 949
+      }
+    },
+    "Fibre08": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 47
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 122
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 876
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 949
+      }
+    },
+    "Fibre09": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 48
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 91
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 825
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 945
+      }
+    },
+    "Fibre10": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 49
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 136
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 783
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 945
+      }
+    }
+  },
+  "Lane06": {
+    "Fibre01": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 50
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 144
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 1151
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 913
+      }
+    },
+    "Fibre02": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 51
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 146
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 1109
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 913
+      }
+    },
+    "Fibre03": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 52
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 162
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 1067
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 912
+      }
+    },
+    "Fibre04": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 53
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 168
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 1025
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 911
+      }
+    },
+    "Fibre05": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 54
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 160
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 984
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 910
+      }
+    },
+    "Fibre06": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 55
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 159
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 939
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 909
+      }
+    },
+    "Fibre07": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 56
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 169
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 897
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 906
+      }
+    },
+    "Fibre08": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 57
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 152
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 853
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 906
+      }
+    },
+    "Fibre09": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 58
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 144
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 813
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 902
+      }
+    },
+    "Fibre10": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 59
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 152
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 770
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 902
+      }
+    }
+  },
+  "Lane07": {
+    "Fibre01": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 60
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 111
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 1147
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 867
+      }
+    },
+    "Fibre02": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 61
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 117
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 1101
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 867
+      }
+    },
+    "Fibre03": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 62
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 134
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 1060
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 865
+      }
+    },
+    "Fibre04": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 63
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 145
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 1017
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 863
+      }
+    },
+    "Fibre05": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 64
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 137
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 972
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 860
+      }
+    },
+    "Fibre06": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 65
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 142
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 932
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 858
+      }
+    },
+    "Fibre07": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 66
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 111
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 886
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 856
+      }
+    },
+    "Fibre08": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 67
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 133
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 842
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 852
+      }
+    },
+    "Fibre09": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 68
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 127
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 800
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 850
+      }
+    },
+    "Fibre10": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 69
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 139
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 758
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 849
+      }
+    }
+  },
+  "Lane08": {
+    "Fibre01": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 70
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 67
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 1177
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 829
+      }
+    },
+    "Fibre02": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 71
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 127
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 1129
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 825
+      }
+    },
+    "Fibre03": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 72
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 129
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 1072
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 823
+      }
+    },
+    "Fibre04": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 73
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 136
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 1025
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 820
+      }
+    },
+    "Fibre05": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 74
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 153
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 978
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 816
+      }
+    },
+    "Fibre06": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 75
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 141
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 932
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 813
+      }
+    },
+    "Fibre07": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 76
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 143
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 889
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 810
+      }
+    },
+    "Fibre08": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 77
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 116
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 849
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 807
+      }
+    },
+    "Fibre09": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 78
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 149
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 802
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 803
+      }
+    },
+    "Fibre10": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 79
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 129
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 761
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 800
+      }
+    }
+  },
+  "Lane09": {
+    "Fibre01": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 80
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 141
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 1120
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 776
+      }
+    },
+    "Fibre02": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 81
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 159
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 1167
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 774
+      }
+    },
+    "Fibre03": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 82
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 132
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 1079
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 771
+      }
+    },
+    "Fibre04": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 83
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 161
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 1037
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 763
+      }
+    },
+    "Fibre05": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 84
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 166
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 988
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 762
+      }
+    },
+    "Fibre06": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 85
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 133
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 947
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 759
+      }
+    },
+    "Fibre07": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 86
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 155
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 904
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 755
+      }
+    },
+    "Fibre08": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 87
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 138
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 863
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 752
+      }
+    },
+    "Fibre09": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 88
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 158
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 818
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 749
+      }
+    },
+    "Fibre10": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 89
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 150
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 775
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 745
+      }
+    }
+  },
+  "Lane10": {
+    "Fibre01": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 90
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 62
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 1191
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 735
+      }
+    },
+    "Fibre02": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 91
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 99
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 1143
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 733
+      }
+    },
+    "Fibre03": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 92
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 77
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 1105
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 725
+      }
+    },
+    "Fibre04": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 93
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 113
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 1065
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 725
+      }
+    },
+    "Fibre05": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 94
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 121
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 1024
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 723
+      }
+    },
+    "Fibre06": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 95
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 135
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 981
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 717
+      }
+    },
+    "Fibre07": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 96
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 127
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 938
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 713
+      }
+    },
+    "Fibre08": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 97
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 131
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 893
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 710
+      }
+    },
+    "Fibre09": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 98
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 122
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 822
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 703
+      }
+    },
+    "Fibre10": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 99
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 109
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 769
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 699
+      }
+    }
+  },
+  "Lane11": {
+    "Fibre01": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 100
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 77
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 1199
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 685
+      }
+    },
+    "Fibre02": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 101
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 87
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 1153
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 681
+      }
+    },
+    "Fibre03": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 102
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 89
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 1106
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 678
+      }
+    },
+    "Fibre04": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 103
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 87
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 1057
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 675
+      }
+    },
+    "Fibre05": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 104
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 92
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 1012
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 673
+      }
+    },
+    "Fibre06": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 105
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 93
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 963
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 669
+      }
+    },
+    "Fibre07": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 106
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 94
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 917
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 666
+      }
+    },
+    "Fibre08": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 107
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 94
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 869
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 662
+      }
+    },
+    "Fibre09": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 108
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 85
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 821
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 657
+      }
+    },
+    "Fibre10": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 109
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 77
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 773
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 653
+      }
+    }
+  },
+  "Lane12": {
+    "Fibre01": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 110
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 90
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 1207
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 636
+      }
+    },
+    "Fibre02": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 111
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 95
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 1158
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 633
+      }
+    },
+    "Fibre03": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 112
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 107
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 1104
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 629
+      }
+    },
+    "Fibre04": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 113
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 111
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 1056
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 626
+      }
+    },
+    "Fibre05": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 114
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 104
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 1012
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 622
+      }
+    },
+    "Fibre06": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 115
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 111
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 967
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 621
+      }
+    },
+    "Fibre07": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 116
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 106
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 923
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 617
+      }
+    },
+    "Fibre08": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 117
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 112
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 874
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 615
+      }
+    },
+    "Fibre09": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 118
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 115
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 828
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 610
+      }
+    },
+    "Fibre10": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 119
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 104
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 777
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 604
+      }
+    }
+  },
+  "Lane13": {
+    "Fibre01": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 120
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 73
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 1177
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 587
+      }
+    },
+    "Fibre02": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 121
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 89
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 1137
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 582
+      }
+    },
+    "Fibre03": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 122
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 87
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 1091
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 579
+      }
+    },
+    "Fibre04": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 123
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 90
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 1050
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 576
+      }
+    },
+    "Fibre05": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 124
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 75
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 1006
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 574
+      }
+    },
+    "Fibre06": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 125
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 79
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 963
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 573
+      }
+    },
+    "Fibre07": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 126
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 80
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 924
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 569
+      }
+    },
+    "Fibre08": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 127
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 89
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 875
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 569
+      }
+    },
+    "Fibre09": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 128
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 82
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 819
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 563
+      }
+    },
+    "Fibre10": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 129
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 79
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 775
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 561
+      }
+    }
+  },
+  "Lane14": {
+    "Fibre01": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 130
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 86
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 1160
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 533
+      }
+    },
+    "Fibre02": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 131
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 85
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 1118
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 530
+      }
+    },
+    "Fibre03": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 132
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 86
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 1072
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 527
+      }
+    },
+    "Fibre04": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 133
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 88
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 1030
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 524
+      }
+    },
+    "Fibre05": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 134
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 84
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 985
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 521
+      }
+    },
+    "Fibre06": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 135
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 80
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 941
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 518
+      }
+    },
+    "Fibre07": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 136
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 91
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 896
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 516
+      }
+    },
+    "Fibre08": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 137
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 70
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 854
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 512
+      }
+    },
+    "Fibre09": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 138
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 85
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 804
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 508
+      }
+    },
+    "Fibre10": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 139
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 68
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 765
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 503
+      }
+    }
+  },
+  "Lane15": {
+    "Fibre01": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 140
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 100
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 1196
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 487
+      }
+    },
+    "Fibre02": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 141
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 102
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 1154
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 482
+      }
+    },
+    "Fibre03": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 142
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 98
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 1104
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 477
+      }
+    },
+    "Fibre04": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 143
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 105
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 1058
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 474
+      }
+    },
+    "Fibre05": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 144
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 107
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 1015
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 472
+      }
+    },
+    "Fibre06": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 145
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 108
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 972
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 469
+      }
+    },
+    "Fibre07": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 146
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 107
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 927
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 465
+      }
+    },
+    "Fibre08": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 147
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 104
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 885
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 462
+      }
+    },
+    "Fibre09": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 148
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 107
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 841
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 458
+      }
+    },
+    "Fibre10": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 149
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 117
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 799
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 453
+      }
+    }
+  },
+  "Lane16": {
+    "Fibre01": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 150
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 94
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 1232
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 445
+      }
+    },
+    "Fibre02": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 151
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 96
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 1190
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 439
+      }
+    },
+    "Fibre03": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 152
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 92
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 1140
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 434
+      }
+    },
+    "Fibre04": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 153
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 103
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 1095
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 429
+      }
+    },
+    "Fibre05": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 154
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 99
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 1051
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 426
+      }
+    },
+    "Fibre06": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 155
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 91
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 1004
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 422
+      }
+    },
+    "Fibre07": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 156
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 101
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 959
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 419
+      }
+    },
+    "Fibre08": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 157
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 116
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 918
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 417
+      }
+    },
+    "Fibre09": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 158
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 101
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 875
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 414
+      }
+    },
+    "Fibre10": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 159
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 109
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 831
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 410
+      }
+    }
+  },
+  "Lane17": {
+    "Fibre01": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 160
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 43
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 1237
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 387
+      }
+    },
+    "Fibre02": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 161
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 72
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 1161
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 384
+      }
+    },
+    "Fibre03": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 162
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 46
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 1125
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 377
+      }
+    },
+    "Fibre04": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 163
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 77
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 1070
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 376
+      }
+    },
+    "Fibre05": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 164
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 81
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 1028
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 372
+      }
+    },
+    "Fibre06": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 165
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 90
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 985
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 369
+      }
+    },
+    "Fibre07": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 166
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 95
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 939
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 365
+      }
+    },
+    "Fibre08": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 167
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 89
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 897
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 362
+      }
+    },
+    "Fibre09": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 168
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 78
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 853
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 359
+      }
+    },
+    "Fibre10": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 169
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 85
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 807
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 355
+      }
+    }
+  },
+  "Lane18": {
+    "Fibre01": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 170
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 36
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 1233
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 339
+      }
+    },
+    "Fibre02": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 171
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 37
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 1197
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 333
+      }
+    },
+    "Fibre03": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 172
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 46
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 1151
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 327
+      }
+    },
+    "Fibre04": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 173
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 51
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 1103
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 325
+      }
+    },
+    "Fibre05": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 174
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 48
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 1063
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 321
+      }
+    },
+    "Fibre06": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 175
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 60
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 1015
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 321
+      }
+    },
+    "Fibre07": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 176
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 79
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 881
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 315
+      }
+    },
+    "Fibre08": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 177
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 57
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 967
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 313
+      }
+    },
+    "Fibre09": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 178
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 57
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 929
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 313
+      }
+    },
+    "Fibre10": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 179
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 77
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 834
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 312
+      }
+    }
+  },
+  "Lane19": {
+    "Fibre01": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 180
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 74
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 1233
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 287
+      }
+    },
+    "Fibre02": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 181
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 70
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 1180
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 285
+      }
+    },
+    "Fibre03": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 182
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 78
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 1098
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 278
+      }
+    },
+    "Fibre04": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 183
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 41
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 1141
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 277
+      }
+    },
+    "Fibre05": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 184
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 79
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 1053
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 276
+      }
+    },
+    "Fibre06": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 185
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 75
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 1010
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 274
+      }
+    },
+    "Fibre07": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 186
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 78
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 968
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 272
+      }
+    },
+    "Fibre08": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 187
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 77
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 919
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 271
+      }
+    },
+    "Fibre09": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 188
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 77
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 878
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 269
+      }
+    },
+    "Fibre10": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 189
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 80
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 835
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 266
+      }
+    }
+  },
+  "Lane20": {
+    "Fibre01": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 190
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 48
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 1233
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 242
+      }
+    },
+    "Fibre02": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 191
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 67
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 1149
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 237
+      }
+    },
+    "Fibre03": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 192
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 62
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 1191
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 235
+      }
+    },
+    "Fibre04": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 193
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 81
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 1103
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 231
+      }
+    },
+    "Fibre05": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 194
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 67
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 1019
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 227
+      }
+    },
+    "Fibre06": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 195
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 55
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 1065
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 225
+      }
+    },
+    "Fibre07": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 196
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 65
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 967
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 225
+      }
+    },
+    "Fibre08": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 197
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 61
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 925
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 221
+      }
+    },
+    "Fibre09": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 198
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 43
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 877
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 217
+      }
+    },
+    "Fibre10": {
+      "id": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 199
+      },
+      "mean": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 37
+      },
+      "x": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 837
+      },
+      "y": {
+        "$type": "Integer",
+        "Access": "Developer",
+        "Category": "Lanes_cat",
+        "Max": 2000,
+        "Min": 0,
+        "Value": 217
+      }
+    }
+  }
+}

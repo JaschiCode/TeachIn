@@ -1,0 +1,146 @@
+{
+  "General": {
+    "V_FeatureActive": {
+      "$type": "Boolean",
+      "Category": "calibration_cat",
+      "Access": "Developer",
+      "Value": true
+    },
+    "V_TeachIn_Active": {
+      "$type": "Boolean",
+      "Category": "calibration_cat",
+      "Access": "Developer",
+      "Value": false
+    },
+    "V_CalibrationObject_Length_MM": {
+      "$type": "Double",
+      "Access": "Developer",
+      "Category": "calibration_cat",
+      "Value": 20,
+      "Max": 25,
+      "Min": 0
+    },
+    "V_CalibrationObject_Width_MM": {
+      "$type": "Double",
+      "Access": "Developer",
+      "Category": "calibration_cat",
+      "Value": 9,
+      "Max": 25,
+      "Min": 0
+    },
+    "V_CalibrationObject_MeasureSystemAnalyses_Active": {
+      "$type": "Boolean",
+      "Category": "calibration_cat",
+      "Access": "Developer",
+      "Value": false
+    },
+    "V_CalibrationObject_SampleObjects_Count": {
+      "$type": "Double",
+      "Access": "Developer",
+      "Category": "calibration_cat",
+      "Value": 1,
+      "Max": 25,
+      "Min": 1
+    },
+    "V_Calib_GlobalMeasurementOffset_µm_X": {
+      "$type": "Integer",
+      "Access": "Developer",
+      "Category": "calibration_cat",
+      "Value": 0,
+      "Max": 1000,
+      "Min": -1000
+    },
+    "V_Calib_GlobalMeasurementOffset_µm_Y": {
+      "$type": "Integer",
+      "Access": "Developer",
+      "Category": "calibration_cat",
+      "Value": 0,
+      "Max": 1000,
+      "Min": -1000
+    }
+  },
+  "Calibration": {
+    "Calib_Cam_0": {
+      "V_CalibX_PixToMM_0": {
+        "$type": "Double",
+        "Access": "Developer",
+        "Category": "calibration_cat",
+        "Value": 1.0,
+        "Max": 20,
+        "Min": 0
+      },
+      "V_CalibY_PixToMM_0": {
+        "$type": "Double",
+        "Access": "Developer",
+        "Category": "calibration_cat",
+        "Value": 1.0,
+        "Max": 20,
+        "Min": 0
+      },
+      "V_CalibX_PixToMM_1": {
+        "$type": "Double",
+        "Access": "Developer",
+        "Category": "calibration_cat",
+        "Value": 1.0,
+        "Max": 20,
+        "Min": 0
+      },
+      "V_CalibY_PixToMM_1": {
+        "$type": "Double",
+        "Access": "Developer",
+        "Category": "calibration_cat",
+        "Value": 1.0,
+        "Max": 20,
+        "Min": 0
+      },
+		"V_CalibX_PixToMM_2": {
+        "$type": "Double",
+        "Access": "Developer",
+        "Category": "calibration_cat",
+        "Value": 1.0,
+        "Max": 20,
+        "Min": 0
+      },
+      "V_CalibY_PixToMM_2": {
+        "$type": "Double",
+        "Access": "Developer",
+        "Category": "calibration_cat",
+        "Value": 1.0,
+        "Max": 20,
+        "Min": 0
+      },
+      "V_CalibX_PixToMM_3": {
+        "$type": "Double",
+        "Access": "Developer",
+        "Category": "calibration_cat",
+        "Value": 1.0,
+        "Max": 20,
+        "Min": 0
+      },
+      "V_CalibY_PixToMM_3": {
+        "$type": "Double",
+        "Access": "Developer",
+        "Category": "calibration_cat",
+        "Value": 1.0,
+        "Max": 20,
+        "Min": 0
+      },
+		"V_CalibX_PixToMM_4": {
+        "$type": "Double",
+        "Access": "Developer",
+        "Category": "calibration_cat",
+        "Value": 1.0,
+        "Max": 20,
+        "Min": 0
+      },
+      "V_CalibY_PixToMM_4": {
+        "$type": "Double",
+        "Access": "Developer",
+        "Category": "calibration_cat",
+        "Value": 1.0,
+        "Max": 20,
+        "Min": 0
+      }
+    }
+  }
+}

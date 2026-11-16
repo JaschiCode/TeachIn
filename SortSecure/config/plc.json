@@ -1,0 +1,730 @@
+{
+	"PollingInterval": 333,
+	"ReadDataRequests": [
+		{
+			"$id": "ProgramID",
+			"Region": "DataBlock",
+			"DB": 1000,
+			"StartAddress": 0,
+			"DataType": "S7_STRING",
+			"Quantity": 256,
+			"Itemkey": "ProgramID"
+		},
+		{
+			"$id": "SN_CPU",
+			"Region": "DataBlock",
+			"DB": 1000,
+			"StartAddress": 280,
+			"DataType": "S7_STRING",
+			"Quantity": 18,
+			"Itemkey": "SN_CPU"
+		},
+		{
+			"$id": "SN_XMODULE_1",
+			"Region": "DataBlock",
+			"DB": 1000,
+			"StartAddress": 338,
+			"DataType": "S7_STRING",
+			"Quantity": 18,
+			"Itemkey": "SN_XMODULE_1"
+		},
+		{
+			"$id": "SN_XMODULE_2",
+			"Region": "DataBlock",
+			"DB": 1000,
+			"StartAddress": 396,
+			"DataType": "S7_STRING",
+			"Quantity": 18,
+			"Itemkey": "SN_XMODULE_2"
+		},
+		{
+			"$id": "SN_XMODULE_3",
+			"Region": "DataBlock",
+			"DB": 1000,
+			"StartAddress": 454,
+			"DataType": "S7_STRING",
+			"Quantity": 18,
+			"Itemkey": "SN_XMODULE_3"
+		},
+		{
+			"$id": "SN_XMODULE_4",
+			"Region": "DataBlock",
+			"DB": 1000,
+			"StartAddress": 512,
+			"DataType": "S7_STRING",
+			"Quantity": 18,
+			"Itemkey": "SN_XMODULE_4"
+		},
+		{
+			"$id": "SN_XMODULE_5",
+			"Region": "DataBlock",
+			"DB": 1000,
+			"StartAddress": 570,
+			"DataType": "S7_STRING",
+			"Quantity": 18,
+			"Itemkey": "SN_XMODULE_5"
+		}
+	],
+	"WriteDataRequests": [],
+	"PLCs": {
+		"PLC_0": {
+			"IP": "192.168.188.96",
+			"ReadDataRequests": [
+				{
+					"$ref": "ProgramID"
+				},
+				{
+					"$ref": "SN_CPU"
+				},
+				{
+					"$ref": "SN_XMODULE_1"
+				},
+				{
+					"$ref": "SN_XMODULE_2"
+				},
+				{
+					"$ref": "SN_XMODULE_3"
+				},
+				{
+					"$ref": "SN_XMODULE_4"
+				},
+				{
+					"$ref": "SN_XMODULE_5"
+				},
+				{
+					"$id": "Status_Machine",
+					"Region": "Flags_Markers",
+					"StartAddress": 34,
+					"DataType": "BIT",
+					"Bit": 0,
+					"Quantity": 1,
+					"Itemkey": "Status_Machine"
+				},
+				{
+					"$id": "Status_Upstream",
+					"Region": "Flags_Markers",
+					"StartAddress": 75,
+					"DataType": "BIT",
+					"Bit": 7,
+					"Quantity": 1,
+					"Itemkey": "Status_Upstream"
+				},
+				{
+					"$id": "Status_Release_Next_Machine",
+					"Region": "Flags_Markers",
+					"StartAddress": 79,
+					"DataType": "BIT",
+					"Bit": 0,
+					"Quantity": 1,
+					"Itemkey": "Status_Release_Next_Machine"
+				},
+				{
+					"$id": "Status_Counter_Stop_Next_Machine",
+					"Region": "Flags_Markers",
+					"StartAddress": 80,
+					"DataType": "BIT",
+					"Bit": 2,
+					"Quantity": 1,
+					"Itemkey": "Status_Counter_Stop_Next_Machine"
+				},
+				{
+					"$id": "Machine_Running",
+					"Region": "Flags_Markers",
+					"StartAddress": 7,
+					"DataType": "BIT",
+					"Bit": 0,
+					"Quantity": 1,
+					"Itemkey": "Machine_Running"
+				},
+				{
+					"$id": "Inspection_Running",
+					"Region": "Flags_Markers",
+					"StartAddress": 78,
+					"DataType": "BIT",
+					"Bit": 6,
+					"Quantity": 1,
+					"Itemkey": "Inspection_Running"
+				},
+				{
+					"$id": "Vibrator_Running",
+					"Region": "Flags_Markers",
+					"StartAddress": 74,
+					"DataType": "BIT",
+					"Bit": 6,
+					"Quantity": 1,
+					"Itemkey": "Vibrator_Running"
+				},
+				{
+					"$id": "Cam_1_Ready",
+					"Region": "Flags_Markers",
+					"StartAddress": 123,
+					"DataType": "BIT",
+					"Bit": 0,
+					"Quantity": 1,
+					"Itemkey": "Cam_1_Ready"
+				},
+				{
+					"$id": "Cam_1_WatchDog",
+					"Region": "Flags_Markers",
+					"StartAddress": 126,
+					"DataType": "BIT",
+					"Bit": 0,
+					"Quantity": 1,
+					"Itemkey": "Cam_1_WatchDog"
+				},		
+				{
+					"$id": "Pressure_OK",
+					"Region": "Flags_Markers",
+					"StartAddress": 73,
+					"DataType": "BIT",
+					"Bit": 6,
+					"Quantity": 1,
+					"Itemkey": "Pressure_OK"
+				},
+				{
+					"$id": "Status_RogueProduct",
+					"Region": "Flags_Markers",
+					"StartAddress": 75,
+					"DataType": "BIT",
+					"Bit": 0,
+					"Quantity": 1,
+					"Itemkey": "Status_RogueProduct"
+				},
+				{
+					"$id": "Status_ConsecutiveEjection",
+					"Region": "Flags_Markers",
+					"StartAddress": 75,
+					"DataType": "BIT",
+					"Bit": 1,
+					"Quantity": 1,
+					"Itemkey": "Status_ConsecutiveEjection"
+				},
+				{
+					"$id": "Status_Pressure",
+					"Region": "Flags_Markers",
+					"StartAddress": 76,
+					"DataType": "BIT",
+					"Bit": 2,
+					"Quantity": 1,
+					"Itemkey": "Status_Pressure"
+				},				
+				{
+					"$id": "Status_CheckEjection",
+					"Region": "Flags_Markers",
+					"StartAddress": 75,
+					"DataType": "BIT",
+					"Bit": 4,
+					"Quantity": 1,
+					"Itemkey": "Status_CheckEjection"
+				},
+				{
+					"$id": "Status_EjectionBin",
+					"Region": "Flags_Markers",
+					"StartAddress": 76,
+					"DataType": "BIT",
+					"Bit": 1,
+					"Quantity": 1,
+					"Itemkey": "Status_EjectionBin"
+				},
+				{
+					"$id": "Status_AWG",
+					"Region": "Flags_Markers",
+					"StartAddress": 76,
+					"DataType": "BIT",
+					"Bit": 6,
+					"Quantity": 1,
+					"Itemkey": "Status_AWG"
+				},
+				{
+					"$id": "Status_MotorDrive",
+					"Region": "Flags_Markers",
+					"StartAddress": 76,
+					"DataType": "BIT",
+					"Bit": 7,
+					"Quantity": 1,
+					"Itemkey": "Status_MotorDrive"
+				},					
+				{
+					"$id": "EjectCounter_01",
+					"Region": "DataBlock",
+					"DB": 25,
+					"StartAddress": 4,
+					"DataType": "INT",
+					"Quantity": 1,
+					"Itemkey": "EjectCounter_01"
+				},
+				{
+					"$id": "EjectCounter_02",
+					"Region": "DataBlock",
+					"DB": 26,
+					"StartAddress": 4,
+					"DataType": "INT",
+					"Quantity": 1,
+					"Itemkey": "EjectCounter_02"
+				},
+				{
+					"$id": "EjectCounter_03",
+					"Region": "DataBlock",
+					"DB": 27,
+					"StartAddress": 4,
+					"DataType": "INT",
+					"Quantity": 1,
+					"Itemkey": "EjectCounter_03"
+				},
+				{
+					"$id": "EjectCounter_04",
+					"Region": "DataBlock",
+					"DB": 28,
+					"StartAddress": 4,
+					"DataType": "INT",
+					"Quantity": 1,
+					"Itemkey": "EjectCounter_04"
+				},
+				{
+					"$id": "EjectCounter_05",
+					"Region": "DataBlock",
+					"DB": 29,
+					"StartAddress": 4,
+					"DataType": "INT",
+					"Quantity": 1,
+					"Itemkey": "EjectCounter_05"
+				},
+				{
+					"$id": "Bunker_Status_Value",
+					"Region": "DataBlock",
+					"DB": 1200,
+					"StartAddress": 0,
+					"DataType": "BYTE",
+					"Quantity": 1,
+					"Itemkey": "Bunker_Status_Value"
+				},
+				{
+					"$id": "Status_Timer_NoCapsule",
+					"Region": "Flags_Markers",
+					"StartAddress": 77,
+					"DataType": "BIT",
+					"Bit": 3,
+					"Quantity": 1,
+					"Itemkey": "Status_Timer_NoCapsule"
+				},
+				{
+					"$id": "Status_Timer_NoRolls",
+					"Region": "Flags_Markers",
+					"StartAddress": 77,
+					"DataType": "BIT",
+					"Bit": 4,
+					"Quantity": 1,
+					"Itemkey": "Status_Timer_NoRolls"
+				},
+				{
+					"$id": "Status_EjectionFlap_At_Start",
+					"Region": "Flags_Markers",
+					"StartAddress": 77,
+					"DataType": "BIT",
+					"Bit": 5,
+					"Quantity": 1,
+					"Itemkey": "Status_EjectionFlap_At_Start"
+				},
+				{
+					"$id": "Timeout_EjectionFlap_Opened",
+					"Region": "Flags_Markers",
+					"StartAddress": 77,
+					"DataType": "BIT",
+					"Bit": 1,
+					"Quantity": 1,
+					"Itemkey": "Timeout_EjectionFlap_Opened"
+				},
+				{
+					"$id": "Timeout_EjectionFlap_Closed",
+					"Region": "Flags_Markers",
+					"StartAddress": 77,
+					"DataType": "BIT",
+					"Bit": 2,
+					"Quantity": 1,
+					"Itemkey": "Timeout_EjectionFlap_Closed"
+				}
+			],
+			"WriteDataRequests": [
+				{
+					"$id": "Send_Start",
+					"Region": "Flags_Markers",
+					"StartAddress": 38,
+					"DataType": "BIT",
+					"Bit": 0,
+					"Itemkey": "Send_Start"
+				},
+				{
+					"$id": "Send_Stop",
+					"Region": "Flags_Markers",
+					"StartAddress": 38,
+					"DataType": "BIT",
+					"Bit": 1,
+					"Itemkey": "Send_Stop"
+				},
+				{
+					"$id": "Send_Reset",
+					"Region": "Flags_Markers",
+					"StartAddress": 38,
+					"DataType": "BIT",
+					"Bit": 2,
+					"Itemkey": "Send_Reset"
+				},
+				{
+					"$id": "Send_Jog",
+					"Region": "Flags_Markers",
+					"StartAddress": 38,
+					"DataType": "BIT",
+					"Bit": 5,
+					"Itemkey": "Send_Jog"
+				},
+				{
+					"$id": "Send_Reset_Counters",
+					"Region": "Flags_Markers",
+					"StartAddress": 74,
+					"DataType": "BIT",
+					"Bit": 5,
+					"Itemkey": "Send_Reset_Counters"
+				},
+				{
+					"$id": "Send_ProductionActive",
+					"Region": "Flags_Markers",
+					"StartAddress": 78,
+					"DataType": "BIT",
+					"Bit": 7,
+					"Itemkey": "Send_ProductionActive"
+				},
+				{
+					"$id": "Send_Test",
+					"Region": "Flags_Markers",
+					"StartAddress": 74,
+					"DataType": "BIT",
+					"Bit": 4,
+					"Itemkey": "Send_Test"
+				},
+				{
+					"$id": "Emergency_Stop_Status",
+					"Region": "Flags_Markers",
+					"StartAddress": 60,
+					"DataType": "BIT",
+					"Bit": 0,
+					"Itemkey": "Emergency_Stop_Status"
+				},
+				{
+					"$id": "Status_Halcon_Error",
+					"Region": "Flags_Markers",
+					"StartAddress": 76,
+					"DataType": "BIT",
+					"Bit": 3,
+					"Quantity": 1,
+					"Itemkey": "Status_Halcon_Error"
+				},					
+				{
+					"$id": "Bypass_Release_Next_Machine",
+					"Region": "Flags_Markers",
+					"StartAddress": 79,
+					"DataType": "BIT",
+					"Bit": 1,
+					"Quantity": 1,
+					"Itemkey": "Bypass_Release_Next_Machine"
+				},				
+				{
+					"$id": "Bypass_Timer_NoCapsule",
+					"Region": "Flags_Markers",
+					"StartAddress": 37,
+					"DataType": "BIT",
+					"Bit": 3,
+					"Itemkey": "Bypass_Timer_NoCapsule"
+				},
+				{
+					"$id": "Bypass_Timer_NoRolls",
+					"Region": "Flags_Markers",
+					"StartAddress": 37,
+					"DataType": "BIT",
+					"Bit": 1,
+					"Itemkey": "Bypass_Timer_NoRolls"
+				},
+				{
+					"$id": "Bypass_EjectionFlap_At_Start",
+					"Region": "Flags_Markers",
+					"StartAddress": 37,
+					"DataType": "BIT",
+					"Bit": 2,
+					"Itemkey": "Bypass_EjectionFlap_At_Start"
+				},
+				{
+					"$id": "Bypass_Timeout_EjectionFlap",
+					"Region": "Flags_Markers",
+					"StartAddress": 37,
+					"DataType": "BIT",
+					"Bit": 4,
+					"Itemkey": "Bypass_Timeout_EjectionFlap"
+				},
+				{
+					"$id": "Bypass_MotorDrive",
+					"Region": "Flags_Markers",
+					"StartAddress": 37,
+					"DataType": "BIT",
+					"Bit": 7,
+					"Itemkey": "Bypass_MotorDrive"
+				},				
+				{
+					"$id": "Bypass_EjectionBin",
+					"Region": "Flags_Markers",
+					"StartAddress": 39,
+					"DataType": "BIT",
+					"Bit": 1,
+					"Itemkey": "Bypass_EjectionBin"
+				},
+				{
+					"$id": "Bypass_Pressure",
+					"Region": "Flags_Markers",
+					"StartAddress": 39,
+					"DataType": "BIT",
+					"Bit": 2,
+					"Itemkey": "Bypass_Pressure"
+				},
+				{
+					"$id": "Bypass_Halcon_Error",
+					"Region": "Flags_Markers",
+					"StartAddress": 39,
+					"DataType": "BIT",
+					"Bit": 3,
+					"Quantity": 1,
+					"Itemkey": "Bypass_Halcon_Error"
+				},					
+				{
+					"$id": "Bypass_ProductionRunning",
+					"Region": "Flags_Markers",
+					"StartAddress": 39,
+					"DataType": "BIT",
+					"Bit": 5,
+					"Itemkey": "Bypass_ProductionRunning"
+				},
+				{
+					"$id": "Bypass_AWG",
+					"Region": "Flags_Markers",
+					"StartAddress": 39,
+					"DataType": "BIT",
+					"Bit": 6,
+					"Itemkey": "Bypass_AWG"
+				},
+				{
+					"$id": "Bypass_Cam_1_WatchDog",
+					"Region": "Flags_Markers",
+					"StartAddress": 84,
+					"DataType": "BIT",
+					"Bit": 0,
+					"Itemkey": "Bypass_Cam_1_WatchDog"
+				},
+				{
+					"$id": "Bypass_Cam_1_Ready",
+					"Region": "Flags_Markers",
+					"StartAddress": 78,
+					"DataType": "BIT",
+					"Bit": 0,
+					"Itemkey": "Bypass_Cam_1_Ready"
+				},				
+				{
+					"$id": "Warning_EjectionBin",
+					"Region": "Flags_Markers",
+					"StartAddress": 18,
+					"DataType": "BIT",
+					"Bit": 4,
+					"Itemkey": "Warning_EjectionBin"
+				},				
+				{
+					"$id": "V_Vacuum_Duration_Tubes_Down",
+					"Region": "DataBlock",
+					"DB": 1320,
+					"StartAddress": 0,
+					"DataType": "DWORD",
+					"Itemkey": "V_Vacuum_Duration_Tubes_Down"
+				},
+				{
+					"$id": "V_Vacuum_Duration_Delay",
+					"Region": "DataBlock",
+					"DB": 1320,
+					"StartAddress": 4,
+					"DataType": "DWORD",
+					"Itemkey": "V_Vacuum_Duration_Delay"
+				},
+				{
+					"$id": "V_Vacuum_Duration",
+					"Region": "DataBlock",
+					"DB": 1320,
+					"StartAddress": 8,
+					"DataType": "DWORD",
+					"Itemkey": "V_Vacuum_Duration"
+				},
+				{
+					"$id": "V_Vacuum_Duration_Wait",
+					"Region": "DataBlock",
+					"DB": 1320,
+					"StartAddress": 12,
+					"DataType": "DWORD",
+					"Itemkey": "V_Vacuum_Duration_Wait"
+				},
+				{
+					"$id": "V_Vacuum_Duration_Tubes_Rising",
+					"Region": "DataBlock",
+					"DB": 1320,
+					"StartAddress": 16,
+					"DataType": "DWORD",
+					"Itemkey": "V_Vacuum_Duration_Tubes_Rising"
+				},
+				{
+					"$id": "V_Vacuum_Duration_Start",
+					"Region": "DataBlock",
+					"DB": 1320,
+					"StartAddress": 20,
+					"DataType": "DWORD",
+					"Itemkey": "V_Vacuum_Duration_Start"
+				},
+				{
+					"$id": "V_Vacuum_Duration_ProductionEnd",
+					"Region": "DataBlock",
+					"DB": 1320,
+					"StartAddress": 24,
+					"DataType": "DWORD",
+					"Itemkey": "V_Vacuum_Duration_ProductionEnd"
+				},
+				{
+					"$id": "V_Time_Stop_NoRolls",
+					"Region": "DataBlock",
+					"DB": 1320,
+					"StartAddress": 28,
+					"DataType": "DWORD",
+					"Itemkey": "V_Time_Stop_NoRolls"
+				},
+				{
+					"$id": "V_Time_Stop_NoCapsule",
+					"Region": "DataBlock",
+					"DB": 1320,
+					"StartAddress": 32,
+					"DataType": "DWORD",
+					"Itemkey": "V_Time_Stop_NoCapsule"
+				},
+				{
+					"$id": "V_Time_Flap_Down",
+					"Region": "DataBlock",
+					"DB": 1320,
+					"StartAddress": 36,
+					"DataType": "DWORD",
+					"Itemkey": "V_Time_Flap_Down"
+				},
+				{
+					"$id": "V_Time_Flap_Up",
+					"Region": "DataBlock",
+					"DB": 1320,
+					"StartAddress": 40,
+					"DataType": "DWORD",
+					"Itemkey": "V_Time_Flap_Up"
+				},
+				{
+					"$id": "V_Time_EjectionBin_Full",
+					"Region": "DataBlock",
+					"DB": 1320,
+					"StartAddress": 60,
+					"DataType": "DWORD",
+					"Itemkey": "V_Time_EjectionBin_Full"
+				},		
+				{
+					"$id": "V_Time_Startup_Delay_Vibrator",
+					"Region": "DataBlock",
+					"DB": 1320,
+					"StartAddress": 64,
+					"DataType": "DWORD",
+					"Itemkey": "V_Time_Startup_Delay_Vibrator"
+				},					
+				{
+					"$id": "V_EjectCount_Default",
+					"Region": "DataBlock",
+					"DB": 1330,
+					"StartAddress": 20,
+					"DataType": "DWORD",
+					"Itemkey": "V_EjectCount_Default"
+				},
+				{
+					"$id": "V_EjectCount_Actual",
+					"Region": "DataBlock",
+					"DB": 1330,
+					"StartAddress": 24,
+					"DataType": "DWORD",
+					"Itemkey": "V_EjectCount_Actual"
+				},
+				{
+					"$id": "V_RollCount_Default_To_Flap_Up",
+					"Region": "DataBlock",
+					"DB": 1330,
+					"StartAddress": 28,
+					"DataType": "DWORD",
+					"Itemkey": "V_RollCount_Default_To_Flap_Up"
+				},
+				{
+					"$id": "V_RollCount_Actual_To_Flap_Up",
+					"Region": "DataBlock",
+					"DB": 1330,
+					"StartAddress": 32,
+					"DataType": "DWORD",
+					"Itemkey": "V_RollCount_Actual_To_Flap_Up"
+				},
+				{
+					"$id": "Counter_Good",
+					"Region": "DataBlock",
+					"DB": 1330,
+					"StartAddress": 36,
+					"DataType": "DWORD",
+					"Itemkey": "Counter_Good"
+				},		
+				{
+					"$id": "Counter_Bad",
+					"Region": "DataBlock",
+					"DB": 1330,
+					"StartAddress": 40,
+					"DataType": "DWORD",
+					"Itemkey": "Counter_Bad"
+				},				
+				{
+					"$id": "Motor_1_MainDrive_Release",
+					"Region": "Flags_Markers",
+					"StartAddress": 100,
+					"DataType": "BIT",
+					"Bit": 0,
+					"Itemkey": "Motor_1_MainDrive_Release"
+				},
+				{
+					"$id": "Motor_1_MainDrive_Speed_Slow",
+					"Region": "DataBlock",
+					"DB": 1100,
+					"StartAddress": 0,
+					"DataType": "REAL",
+					"Itemkey": "Motor_1_MainDrive_Speed_Slow"
+				},
+				{
+					"$id": "Motor_1_MainDrive_Speed_Fast",
+					"Region": "DataBlock",
+					"DB": 1100,
+					"StartAddress": 8,
+					"DataType": "REAL",
+					"Itemkey": "Motor_1_MainDrive_Speed_Fast"
+				},
+				{
+					"$id": "Vibrator_Main_Release",
+					"Region": "Flags_Markers",
+					"StartAddress": 101,
+					"DataType": "BIT",
+					"Bit": 0,
+					"Itemkey": "Vibrator_Main_Release"
+				},
+				{
+					"$id": "Vibrator_Main_Amplitude",
+					"Region": "DataBlock",
+					"DB": 1100,
+					"StartAddress": 16,
+					"DataType": "REAL",
+					"Itemkey": "Vibrator_Main_Amplitude"
+				}
+			]
+		}
+	}
+}
