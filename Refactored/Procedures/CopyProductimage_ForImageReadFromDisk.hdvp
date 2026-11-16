@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="25.11.0.0"><procedure name="CopyProductimage_ForImageReadFromDisk">
+<interface>
+<io>
+<par name="Grab_Image" base_type="iconic" dimension="0"/>
+</io>
+<ic>
+<par name="FileandPathPathname_ImagesProductTeachIn" base_type="ctrl" dimension="0"/>
+</ic>
+</interface>
+<body>
+<c>* copy the Productimage to Images/Productimage0001.tif if it not exists. Useful if image was read from disk without grabbing.</c>
+<l>* Filename := PathnameForImageFiles + FilenameForImageFiles + (ProcutionLoopCounter+1)$'.4d'</l>
+<l>* FilenameToCheck := PathnameValues[12] + FilenameProductimage + (0 $'.4d') + '.tif'</l>
+<l>file_exists (FileandPathPathname_ImagesProductTeachIn, FileExists)</l>
+<l>if (FileExists # 1)</l>
+<l>    write_image (Grab_Image, 'tiff', 0, FileandPathPathname_ImagesProductTeachIn)</l>
+<l>endif</l>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="CopyProductimage_ForImageReadFromDisk">
+<parameters>
+<parameter id="FileandPathPathname_ImagesProductTeachIn"/>
+<parameter id="Grab_Image"/>
+</parameters>
+</docu>
+</procedure>
+</hdevelop>
