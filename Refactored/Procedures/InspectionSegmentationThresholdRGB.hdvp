@@ -100,7 +100,7 @@
 <c>    * Ohne gueltiges TopLight-Bild bleibt die Segmentierung leer.</c>
 <l>endif</l>
 <c></c>
-<l>connection (RegionSegmentedUnion, RegionSegmented)</l>
+<l>connection (RegionSegmented, RegionSegmented)</l>
 <l>select_shape (RegionSegmented, RegionSegmented, 'area', 'and', AreaMin, 1e6)</l>
 <c></c>
 <c>* Set variables to dictionary</c>
