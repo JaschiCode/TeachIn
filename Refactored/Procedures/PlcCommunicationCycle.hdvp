@@ -15,6 +15,7 @@
 <c>* -------------------------------------------------------</c>
 <c></c>
 <l>global tuple App</l>
+<l>global tuple gQueuePLCResults</l>
 <c></c>
 <l>OptionalDataToLog := []</l>
 <c></c>
@@ -97,11 +98,11 @@
 <c></c>
 <c>* Do the communication to plc here</c>
 <l>if (not App.Plc.Status.SkipCommunicationCycle)</l>
-<l>    if (App.Plc.ResultsQueue # []) </l>
+<l>    if (gQueuePLCResults # []) </l>
 <c>        * If there is a queue specified send data to there</c>
 <l>        create_message (MessageToAquisitionThread)</l>
 <l>        set_message_tuple (MessageToAquisitionThread, 'PLC_SendTuple', SendTuple)</l>
-<l>        enqueue_message (App.Plc.ResultsQueue, MessageToAquisitionThread, [], [])</l>
+<l>        enqueue_message (gQueuePLCResults, MessageToAquisitionThread, [], [])</l>
 <l>        clear_message (MessageToAquisitionThread)</l>
 <l>    else</l>
 <l>        if (App.Plc.Socket.Client[0] &gt; -1 and |SendTuple| &gt; 0)</l>
