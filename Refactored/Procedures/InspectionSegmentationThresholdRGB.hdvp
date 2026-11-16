@@ -31,11 +31,10 @@
 <l>gen_empty_obj (RegionSegmentedUnion)</l>
 <l>gen_empty_obj (RegionSegmented)</l>
 <c></c>
-<c>* RGB-Kanaele fuer die Farbhilfe aus dem TopLight-HSV-Bild erzeugen.</c>
-<l>trans_to_rgb (ImageHue, ImageValue, ImageSaturation, ImageRed, ImageGreen, ImageBlue, 'hls')</l>
-<c></c>
 <l>get_image_size (ImageValue, ImageWidth, _)</l>
 <l>if (|ImageWidth| &gt; 0)</l>
+<c>* RGB-Kanaele fuer die Farbhilfe aus dem TopLight-HSV-Bild erzeugen.</c>
+<l>    trans_to_rgb (ImageHue, ImageValue, ImageSaturation, ImageRed, ImageGreen, ImageBlue, 'hls')</l>
 <l>    reduce_domain (ImageValue, LanesROIsUnion, ImageValueReduced)</l>
 <c>    </c>
 <l>    switch (ChannelSelector)</l>
@@ -118,4 +117,3 @@
 </parameters>
 </docu>
 </procedure>
-</hdevelop>
