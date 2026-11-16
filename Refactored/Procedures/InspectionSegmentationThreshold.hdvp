@@ -1,78 +1,79 @@
-
-
-<hdevelop file\_version="1.2" halcon\_version="25.11.0.0">
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="25.11.0.0">
 <procedure name="InspectionSegmentationThreshold">
 <interface>
 <ic>
-<par name="ProcessingThreadID" base\_type="ctrl" dimension="0"/>
-<par name="ChannelSelector" base\_type="ctrl" dimension="0"/>
-<par name="TimeNeeded" base\_type="ctrl" dimension="0"/>
+<par name="ProcessingThreadID" base_type="ctrl" dimension="0"/>
+<par name="ChannelSelector" base_type="ctrl" dimension="0"/>
 </ic>
+<oc>
+<par name="TimeNeeded" base_type="ctrl" dimension="0"/>
+</oc>
 </interface>
 <body>
-<c>\* InspectionSegmentationThreshold</c>
-<c>\* -----------------------------------------------------------------------</c>
-<c>\* Segment tablet ROIs using a smoothed fixed threshold.</c>
+<c>* InspectionSegmentationThreshold</c>
+<c>* -----------------------------------------------------------------------</c>
+<c>* Segment tablet ROIs using a smoothed fixed threshold.</c>
 <c></c>
 <l>global tuple App</l>
 <c></c>
-<l>count\_seconds(TimeStart)</l>
+<l>count_seconds(TimeStart)</l>
 <c></c>
-<c>\* Get variables from dictionary</c>
-<l>ImageValue       := App.Inspection.Threads.\[ProcessingThreadID\].Images.TopLight.HSV.Value</l>
-<l>ImageMono        := App.Inspection.Threads.\[ProcessingThreadID\].Images.BackLight.Mono    </l>
-<l>ImageUV          := App.Inspection.Threads.\[ProcessingThreadID\].Images.TopLight.UV  </l>
-<l>TabletsROIsUnion := App.Inspection.Threads.\[ProcessingThreadID\].Regions.Tablets.ROIsUnion</l>
-<l>LanesROIsUnion   := App.Inspection.Threads.\[ProcessingThreadID\].Regions.Lanes.ROIsUnion</l>
+<c>* Get variables from dictionary</c>
+<l>ImageValue       := App.Inspection.Threads.[ProcessingThreadID].Images.TopLight.HSV.Value</l>
+<l>ImageMono        := App.Inspection.Threads.[ProcessingThreadID].Images.BackLight.Mono    </l>
+<l>ImageUV          := App.Inspection.Threads.[ProcessingThreadID].Images.TopLight.UV  </l>
+<l>TabletsROIsUnion := App.Inspection.Threads.[ProcessingThreadID].Regions.Tablets.ROIsUnion</l>
+<l>LanesROIsUnion   := App.Inspection.Threads.[ProcessingThreadID].Regions.Lanes.ROIsUnion</l>
 <c></c>
-<l>ThresholdRedMin := App.Format.TabletInspection.Segmentation.V\_Segmentation\_ColourSupport\_Threshold\_RedMin.Value</l>
-<l>ThresholdRedMax := App.Format.TabletInspection.Segmentation.V\_Segmentation\_ColourSupport\_Threshold\_RedMax.Value</l>
-<l>AreaMin         := App.Format.TabletInspection.Segmentation.V\_Segmentation\_SmallestSingleObjectFilter\_Area\_Min.Value</l>
-<l>get\_dict\_param (App.Inspection.Threads.\[ProcessingThreadID\].Segmentation, 'key\_exists', 'TabletsAvailable', TabletsAvailableExists)</l>
-<l>gen\_empty\_obj (Reg)</l>
+<l>ThresholdRedMin := App.Format.TabletInspection.Segmentation.V_Segmentation_ColourSupport_Threshold_RedMin.Value</l>
+<l>ThresholdRedMax := App.Format.TabletInspection.Segmentation.V_Segmentation_ColourSupport_Threshold_RedMax.Value</l>
+<l>AreaMin         := App.Format.TabletInspection.Segmentation.V_Segmentation_SmallestSingleObjectFilter_Area_Min.Value</l>
+<l>get_dict_param (App.Inspection.Threads.[ProcessingThreadID].Segmentation, 'key_exists', 'TabletsAvailable', TabletsAvailableExists)</l>
+<l>gen_empty_obj (Reg)</l>
 <c></c>
-<c>\* If no tablets are found, return an empty region without running image operators.</c>
+<c>* If no tablets are found, return an empty region without running image operators.</c>
 <l>if (TabletsAvailableExists)</l>
-<l>    TabletsAvailable := App.Inspection.Threads.\[ProcessingThreadID\].Segmentation.TabletsAvailable</l>
+<l>    TabletsAvailable := App.Inspection.Threads.[ProcessingThreadID].Segmentation.TabletsAvailable</l>
 <l>else</l>
 <l>    TabletsAvailable := 0</l>
 <l>endif</l>
 <l>if (TabletsAvailable)</l>
 <l>    switch (ChannelSelector)</l>
 <l>    case 0: </l>
-<c>        \* BottomLight Mono</c>
-<l>        reduce\_domain (ImageMono, TabletsROIsUnion, ImageReduced)</l>
+<c>        * BottomLight Mono</c>
+<l>        reduce_domain (ImageMono, TabletsROIsUnion, ImageReduced)</l>
 <l>        break</l>
 <l>    case 1: </l>
-<c>        \* TopLight HSV-Value</c>
-<l>        reduce\_domain (ImageValue, TabletsROIsUnion, ImageReduced)</l>
+<c>        * TopLight HSV-Value</c>
+<l>        reduce_domain (ImageValue, TabletsROIsUnion, ImageReduced)</l>
 <l>        break</l>
 <l>    case 2: </l>
-<c>        \* TopLight UV</c>
-<l>        reduce\_domain (ImageUV, TabletsROIsUnion, ImageReduced)</l>
+<c>        * TopLight UV</c>
+<l>        reduce_domain (ImageUV, TabletsROIsUnion, ImageReduced)</l>
 <l>        break      </l>
 <l>    endswitch</l>
 <c></c>
-<l>mean\_image (ImageReduced, ImageMean, 7, 7)</l>
+<l>mean_image (ImageReduced, ImageMean, 7, 7)</l>
 <l>if(ChannelSelector == 0)</l>
 <l>    threshold (ImageMean, Reg, 0, ThresholdRedMin)</l>
 <l>else</l>
 <l>    threshold (ImageMean, Reg, ThresholdRedMin, ThresholdRedMax)</l>
 <l>endif</l>
 <c></c>
-<c>\* Cap component area at 50% of the lane area to reject over-segmented regions.</c>
-<l>area\_center (LanesROIsUnion, Area, \_, \_)</l>
-<l>SegmentationMaxSelection := round(Area \* 0.5 )       </l>
+<c>* Cap component area at 50% of the lane area to reject over-segmented regions.</c>
+<l>area_center (LanesROIsUnion, Area, _, _)</l>
+<l>SegmentationMaxSelection := round(Area * 0.5 )       </l>
 <c></c>
 <l>connection (Reg, Reg)</l>
-<l>select\_shape (Reg, Reg, 'area', 'and', AreaMin, SegmentationMaxSelection)    </l>
+<l>select_shape (Reg, Reg, 'area', 'and', AreaMin, SegmentationMaxSelection)    </l>
 <l>endif</l>
 <c></c>
-<c>\* Set variables to dictionary</c>
-<l>App.Inspection.Threads.\[ProcessingThreadID\].Regions.Tablets.Segmented := Reg</l>
+<c>* Set variables to dictionary</c>
+<l>App.Inspection.Threads.[ProcessingThreadID].Regions.Tablets.Segmented := Reg</l>
 <c></c>
-<l>count\_seconds(TimeEnd)</l>
-<l>TimeNeeded := (TimeEnd - TimeStart) \* 1000.0</l>
+<l>count_seconds(TimeEnd)</l>
+<l>TimeNeeded := (TimeEnd - TimeStart) * 1000.0</l>
 <c></c>
 <c></c>
 <l>return ()</l>
