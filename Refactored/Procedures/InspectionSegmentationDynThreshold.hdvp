@@ -4,17 +4,16 @@
 <interface>
 <ic>
 <par name="ProcessingThreadID" base_type="ctrl" dimension="0"/>
-<par name="TimeNeeded" base_type="ctrl" dimension="0"/>
 </ic>
+<oc>
+<par name="TimeNeeded" base_type="ctrl" dimension="0"/>
+</oc>
 </interface>
 <body>
 <c>* InspectionSegmentationDynThreshold</c>
-<c>* This procedure receives positions of spaces between the rolls (assembly line)</c>
-<c>* For every position, a line is placed to search for edges ([0, 1] or [1, 0] transitions)</c>
-<c>* The edge positions are used to create rectangles around capsules</c>
-<c>* Possible errors:</c>
-<c>*    - Caps are connected due to dark roll borders -&gt; bigger capsules which are detected as 1; solution: erosion_rectangle1(Reg, Reg, 1, HorizHeight) where HorizHeight is large (10+)</c>
-<c>*    - No caps found - erosion too strong</c>
+<c>* ------------------------------------------------------------------------------------------</c>
+<c>* Segment tablets inside the detected tablet ROIs using a local mean threshold.</c>
+<c>* Morphological filtering separates roll-gap connections and restores tablet shapes.</c>
 <c></c>
 <l>global tuple App</l>
 <c></c>
@@ -32,7 +31,7 @@
 <l>    TabletsAvailable := 0</l>
 <l>endif</l>
 <c></c>
-<c>* Parameters for image processing</c>
+<c>* Fixed processing parameters for local thresholding and shape restoration.</c>
 <l>DynThreshold := 8      // threshold for dynamic threshold</l>
 <l>MeanSize := 32         // size for mean image</l>
 <l>DilationSize := 15     // size for dilation rectangle (square)</l>
@@ -45,8 +44,9 @@
 <c>******************************************</c>
 <c>* Image Processing</c>
 <c>******************************************</c>
+<c>* Skip image operators when no tablet ROI was found.</c>
 <l>if (TabletsAvailable)</l>
-<c>* Bin for dark areas because of incident light</c>
+<c>* Detect dark tablet pixels relative to the local mean image.</c>
 <l>reduce_domain (Image, TabletsROIsUnion, ImageReduced)</l>
 <l>mean_image (ImageReduced, ImageMean, MeanSize, MeanSize)</l>
 <c></c>
@@ -55,14 +55,14 @@
 <l>connection (Reg, Reg)</l>
 <l>select_shape (Reg, Reg, ['height'], 'and', [HeightSelect1], [1e6]) // remove small particles</l>
 <c></c>
-<c>* Close capsules to avoid getting removed while eroding with line later</c>
+<c>* Dilate tablet regions before erosion to reduce fragmentation.</c>
 <l>dilation_rectangle1(Reg, Reg, DilationSize ,DilationSize)</l>
 <c></c>
-<c>* Remove small areas</c>
+<c>* Remove components below the configured area and height limits.</c>
 <l>fill_up(Reg, Reg) // fill caps to make sure not to break rois with erosion</l>
 <l>select_shape (Reg, Reg, ['area', 'height'], 'and', [AreaMin, HeightSelect2], [1e6, 1e6])</l>
 <c></c>
-<c>* Remove horizontal connections</c>
+<c>* Separate tablet regions across roll-gap connections, then restore their size.</c>
 <l>erosion_rectangle1(Reg, Reg, 1, HorizHeight) // remove connections with roll gaps</l>
 <l>union1 (Reg, Reg)</l>
 <l>connection (Reg, Reg)</l>
@@ -74,7 +74,7 @@
 <l>union1 (Reg, Reg)</l>
 <l>connection (Reg, Reg)</l>
 <c></c>
-<c>* Convex fill</c>
+<c>* Fill concavities with convex hulls, then restore the approximate original scale.</c>
 <l>shape_trans (Reg, Reg, 'convex') // fill up</l>
 <l>erosion_rectangle1(Reg, Reg, DilationSize,DilationSize) // restore size which has been blown up by dilation</l>
 <c></c>
@@ -90,7 +90,9 @@
 <l>count_seconds (TimeEnd)</l>
 <l>TimeNeeded := (TimeEnd - TimeStart) * 1000.0</l>
 <c></c>
+<c></c>
 <l>return ()</l>
+<c></c>
 </body>
 <docu id="InspectionSegmentationDynThreshold">
 <parameters>
@@ -99,3 +101,4 @@
 </parameters>
 </docu>
 </procedure>
+</hdevelop>
