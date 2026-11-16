@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="25.11.0.0">
+<procedure name="InspectionSelectImageForMeasurement">
+<interface>
+<ic><par name="ProcessingThreadID" base_type="ctrl" dimension="0"/></ic>
+<oc><par name="TimeNeeded" base_type="ctrl" dimension="0"/></oc>
+</interface>
+<body>
+<c>* InspectionSelectImageForMeasurement</c>
+<c>* ------------------------------------------------</c>
+<c>* Select measurement images and position-corrected tablet regions through App.</c>
+<c></c>
+<l>global tuple App</l>
+<l>count_seconds (TimeStart)</l>
+<l>ChannelSelector := App.Inspection.Threads.[ProcessingThreadID].Segmentation.Parameters.ChannelSelector</l>
+<l>get_dict_param (App.Sensor.GrabImageMetaData, 'key_exists', 'Sequencer_MovedDistanceInBetweenGrabbedImages', MovedDistanceExists)</l>
+<l>if (MovedDistanceExists)</l>
+<l>    MovedDistance := App.Sensor.GrabImageMetaData.Sequencer_MovedDistanceInBetweenGrabbedImages</l>
+<l>else</l>
+<l>    MovedDistance := []</l>
+<l>endif</l>
+<l>ImageValue := App.Inspection.Threads.[ProcessingThreadID].Images.TopLight.HSV.Value</l>
+<l>ImageMono := App.Inspection.Threads.[ProcessingThreadID].Images.BackLight.Mono</l>
+<l>ImageUV := App.Inspection.Threads.[ProcessingThreadID].Images.TopLight.UV</l>
+<l>TabletIndividual := App.Inspection.Threads.[ProcessingThreadID].Regions.Tablets.Individual</l>
+<l>TabletIndividualGeometric := TabletIndividual</l>
+<l>TabletIndividualLength := TabletIndividual</l>
+<c></c>
+<l>switch (ChannelSelector)</l>
+<l>case 0:</l>
+<c>    * BackLight segmentation: measure geometry in Mono and move the region back to that image.</c>
+<l>    ImageForGeometricalMeasurement := ImageMono</l>
+<l>    ImageForGeometricalMeasurementLength := ImageMono</l>
+<l>    ImageForGeometricalMeasurementPRV := ImageUV</l>
+<l>    if (MovedDistance # [])</l>
+<l>        move_region (TabletIndividual, TabletIndividualGeometric, -MovedDistance, 0)</l>
+<l>    endif</l>
+<l>    TabletIndividualLength := TabletIndividualGeometric</l>
+<l>    break</l>
+<l>case 1:</l>
+<c>    * TopLight segmentation: use Value for geometry, Mono for length, and UV for PRV.</c>
+<l>    ImageForGeometricalMeasurement := ImageValue</l>
+<l>    ImageForGeometricalMeasurementLength := ImageMono</l>
+<l>    ImageForGeometricalMeasurementPRV := ImageUV</l>
+<l>    break</l>
+<l>case 2:</l>
+<c>    * UV segmentation: use UV for geometry and PRV, and Mono for length.</c>
+<l>    ImageForGeometricalMeasurement := ImageUV</l>
+<l>    ImageForGeometricalMeasurementLength := ImageMono</l>
+<l>    ImageForGeometricalMeasurementPRV := ImageUV</l>
+<l>    break</l>
+<l>endswitch</l>
+<c></c>
+<l>App.Inspection.Threads.[ProcessingThreadID].Images.Measurement := dict{}</l>
+<l>App.Inspection.Threads.[ProcessingThreadID].Images.Measurement.Geometrical := ImageForGeometricalMeasurement</l>
+<l>App.Inspection.Threads.[ProcessingThreadID].Images.Measurement.Length := ImageForGeometricalMeasurementLength</l>
+<l>App.Inspection.Threads.[ProcessingThreadID].Images.Measurement.PRV := ImageForGeometricalMeasurementPRV</l>
+<l>App.Inspection.Threads.[ProcessingThreadID].Segmentation.Parameters.MovedDistance := MovedDistance</l>
+<l>App.Inspection.Threads.[ProcessingThreadID].Regions.Tablets.PositionCorrected := dict{}</l>
+<l>App.Inspection.Threads.[ProcessingThreadID].Regions.Tablets.PositionCorrected.Geometric := TabletIndividualGeometric</l>
+<l>App.Inspection.Threads.[ProcessingThreadID].Regions.Tablets.PositionCorrected.Length := TabletIndividualLength</l>
+<l>count_seconds (TimeEnd)</l>
+<l>TimeNeeded := (TimeEnd-TimeStart) * 1000.0</l>
+<l>return ()</l>
+</body>
+<docu id="InspectionSelectImageForMeasurement">
+<parameters>
+<parameter id="ProcessingThreadID"/>
+<parameter id="TimeNeeded"/>
+</parameters>
+</docu>
+</procedure>
+</hdevelop>
