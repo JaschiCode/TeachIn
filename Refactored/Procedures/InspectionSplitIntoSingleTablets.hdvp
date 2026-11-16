@@ -6,18 +6,16 @@
 <par name="ProcessingThreadID" base_type="ctrl" dimension="0"/>
 <par name="FeatureActive" base_type="ctrl" dimension="0"/>
 </ic>
-<oc>
-<par name="TimeNeeded" base_type="ctrl" dimension="0"/>
-</oc>
+<oc><par name="TimeNeeded" base_type="ctrl" dimension="0"/></oc>
 </interface>
 <body>
 <c>* InspectionSplitIntoSingleTablets</c>
 <c>* -------------------------------------------------------</c>
+<c>* Split segmented tablet regions per lane and store all results in App.</c>
 <c></c>
 <l>global tuple App</l>
 <l>count_seconds (TimeStart)</l>
 <c></c>
-<c>* Eingaben und Ergebnisse aus dem threadbezogenen App-Dictionary lesen/schreiben.</c>
 <l>ImageHSV := App.Inspection.Threads.[ProcessingThreadID].Images.TopLight.HSV.AllChannel</l>
 <l>LanesROIs := App.Inspection.Threads.[ProcessingThreadID].Regions.Lanes.ROIs</l>
 <l>RegionTablets := App.Inspection.Threads.[ProcessingThreadID].Regions.Tablets.Segmented</l>
@@ -26,14 +24,14 @@
 <l>if (FeatureActive)</l>
 <l>    count_obj (LanesROIs, NumberOfLanes)</l>
 <l>    gen_empty_obj (RegionTabletsIndividual)</l>
-<l>    for IdxLane := 0 to NumberOfLanes-1 by 1</l>
-<l>        select_obj (LanesROIs, LaneROI, IdxLane+1)</l>
+<l>    for IndexLane := 0 to NumberOfLanes-1 by 1</l>
+<l>        select_obj (LanesROIs, LaneROI, IndexLane+1)</l>
 <l>        intersection (LaneROI, RegionTablets, RegionTablet)</l>
-<l>        InspectionSplitIntoSingleTabletsDifferentModes (RegionTablet, RegionTabletIndividual, ProcessingThreadID, IdxLane)</l>
+<l>        InspectionSplitIntoSingleTabletsDifferentModes (RegionTablet, RegionTabletIndividual, ProcessingThreadID, IndexLane)</l>
 <l>        concat_obj (RegionTabletsIndividual, RegionTabletIndividual, RegionTabletsIndividual)</l>
 <l>    endfor</l>
 <c></c>
-<c>    * Nach dem Lane-Splitting Randobjekte einmal gesammelt erkennen und ausschliessen.</c>
+<c>    * Remove objects touching lane borders after collecting all lane results.</c>
 <l>    InspectionSplitIntoSingleTabletsRemoveRegionsThatCrossTheBorder (ImageHSV, RegionTabletsIndividual, LanesROIs, RegionTabletsWithoutTabletsOnBorder, RegionTabletsToRemove)</l>
 <l>    RegionTabletsIndividual := RegionTabletsWithoutTabletsOnBorder</l>
 <l>    RegionTabletsOnBorder := RegionTabletsToRemove</l>
@@ -43,15 +41,17 @@
 <c></c>
 <l>App.Inspection.Threads.[ProcessingThreadID].Regions.Tablets.Individual := RegionTabletsIndividual</l>
 <l>App.Inspection.Threads.[ProcessingThreadID].Regions.Tablets.OnBorder := RegionTabletsOnBorder</l>
+<l>InspectionSegmentationBackgroundCheck (ProcessingThreadID, TimeNeededBackgroundCheck)</l>
 <c></c>
-<c>* Leere Objekte aus dem Ergebnis entfernen und den bereinigten Stand zurueckschreiben.</c>
+<c>* Remove empty objects and store the cleaned result.</c>
 <l>RegionTabletsIndividual := App.Inspection.Threads.[ProcessingThreadID].Regions.Tablets.Individual</l>
 <l>select_shape (RegionTabletsIndividual, RegionTabletsIndividual, 'area', 'and', 1, 1e6)</l>
 <l>App.Inspection.Threads.[ProcessingThreadID].Regions.Tablets.Individual := RegionTabletsIndividual</l>
+<l>union1 (RegionTabletsIndividual, RegionTabletsIndividualUnion)</l>
+<l>App.Inspection.Threads.[ProcessingThreadID].Regions.Tablets.IndividualUnion := RegionTabletsIndividualUnion</l>
 <c></c>
 <l>count_seconds (TimeEnd)</l>
-<l>TimeNeeded := (TimeEnd - TimeStart) * 1000</l>
-<c></c>
+<l>TimeNeeded := (TimeEnd-TimeStart) * 1000</l>
 <l>return ()</l>
 </body>
 <docu id="InspectionSplitIntoSingleTablets">
