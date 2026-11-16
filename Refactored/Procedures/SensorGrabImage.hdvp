@@ -96,7 +96,11 @@
 <l>                NoImageFound := 1</l>
 <l>            endif</l>
 <l>        else</l>
-<l>            if (IsTeachIn)</l>
+<l>            tuple_regexp_match (Filename, '[^/\\\\]*.tif', ShortNames)</l>
+<l>            tuple_regexp_replace (ShortNames, '(\\\\d{1})_(\\\\d{4}).tif', '$1', Names_JustCamnumber)</l>
+<l>            tuple_regexp_replace (Names_JustCamnumber, 'ProductImageCam', '', Names_JustCamnumber)</l>
+<l>            tuple_number (Names_JustCamnumber, Camera_DeviceNumberUsedForGrabbing)</l>
+<l>            if (IsTeachIn or Camera_DeviceNumberUsedForGrabbing = ['ProductImage0000.tif'])</l>
 <l>                gen_empty_obj (ImageCap)</l>
 <l>            else</l>
 <l>                SensorGrabImageConvertLongToMultiChannelImageAndCapImage (Image, Image, ImageCap)</l>
