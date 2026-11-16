@@ -41,9 +41,10 @@
 <c>* Get port and IP address of active PLCs</c>
 <c>* In case multiple PLCs are connected to one camera, iterate over all</c>
 <l>PlcActive := split(PlcActive, ',')</l>
+<l>PlcPorts := split(CameraActive.V_PLCRemotePort.Value, ',')</l>
 <l>for IdxPlc := 0 to |PlcActive|-1 by 1</l>
 <l>    App.Plc.Socket.Ip[IdxPlc]   := App.Format.Plc.PLCs.[PlcActive[IdxPlc]].V_IP.Value</l>
-<l>    App.Plc.Socket.Port[IdxPlc] := number(CameraActive.V_PLCRemotePort.Value)</l>
+<l>    App.Plc.Socket.Port[IdxPlc] := number(PlcPorts[IdxPlc])</l>
 <l>endfor</l>
 <c></c>
 <l>if (PlcAvailable)</l>
