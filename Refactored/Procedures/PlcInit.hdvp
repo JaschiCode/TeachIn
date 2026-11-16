@@ -8,7 +8,6 @@
 <c></c>
 <l>global tuple App</l>
 <c></c>
-<c></c>
 <l>App.Plc := dict{}</l>
 <l>App.Plc.Socket := dict{}</l>
 <l>App.Plc.Socket.Port   := []</l>
@@ -21,18 +20,16 @@
 <l>App.Plc.Status.NumberOfConnectionTrials := 10</l>
 <l>App.Plc.Status.ErrorEjectCounterCheck   := false</l>
 <c></c>
-<l>App.Plc.Status.TimestampProgramStart  := []</l>
-<l>App.Plc.Status.TimestampLastTelegram  := []</l>
-<l>App.Plc.Status.FastestPossibleCycle   := 0  // [ms]</l>
+<l>count_seconds (TimestampProgramStart)</l>
+<l>App.Plc.Status.TimestampProgramStart := TimestampProgramStart</l>
+<l>App.Plc.Status.TimestampLastTelegram := []</l>
+<l>App.Plc.Status.FastestPossibleCycle   := 0</l>
 <l>App.Plc.Status.SkipCommunicationCycle := 0</l>
 <c></c>
 <l>App.Plc.Logging := dict{}</l>
 <l>App.Plc.Logging.IsActive  := 0</l>
 <l>App.Plc.Logging.MaxLength := 200</l>
 <l>App.Plc.Logging.Message   := dict{}</l>
-<c></c>
-<c></c>
-<c></c>
 <c></c>
 <c>* Check if plc is available</c>
 <l>PlcAvailable := App.Format.Plc.General.V_WorkOnPLCEnable.Value</l>
@@ -41,25 +38,22 @@
 <l>CameraActive := App.Format.Camera.Cameras.['Camera_' + App.Status.Camera.ID]</l>
 <l>PlcActive    := CameraActive.V_PLC.Value</l>
 <c></c>
-<c></c>
-<c>* Get port and ip-adress of active PLCs</c>
-<c>* (In case multiple PLCs are connected to one camera loop through all)</c>
+<c>* Get port and IP address of active PLCs</c>
+<c>* In case multiple PLCs are connected to one camera, iterate over all</c>
 <l>PlcActive := split(PlcActive, ',')</l>
-<l>for IdxPlc := 0 to |PlcActive|-1 by 1 // get io´s and port´s ready for init</l>
-<l>    App.Plc.Socket.Ip[IdxPlc]   :=  App.Format.Plc.PLCs.[PlcActive[IdxPlc]].V_IP.Value</l>
-<l>    App.Plc.Socket.Port[IdxPlc] :=  number(CameraActive.V_PLCRemotePort.Value)</l>
+<l>for IdxPlc := 0 to |PlcActive|-1 by 1</l>
+<l>    App.Plc.Socket.Ip[IdxPlc]   := App.Format.Plc.PLCs.[PlcActive[IdxPlc]].V_IP.Value</l>
+<l>    App.Plc.Socket.Port[IdxPlc] := number(CameraActive.V_PLCRemotePort.Value)</l>
 <l>endfor</l>
 <c></c>
-<c></c>
 <l>if (PlcAvailable)</l>
-<c>    </c>
 <c>    * Open connection to all related PLCs</c>
 <l>    for IdxPlc := 0 to |App.Plc.Socket.Ip|-1 by 1</l>
 <l>        for IdxTrial := 0 to App.Plc.Status.NumberOfConnectionTrials by 1</l>
 <l>            dev_error_var (Error, 1)</l>
 <l>            dev_set_check ('~give_error')</l>
 <l>            open_socket_connect (App.Plc.Socket.Ip[IdxPlc], App.Plc.Socket.Port[IdxPlc], ['protocol', 'timeout'], ['TCP', 0.2], SocketClient)</l>
-<l>            ReadError := Error            </l>
+<l>            ReadError := Error</l>
 <l>            dev_set_check ('give_error')</l>
 <l>            if (ReadError = 2)</l>
 <l>                break</l>
@@ -67,29 +61,23 @@
 <l>                wait_seconds (0.2)</l>
 <l>            endif</l>
 <l>        endfor</l>
-<c>        </c>
-<c>        * If no connection could be established set to -1, elso socket</c>
 <l>        if (SocketClient = [])</l>
 <l>            App.Plc.Socket.Client[IdxPlc] := -1</l>
 <l>        else</l>
 <l>            App.Plc.Socket.Client[IdxPlc] := SocketClient</l>
 <l>        endif</l>
 <l>    endfor</l>
-<c>    </c>
 <l>    Ind := find(App.Plc.Socket.Client, -1)</l>
 <l>    if (|Ind| == 0 or Ind &lt; 0)</l>
 <l>        PLC_FailedToConnect := 0</l>
 <l>    endif</l>
-<c>    </c>
-<l>else </l>
-<c>    </c>
+<l>else</l>
 <c>    * Work offline if WorkOnPlcEnable is not set to true</c>
 <l>    App.Plc.Socket.Client := []</l>
 <l>    for IdxPlc := 0 to |App.Plc.Socket.Ip|-1 by 1</l>
 <l>        App.Plc.Socket.Client[IdxPlc] := -1</l>
 <l>    endfor</l>
 <l>    PLC_FailedToConnect := 0</l>
-<c>    </c>
 <l>endif</l>
 <c></c>
 <l>return ()</l>
