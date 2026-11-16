@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="25.11.0.0">
+<procedure name="InspectionMiddleThreadResultsMap">
+<interface>
+<ic>
+<par name="ImageOrig" base_type="iconic" dimension="0"/>
+<par name="VIThreadUpstreamProcessingResult" base_type="iconic" dimension="1"/>
+<par name="ProcessingThreadID" base_type="ctrl" dimension="0"/>
+</ic>
+<oc>
+<par name="TabletIndividual" base_type="iconic" dimension="0"/>
+<par name="ColourClassifiedTablets" base_type="iconic" dimension="0"/>
+<par name="ImageOrig_HSV" base_type="iconic" dimension="0"/>
+<par name="ImageOrig_Monochrome" base_type="iconic" dimension="0"/>
+<par name="Rollmeasurement360" base_type="iconic" dimension="0"/>
+<par name="TimeNeeded" base_type="ctrl" dimension="0"/>
+</oc>
+</interface>
+<body>
+<c>* InspectionMiddleThreadResultsMap</c>
+<c>* --------------------------------------------------------------</c>
+<c>* Ordnet Ergebnisse des vorgelagerten Threads dem App-Thread-Dictionary zu.</c>
+<c></c>
+<l>global tuple App</l>
+<l>count_seconds (TimeStart)</l>
+<c></c>
+<c>* Die vorgeschalteten Ergebnisse sind nach Datenart und Thread gruppiert.</c>
+<l>TabletIndividualAll := VIThreadUpstreamProcessingResult.at(0)</l>
+<l>select_obj (TabletIndividualAll, TabletIndividual, ProcessingThreadID + 1)</l>
+<l>connection (TabletIndividual, TabletIndividual)</l>
+<l>ColourClassifiedAll := VIThreadUpstreamProcessingResult.at(1)</l>
+<l>select_obj (ColourClassifiedAll, ColourClassifiedTablets, ProcessingThreadID + 1)</l>
+<l>connection (ColourClassifiedTablets, ColourClassifiedTablets)</l>
+<l>Rollmeasurement360 := VIThreadUpstreamProcessingResult.at(2)</l>
+<c></c>
+<c>* Die App-Dictionaries sind die führende Ablage für Thread-Ergebnisse.</c>
+<l>App.Inspection.Threads.[ProcessingThreadID].Regions.Tablets.Individual := TabletIndividual</l>
+<l>App.Inspection.Threads.[ProcessingThreadID].Regions.Tablets.ColourClassified := ColourClassifiedTablets</l>
+<l>App.Inspection.Threads.[ProcessingThreadID].Regions.Rolls.Measurement360 := Rollmeasurement360</l>
+<c></c>
+<c>* Das Fünfkanalbild wird in den bereits verwendeten App-Bildpfaden abgelegt.</c>
+<l>App.Inspection.Threads.[ProcessingThreadID].Images.MultiChannel := ImageOrig</l>
+<l>InspectionImageDecomposeForPreprocessing (ProcessingThreadID, TimeNeededDecompose)</l>
+<l>ImageOrig_HSV := App.Inspection.Threads.[ProcessingThreadID].Images.TopLight.HSV.AllChannel</l>
+<l>ImageOrig_Monochrome := App.Inspection.Threads.[ProcessingThreadID].Images.BackLight.Mono</l>
+<c></c>
+<l>count_seconds (TimeEnd)</l>
+<l>TimeNeeded := (TimeEnd-TimeStart) * 1000.0</l>
+<l>return ()</l>
+</body>
+<docu id="InspectionMiddleThreadResultsMap">
+<parameters>
+<parameter id="ImageOrig"/>
+<parameter id="VIThreadUpstreamProcessingResult"/>
+<parameter id="ProcessingThreadID"/>
+<parameter id="TabletIndividual"/>
+<parameter id="ColourClassifiedTablets"/>
+<parameter id="ImageOrig_HSV"/>
+<parameter id="ImageOrig_Monochrome"/>
+<parameter id="Rollmeasurement360"/>
+<parameter id="TimeNeeded"/>
+</parameters>
+</docu>
+</procedure>
+</hdevelop>
