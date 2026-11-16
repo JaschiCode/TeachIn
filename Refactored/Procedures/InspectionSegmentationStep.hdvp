@@ -16,7 +16,9 @@
 <l>count_seconds (TimeStart)</l>
 <c></c>
 <c>* Get variables from dictionary</c>
-<l>UseRGBThreshold := App.Inspection.Threads.[ProcessingThreadID].Segmentation.Parameters.UseRGBThreshold</l>
+<l>UseRGBThreshold := App.Format.TabletInspection.Segmentation.V_AreaClassification_ColourOrMonochrome.Value</l>
+<c>* Store the configured segmentation mode in the thread-specific App dictionary.</c>
+<l>App.Inspection.Threads.[ProcessingThreadID].Segmentation.Parameters.UseRGBThreshold := UseRGBThreshold</l>
 <l>ShiftMean       := App.Sensor.GrabImageMetaData.Sequencer_MovedDistanceInBetweenGrabbedImages</l>
 <c>* Store the selected channel for helper procedures that read it from App.</c>
 <l>App.Inspection.Threads.[ProcessingThreadID].Segmentation.Parameters.ChannelSelector := ChannelSelector</l>
@@ -43,8 +45,20 @@
 <l>    select_shape (RegionTablets, RegionTablets, 'area', 'and', 1, 1e6)</l>
 <l>    shape_trans (RegionTablets, RegionTablets, 'convex')</l>
 <l>else</l>
-<c>    * The grayscale path is not migrated yet; preserve the existing App segmentation.</c>
-<l>    RegionTablets := App.Inspection.Threads.[ProcessingThreadID].Regions.Tablets.Segmented</l>
+<c>    * Recreate the legacy RGB-to-grayscale threshold path from the HSV channels stored in App.</c>
+<l>    ImageHue        := App.Inspection.Threads.[ProcessingThreadID].Images.TopLight.HSV.Hue</l>
+<l>    ImageSaturation := App.Inspection.Threads.[ProcessingThreadID].Images.TopLight.HSV.Saturation</l>
+<l>    ImageValue      := App.Inspection.Threads.[ProcessingThreadID].Images.TopLight.HSV.Value</l>
+<l>    SegmentationThreshold := App.Format.TabletInspection.Segmentation.V_SegmentationThreshold.Value</l>
+<l>    gen_empty_obj (RegionTablets)</l>
+<l>    get_image_size (ImageValue, ImageWidth, _)</l>
+<l>    if (|ImageWidth| &gt; 0)</l>
+<c>        * Reconstruct RGB before grayscale conversion to match the legacy threshold path.</c>
+<l>        trans_to_rgb (ImageHue, ImageValue, ImageSaturation, ImageRed, ImageGreen, ImageBlue, 'hls')</l>
+<l>        compose3 (ImageRed, ImageGreen, ImageBlue, ImageRGB)</l>
+<l>        rgb1_to_gray (ImageRGB, ImageGray)</l>
+<l>        threshold (ImageGray, RegionTablets, SegmentationThreshold, 255)</l>
+<l>    endif</l>
 <l>endif</l>
 <c></c>
 <c></c>
@@ -64,4 +78,3 @@
 </parameters>
 </docu>
 </procedure>
-</hdevelop>
