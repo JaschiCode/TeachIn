@@ -17,7 +17,7 @@
 <c></c>
 <c>* Get variables from dictionary</c>
 <l>ImageHSV           := App.Inspection.Threads.[ProcessingThreadID].Images.TopLight.HSV.AllChannel</l>
-<l>ImageUV            := App.Inspection.Threads.[ProcessingThreadID].Images.BackLight.Mono</l>
+<l>ImageUV            := App.Inspection.Threads.[ProcessingThreadID].Images.TopLight.UV</l>
 <l>RegionTabletsUnion := App.Inspection.Threads.[ProcessingThreadID].Regions.Tablets.SegmentedUnion</l>
 <l>SpotFeatureActive  := App.Format.TabletInspection.Measure_ProductSpot.V_FeatureActive.Value</l>
 <c></c>
