@@ -15,47 +15,38 @@
 <c>* -------------------------------------------------------</c>
 <c></c>
 <l>global tuple App</l>
-<c></c>
 <l>count_seconds (TimeStart)</l>
 <c></c>
-<c></c>
-<c>* Get variables from dictionary</c>
-<l>ImageHSV       := App.Inspection.Threads.[ProcessingThreadID].Images.TopLight.HSV.AllChannel</l>
-<l>LanesROIs      := App.Inspection.Threads.[ProcessingThreadID].Regions.Lanes.ROIs</l>
-<l>RegionTablets  := App.Inspection.Threads.[ProcessingThreadID].Regions.Tablets.Segmented</l>
-<c></c>
+<c>* Eingaben und Ergebnisse aus dem threadbezogenen App-Dictionary lesen/schreiben.</c>
+<l>ImageHSV := App.Inspection.Threads.[ProcessingThreadID].Images.TopLight.HSV.AllChannel</l>
+<l>LanesROIs := App.Inspection.Threads.[ProcessingThreadID].Regions.Lanes.ROIs</l>
+<l>RegionTablets := App.Inspection.Threads.[ProcessingThreadID].Regions.Tablets.Segmented</l>
+<l>gen_empty_obj (RegionTabletsOnBorder)</l>
 <c></c>
 <l>if (FeatureActive)</l>
-<c>    * Split the tablets based on different possible modes to get them seperated if they are to near to each other</c>
-<l>    count_obj (LanesROIs, NumberOfObjectsToProcessParallel)</l>
+<l>    count_obj (LanesROIs, NumberOfLanes)</l>
 <l>    gen_empty_obj (RegionTabletsIndividual)</l>
-<l>    for IdxLane := 0 to NumberOfObjectsToProcessParallel-1 by 1</l>
+<l>    for IdxLane := 0 to NumberOfLanes-1 by 1</l>
 <l>        select_obj (LanesROIs, LaneROI, IdxLane+1)</l>
 <l>        intersection (LaneROI, RegionTablets, RegionTablet)</l>
 <l>        InspectionSplitIntoSingleTabletsDifferentModes (RegionTablet, RegionTabletIndividual, ProcessingThreadID, IdxLane)</l>
 <l>        concat_obj (RegionTabletsIndividual, RegionTabletIndividual, RegionTabletsIndividual)</l>
 <l>    endfor</l>
-<c>    </c>
-<l>    stop()</l>
-<l>    +++ Go on here !!!</l>
-<c>    </c>
-<c>    * Remove tablets that crosses the border of the lane, but keep them in seperate parameter</c>
-<l>    InspectionSplitIntoSingleTabletsRemoveRegionsThatCrossTheBorder (ImageHSV, RegionTabletsIndividual, LanesROIs, RegionTabletsOnBorder, RegionTabletsToRemove)</l>
 <c></c>
+<c>    * Nach dem Lane-Splitting Randobjekte einmal gesammelt erkennen und ausschliessen.</c>
+<l>    InspectionSplitIntoSingleTabletsRemoveRegionsThatCrossTheBorder (ImageHSV, RegionTabletsIndividual, LanesROIs, RegionTabletsWithoutTabletsOnBorder, RegionTabletsToRemove)</l>
+<l>    RegionTabletsIndividual := RegionTabletsWithoutTabletsOnBorder</l>
+<l>    RegionTabletsOnBorder := RegionTabletsToRemove</l>
 <l>else</l>
 <l>    RegionTabletsIndividual := RegionTablets</l>
-<c>    </c>
 <l>endif</l>
 <c></c>
 <l>App.Inspection.Threads.[ProcessingThreadID].Regions.Tablets.Individual := RegionTabletsIndividual</l>
-<l>App.Inspection.Threads.[ProcessingThreadID].Regions.Tablets.OnBorder </l>
+<l>App.Inspection.Threads.[ProcessingThreadID].Regions.Tablets.OnBorder := RegionTabletsOnBorder</l>
 <c></c>
-<c></c>
-<c>* Remove empty regions</c>
+<c>* Leere Objekte aus dem Ergebnis entfernen und den bereinigten Stand zurueckschreiben.</c>
 <l>RegionTabletsIndividual := App.Inspection.Threads.[ProcessingThreadID].Regions.Tablets.Individual</l>
 <l>select_shape (RegionTabletsIndividual, RegionTabletsIndividual, 'area', 'and', 1, 1e6)</l>
-<c></c>
-<c></c>
 <l>App.Inspection.Threads.[ProcessingThreadID].Regions.Tablets.Individual := RegionTabletsIndividual</l>
 <c></c>
 <l>count_seconds (TimeEnd)</l>
