@@ -52,6 +52,9 @@
 <l>* StopLoop := 0</l>
 <l>* gProductionLoopCounter := 0</l>
 <l>Firstloop := 1</l>
+<c>* Erfolg nur nach Stop mit mindestens einem Bild</c>
+<l>Exitcondition := 0</l>
+<l>CalculationFinished := 0</l>
 <l>* create_color_trans_lut ('hsv', 'from_rgb', 8, gColorTransLUTHandle)</l>
 <l>ThreadId := 0</l>
 <l>* UseMultipleColourscpaces := dict_Camera.General.V_Camera_UseMultipleColourscpaces.Value</l>
@@ -251,8 +254,9 @@
 <l>        else</l>
 <l>            IsInside := 0</l>
 <l>        endif</l>
-<l>        if (IsInside = 1 or BtnPressed = 2)</l>
+<l>        if (BtnPressed = 2 or (IsInside = 1 and BtnPressed # 1))</l>
 <l>            if (gProductionLoopCounter &gt; 0)</l>
+<l>                CalculationFinished := 1</l>
 <l>                break</l>
 <l>            endif</l>
 <l>        endif</l>
@@ -262,6 +266,12 @@
 <l>        endif</l>
 <l>    endif</l>
 <l>endwhile</l>
+<c>* Abschlusszustand für den TeachIn-Ablauf setzen</c>
+<l>if (CalculationFinished and not Exitcondition)</l>
+<l>    App.TeachIn.SwitchCondition := 1000</l>
+<l>else</l>
+<l>    App.TeachIn.SwitchCondition := 9999</l>
+<l>endif</l>
 <c>*</c>
 <l>if (SwitchIdx &lt; |Switch_List|)</l>
 <l>    SwitchIdx := SwitchIdx + 1</l>
