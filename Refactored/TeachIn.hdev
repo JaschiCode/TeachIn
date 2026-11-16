@@ -444,8 +444,7 @@
 <l>endif</l>
 <l>if (Btn4 # 0)</l>
 <l>    fwrite_string (FileHandle, '4;' + Btn4)</l>
-<l>    fnew_line (FileHandle)
-</l>
+<l>    fnew_line (FileHandle)</l>
 <l>endif</l>
 <l>if (Btn5IconArrowLeft # 0)</l>
 <l>    fwrite_string (FileHandle, '5;' + Btn5IconArrowLeft)</l>
