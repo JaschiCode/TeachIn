@@ -14,8 +14,6 @@
 <l>App.Plc.Socket.Port   := []</l>
 <l>App.Plc.Socket.Ip     := []</l>
 <l>App.Plc.Socket.Client := []</l>
-<c>* Warteschlange für PLC-Ergebnisse</c>
-<l>App.Plc.ResultsQueue := []</l>
 <c></c>
 <l>App.Plc.Status := dict{}</l>
 <l>App.Plc.Status.WatchDog                 := true</l>
