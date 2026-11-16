@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="25.11.0.0">
+<procedure name="InspectionMeasurementParametersPrepare">
+<interface>
+<ic>
+<par name="ProcessingThreadID" base_type="ctrl" dimension="0"/>
+<par name="MeasurementKind" base_type="ctrl" dimension="0"/>
+<par name="ChannelSelector" base_type="ctrl" dimension="0"/>
+<par name="MovedDistance" base_type="ctrl" dimension="0"/>
+<par name="FeatureConfiguration" base_type="ctrl" dimension="0"/>
+</ic>
+<oc>
+<par name="FeatureParameters" base_type="ctrl" dimension="0"/>
+<par name="TimeNeeded" base_type="ctrl" dimension="0"/>
+</oc>
+</interface>
+<body>
+<c>* InspectionMeasurementParametersPrepare</c>
+<c>* ------------------------------------------------------------</c>
+<c>* Bereitet Längen- oder Breitenparameter aus den App-Dictionaries vor.</c>
+<c></c>
+<l>global tuple App</l>
+<l>count_seconds (TimeStart)</l>
+<c></c>
+<c>* Die Feature-Konfiguration wird lokal kopiert und nicht verändert.</c>
+<l>copy_dict (FeatureConfiguration, [], [], FeatureParameters)</l>
+<c></c>
+<c>* Lane-Nummern sind einsbasiert; Kalibrierungs-ROI-Suffixe sind nullbasiert.</c>
+<c>* Die Feature-Berechnung kann nur einen Maßstab verwenden; deshalb wird die erste Lane des Threads verwendet.</c>
+<l>get_dict_param (App.ThreadManagement.Threads, 'key_exists', ProcessingThreadID, ThreadExists)</l>
+<l>if (ThreadExists)</l>
+<l>    ThreadLanes := App.ThreadManagement.Threads.[ProcessingThreadID]</l>
+<l>    if (|ThreadLanes| &gt; 0)</l>
+<l>        CalibrationROIIndex := ThreadLanes[0] - 1</l>
+<l>    else</l>
+<l>        CalibrationROIIndex := 0</l>
+<l>    endif</l>
+<l>else</l>
+<l>    CalibrationROIIndex := 0</l>
+<l>endif</l>
+<l>CameraID := App.Status.Camera.ID</l>
+<c></c>
+<l>if (MeasurementKind = 'Length')</l>
+<c>    * Der Legacy-Längenpfad verdoppelt den Shift nur bei UV-Segmentierung.</c>
+<l>    ShiftForLength := MovedDistance</l>
+<l>    if (ChannelSelector = 2 and MovedDistance # [])</l>
+<l>        ShiftForLength := MovedDistance * 2</l>
+<l>    endif</l>
+<l>    FeatureParameters.Sequencer_MovedDistanceInBetweenGrabbedImage := ShiftForLength</l>
+<c></c>
+<l>    if (App.Format.CalibrationLocal.General.V_FeatureActive.Value)</l>
+<l>        FeatureParameters.Calibration_Y_PixToMM := real(App.Format.CalibrationGlobal.Calibration.['Calib_Cam_' + CameraID].['V_CalibY_PixToMM_' + CalibrationROIIndex].Value)</l>
+<l>        FeatureParameters.Calibration_GlobalMeasurementOffset_Micron_Y := App.Format.CalibrationLocal.General.['V_Calib_GlobalMeasurementOffset_µm_Y'].Value</l>
+<l>    else</l>
+<l>        FeatureParameters.Calibration_Y_PixToMM := 1</l>
+<l>        FeatureParameters.Calibration_GlobalMeasurementOffset_Micron_Y := 0</l>
+<l>    endif</l>
+<l>elseif (MeasurementKind = 'Width')</l>
+<c>    * Die Übergangsrichtung folgt dem verwendeten Segmentierungsbild.</c>
+<l>    ShiftForWidth := MovedDistance</l>
+<l>    TransitionDirection := 0</l>
+<l>    switch (ChannelSelector)</l>
+<l>    case 0:</l>
+<l>        break</l>
+<l>    case 1:</l>
+<l>        TransitionDirection := App.Format.TabletInspection.Segmentation.V_Segmentation_DarkOnBright0_BrightOnDark1.Value</l>
+<l>        break</l>
+<l>    case 2:</l>
+<l>        ShiftForWidth := 0</l>
+<l>        TransitionDirection := 1</l>
+<l>        break</l>
+<l>    endswitch</l>
+<l>    FeatureParameters.Sequencer_MovedDistanceInBetweenGrabbedImages := ShiftForWidth</l>
+<l>    FeatureParameters.MeasureSubpix_Transition_Negative0_Positive1 := TransitionDirection</l>
+<c></c>
+<l>    if (App.Format.CalibrationLocal.General.V_FeatureActive.Value)</l>
+<l>        FeatureParameters.Calibration_X_PixToMM := real(App.Format.CalibrationGlobal.Calibration.['Calib_Cam_' + CameraID].['V_CalibX_PixToMM_' + CalibrationROIIndex].Value)</l>
+<l>        FeatureParameters.Calibration_GlobalMeasurementOffset_Micron_X := App.Format.CalibrationLocal.General.['V_Calib_GlobalMeasurementOffset_µm_X'].Value</l>
+<l>    else</l>
+<l>        FeatureParameters.Calibration_X_PixToMM := 1</l>
+<l>        FeatureParameters.Calibration_GlobalMeasurementOffset_Micron_X := 0</l>
+<l>    endif</l>
+<l>endif</l>
+<c></c>
+<l>count_seconds (TimeEnd)</l>
+<l>TimeNeeded := (TimeEnd-TimeStart) * 1000.0</l>
+<l>return ()</l>
+</body>
+<docu id="InspectionMeasurementParametersPrepare">
+<parameters>
+<parameter id="ProcessingThreadID"/>
+<parameter id="MeasurementKind"/>
+<parameter id="ChannelSelector"/>
+<parameter id="MovedDistance"/>
+<parameter id="FeatureConfiguration"/>
+<parameter id="FeatureParameters"/>
+<parameter id="TimeNeeded"/>
+</parameters>
+</docu>
+</procedure>
+</hdevelop>
