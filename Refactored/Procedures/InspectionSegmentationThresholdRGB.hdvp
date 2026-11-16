@@ -90,10 +90,11 @@
 <c>    </c>
 <l>    ColorSupportIsActive := App.Format.TabletInspection.Segmentation.V_Segmentation_ColourSupport_Active.Value</l>
 <l>    if (ColorSupportIsActive)</l>
-<c>        </c>
+<l>        SegmentationColorSupport (ImageHSV, ImageRed, ImageGreen, ImageBlue, LanesROIsUnion, RegionSegmentedUnion, RegionSegmented, RegionColorSupport)</l>
+<l>    else</l>
+<c>        * Ohne aktive Farbhilfe die Basissegmentierung unveraendert weitergeben.</c>
+<l>        RegionSegmented := RegionSegmentedUnion</l>
 <l>    endif</l>
-<c></c>
-<l>    SegmentationColorSupport (ImageHSV, ImageRed, ImageGreen, ImageBlue, LanesROIsUnion, RegionSegmentedUnion, RegionSegmented, RegionColorSupport)</l>
 <c>       </c>
 <c>    </c>
 <l>else</l>
