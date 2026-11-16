@@ -18,14 +18,15 @@
 <c>* Get variables from dictionary</c>
 <l>UseRGBThreshold := App.Inspection.Threads.[ProcessingThreadID].Segmentation.Parameters.UseRGBThreshold</l>
 <l>ShiftMean       := App.Sensor.GrabImageMetaData.Sequencer_MovedDistanceInBetweenGrabbedImages</l>
+<c>* Store the selected channel for helper procedures that read it from App.</c>
 <l>App.Inspection.Threads.[ProcessingThreadID].Segmentation.Parameters.ChannelSelector := ChannelSelector</l>
 <c></c>
 <l>if (UseRGBThreshold)</l>
 <l>    InspectionSegmentationThresholdRGB (ProcessingThreadID, ChannelSelector)</l>
 <c>  </c>
-<c>    ************ added option for segmentation preprocessing</c>
+<c>    * Apply preprocessing to the detected tablet regions.</c>
 <l>    RegionTablets := App.Inspection.Threads.[ProcessingThreadID].Regions.Tablets.Segmented</l>
-<c>    * in case backlight was used for segmentation adapt region to toplight position</c>
+<c>    * When BackLight is used for segmentation, align the region with the TopLight position.</c>
 <l>    switch (ChannelSelector)</l>
 <l>    case 0:</l>
 <c>        * BottomLight</c>
@@ -36,16 +37,16 @@
 <l>        break</l>
 <l>    endswitch</l>
 <c>    </c>
-<c>    * todo: read opening radius from format</c>
+<c>    * TODO: Read the opening radius from the format configuration.</c>
 <l>    ToDoParametrize := 1</l>
 <l>    if(ToDoParametrize = 1)</l>
-<c>        * // integrated for 360 to compensate for product dirt on rolls </c>
+<c>        * Used on the 360 line to compensate for debris on the rolls.</c>
 <l>        opening_circle (RegionTablets, RegionTablets, 15.5) </l>
 <l>    endif</l>
 <l>    select_shape (RegionTablets, RegionTablets, 'area', 'and', 1, 1e6)</l>
 <l>    shape_trans (RegionTablets, RegionTablets, 'convex')</l>
 <l>else</l>
-<c>    * Grauwertpfad noch nicht migriert; den vorhandenen Dictionary-Stand beibehalten.</c>
+<c>    * The grayscale path is not migrated yet; preserve the existing App segmentation.</c>
 <l>    RegionTablets := App.Inspection.Threads.[ProcessingThreadID].Regions.Tablets.Segmented</l>
 <l>endif</l>
 <c></c>
