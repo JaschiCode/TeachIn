@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="25.11.0.0"><procedure name="ButtonsIntervaceViaFile">
+<interface>
+<ic>
+<par name="FilenameIntervaceFile" base_type="ctrl" dimension="0"/>
+<par name="Btn0FlagTeachInSuccessfull" base_type="ctrl" dimension="0"/>
+<par name="Btn1" base_type="ctrl" dimension="0"/>
+<par name="Btn2" base_type="ctrl" dimension="0"/>
+<par name="Btn3" base_type="ctrl" dimension="0"/>
+<par name="Btn4" base_type="ctrl" dimension="0"/>
+<par name="Btn5IconArrowLeft" base_type="ctrl" dimension="0"/>
+<par name="Btn6IconArrowRight" base_type="ctrl" dimension="0"/>
+<par name="Btn7CancelDraw" base_type="ctrl" dimension="0"/>
+<par name="Btn8ProgressBar" base_type="ctrl" dimension="0"/>
+<par name="Btn9HelpText" base_type="ctrl" dimension="0"/>
+<par name="BtnACaption" base_type="ctrl" dimension="0"/>
+<par name="BtnB" base_type="ctrl" dimension="0"/>
+<par name="BtnC" base_type="ctrl" dimension="0"/>
+<par name="BtnD" base_type="ctrl" dimension="0"/>
+</ic>
+</interface>
+<body>
+<l>* set_system ('filename_encoding', 'utf8')</l>
+<l>open_file (FilenameIntervaceFile, 'output', FileHandle)</l>
+<l>if (Btn0FlagTeachInSuccessfull # 0)</l>
+<l>    fwrite_string (FileHandle, '0;' + Btn0FlagTeachInSuccessfull)</l>
+<l>    fnew_line (FileHandle)</l>
+<l>endif</l>
+<l>if (Btn1 # 0)</l>
+<l>    fwrite_string (FileHandle, '1;' + Btn1)</l>
+<l>    fnew_line (FileHandle)</l>
+<l>endif</l>
+<l>if (Btn2 # 0)</l>
+<l>    fwrite_string (FileHandle, '2;' + Btn2)</l>
+<l>    fnew_line (FileHandle)</l>
+<l>endif</l>
+<l>if (Btn3 # 0)</l>
+<l>    fwrite_string (FileHandle, '3;' + Btn3)</l>
+<l>    fnew_line (FileHandle)</l>
+<l>endif</l>
+<l>if (Btn4 # 0)</l>
+<l>    fwrite_string (FileHandle, '4;' + Btn4)</l>
+<l>    fnew_line (FileHandle)</l>
+<l>endif</l>
+<l>if (Btn5IconArrowLeft # 0)</l>
+<l>    fwrite_string (FileHandle, '5;' + Btn5IconArrowLeft)</l>
+<l>    fnew_line (FileHandle)</l>
+<l>endif</l>
+<l>if (Btn6IconArrowRight # 0)</l>
+<l>    fwrite_string (FileHandle, '6;' + Btn6IconArrowRight)</l>
+<l>    fnew_line (FileHandle)</l>
+<l>endif</l>
+<l>if (Btn7CancelDraw # 0)</l>
+<l>    fwrite_string (FileHandle, '7;' + Btn7CancelDraw)</l>
+<l>    fnew_line (FileHandle)</l>
+<l>endif</l>
+<l>if (Btn8ProgressBar # 0)</l>
+<l>    fwrite_string (FileHandle, '8;' + Btn8ProgressBar)</l>
+<l>    fnew_line (FileHandle)</l>
+<l>endif</l>
+<l>if (Btn9HelpText # 0)</l>
+<l>    fwrite_string (FileHandle, '9;' + Btn9HelpText)</l>
+<l>    fnew_line (FileHandle)</l>
+<l>endif</l>
+<l>if (BtnACaption # 0)</l>
+<l>    fwrite_string (FileHandle, 'A;' + BtnACaption)</l>
+<l>    fnew_line (FileHandle)</l>
+<l>endif</l>
+<l>if (BtnB # 0)</l>
+<l>    fwrite_string (FileHandle, 'B;' + BtnB)</l>
+<l>    fnew_line (FileHandle)</l>
+<l>endif</l>
+<l>if (BtnC # 0)</l>
+<l>    fwrite_string (FileHandle, 'C;' + BtnC)</l>
+<l>    fnew_line (FileHandle)</l>
+<l>endif</l>
+<l>if (BtnD # 0)</l>
+<l>    fwrite_string (FileHandle, 'D;' + BtnD)</l>
+<l>    fnew_line (FileHandle)</l>
+<l>endif</l>
+<l>close_file (FileHandle)</l>
+<l>* set_system ('filename_encoding', 'locale')</l>
+<c></c>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="ButtonsIntervaceViaFile">
+<parameters>
+<parameter id="Btn0FlagTeachInSuccessfull"/>
+<parameter id="Btn1"/>
+<parameter id="Btn2"/>
+<parameter id="Btn3"/>
+<parameter id="Btn4"/>
+<parameter id="Btn5IconArrowLeft"/>
+<parameter id="Btn6IconArrowRight"/>
+<parameter id="Btn7CancelDraw"/>
+<parameter id="Btn8ProgressBar"/>
+<parameter id="Btn9HelpText"/>
+<parameter id="BtnACaption"/>
+<parameter id="BtnB"/>
+<parameter id="BtnC"/>
+<parameter id="BtnD"/>
+<parameter id="FilenameIntervaceFile"/>
+</parameters>
+</docu>
+</procedure>
+</hdevelop>
