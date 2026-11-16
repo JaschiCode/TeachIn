@@ -18,25 +18,22 @@
 <l>global tuple gQueuePLCResults</l>
 <c></c>
 <l>OptionalDataToLog := []</l>
+<l>App.Plc.Status.SkipCommunicationCycle := 0</l>
 <c></c>
 <c>* Important note: </c>
 <c>* Siemens S-7 1200 seems to have issues with fast communication (around 5ms?)</c>
 <c>* this is while a mode for skipping or waiting some of the cycles is implemented</c>
 <c>* - skipping when nice to have (0)</c>
 <c>* - waiting when must have (1)</c>
-<l>if (|App.Plc.Status.TimestampLastTelegram| == 0) //after init nothing is set</l>
+<l>if (|App.Plc.Status.TimestampLastTelegram| == 0)</l>
 <l>    App.Plc.Status.TimestampLastTelegram := 0</l>
 <l>endif</l>
 <c></c>
+<l>App.Plc.Status.WatchDog := not App.Plc.Status.WatchDog</l>
 <c></c>
-<c>* Toggle watchdog</c>
-<l>App.Plc.Status.WatchDog := not App.Plc.Status.WatchDog    // must change with every cycle</l>
-<c></c>
-<c>* Invert signals for plc logic</c>
 <l>ErrorEjectCounterCheck        := not App.Plc.Status.ErrorEjectCounterCheck</l>
 <l>CriticalInspectionResultFound := not App.Shiftregister.Cameras.[App.Status.Camera.ID].CriticalResultFound</l>
 <c></c>
-<c>* todo: PulsingmodeForVibrator kann weg (gehört zu CountSecure)</c>
 <c>* Define bits for Byte 0 and 1</c>
 <l>Communication := [App.Plc.Status.WatchDog, \
                   App.Status.Light.On, \
@@ -55,83 +52,49 @@
                            0, \
                            EjectCycleFinished]</l>
 <c></c>
-<c>* Define bits for Byte 2</c>
-<l>Communication := [Communication, ShiftregisterEjectPort] </l>
+<l>Communication := [Communication, ShiftregisterEjectPort]</l>
 <c></c>
-<c>* Define bits for Byte 3</c>
-<l>if (ShiftregisterGoodPort = []) </l>
-<c>    * If no result is given for a good results at eject position, set all bits in byte to 0</c>
+<l>if (ShiftregisterGoodPort = [])</l>
+<c>    * Wenn am Auswurf keine Gutobjekt-Ergebnisse vorliegen, das Byte auf 0 setzen.</c>
 <l>    ShiftregisterGoodPort := gen_tuple_const(8, 0)</l>
 <l>endif</l>
 <l>Communication := [Communication, ShiftregisterGoodPort]</l>
 <c></c>
 <l>PlcCommunication360 (LineNumberToSignal, ShiftregisterEjectPort, ShiftregisterGoodPort, CriticalInspectionResultFound, Communication)</l>
 <l>PlcConvertBitsToBytes (Communication, SendTuple, Bytes, ErrorConversion)</l>
-<l>if(ErrorConversion = 1)</l>
+<l>if (ErrorConversion = 1)</l>
 <l>    OptionalDataToLog := [OptionalDataToLog, Communication + ' ConvertBites2Bytes failed, in result [] was send.']</l>
 <l>endif</l>
 <c></c>
-<c>* Add byte for counter to plc communication. State 0 is not initialized so countable is from 1-255)</c>
-<l>* if (gCounterPLCCamtrigger &gt; 255)</l>
-<l>* gCounterPLCCamtrigger := 1</l>
-<l>* endif</l>
-<c></c>
-<c></c>
-<c>* Implement wait or skip plc communication based on time measurement to last plc communication, with optional logging</c>
 <l>count_seconds (TimeCurrent)</l>
 <l>TimeDeltaToLastCommunication := (TimeCurrent - App.Plc.Status.TimestampLastTelegram) * 1000.0</l>
 <c></c>
-<l>if (MustSendTelegram) </l>
-<c>    * In this case wait before sending the message - to avoid too fast plc communication</c>
-<l>    if(TimeDeltaToLastCommunication &lt; App.Plc.Status.FastestPossibleCycle) // unit of threshold is ms</l>
+<l>if (MustSendTelegram)</l>
+<c>    * In diesem Fall vor dem Senden warten, um zu schnelle PLC-Kommunikation zu vermeiden.</c>
+<l>    if (TimeDeltaToLastCommunication &lt; App.Plc.Status.FastestPossibleCycle)</l>
 <l>        WaitTimeMS := App.Plc.Status.FastestPossibleCycle - TimeDeltaToLastCommunication</l>
-<l>        OptionalDataToLog := [OptionalDataToLog,'Wait ' + WaitTimeMS + 'ms before sending data to PLC.']</l>
-<l>        wait_seconds(WaitTimeMS/1000.0)</l>
+<l>        OptionalDataToLog := [OptionalDataToLog, 'Wait ' + WaitTimeMS + 'ms before sending data to PLC.']</l>
+<l>        wait_seconds (WaitTimeMS / 1000.0)</l>
 <l>    endif</l>
-<l>else </l>
-<c>    * In this case communication is optional e.g. heartbeat (heartbeat had be done in last communication anyway)</c>
-<l>    if(TimeDeltaToLastCommunication &lt; App.Plc.Status.FastestPossibleCycle)</l>
+<l>else</l>
+<c>    * Optionale Kommunikation wird bei zu kurzem Abstand übersprungen.</c>
+<l>    if (TimeDeltaToLastCommunication &lt; App.Plc.Status.FastestPossibleCycle)</l>
 <l>        App.Plc.Status.SkipCommunicationCycle := 1</l>
 <l>        OptionalDataToLog := [OptionalDataToLog, 'Last communication cycle was before ' + TimeDeltaToLastCommunication + 'ms. Time is too short, this cycle is skipped.']</l>
 <l>    endif</l>
 <l>endif</l>
 <c></c>
-<c>* Do the communication to plc here</c>
 <l>if (not App.Plc.Status.SkipCommunicationCycle)</l>
-<l>    if (gQueuePLCResults # []) </l>
-<c>        * If there is a queue specified send data to there</c>
+<l>    if (gQueuePLCResults # [])</l>
+<c>        * Wenn eine Queue angegeben ist, Telegramm dorthin senden.</c>
 <l>        create_message (MessageToAquisitionThread)</l>
 <l>        set_message_tuple (MessageToAquisitionThread, 'PLC_SendTuple', SendTuple)</l>
 <l>        enqueue_message (gQueuePLCResults, MessageToAquisitionThread, [], [])</l>
 <l>        clear_message (MessageToAquisitionThread)</l>
 <l>    else</l>
 <l>        if (App.Plc.Socket.Client[0] &gt; -1 and |SendTuple| &gt; 0)</l>
-<c>            *** Janine - Debug - Write tcp telegramm to plc</c>
-<l>*             global tuple gFileHandle</l>
-<c></c>
-<l>*             Shiftregister_SpecifyEjectPort_String := ''</l>
-<l>*             for idx := 0 to |Shiftregister_SpecifyEjectPort|-1 by 1</l>
-<l>*                 Shiftregister_SpecifyEjectPort_String := Shiftregister_SpecifyEjectPort_String + Shiftregister_SpecifyEjectPort[idx]</l>
-<l>*             endfor</l>
-<l>*             Shiftregister_SpecifyGoodPort_String := ''</l>
-<l>*             for idx := 0 to |Shiftregister_SpecifyGoodPort|-1 by 1</l>
-<l>*                 Shiftregister_SpecifyGoodPort_String := Shiftregister_SpecifyGoodPort_String + Shiftregister_SpecifyGoodPort[idx]</l>
-<l>*             endfor</l>
-<l>*             OptionalTupleToSendInPLCCommunicationQueue_String := ''</l>
-<l>*             for idx := 0 to |OptionalTupleToSendInPLCCommunicationQueue|-1 by 1</l>
-<l>*                 OptionalTupleToSendInPLCCommunicationQueue_String := OptionalTupleToSendInPLCCommunicationQueue_String + OptionalTupleToSendInPLCCommunicationQueue[idx]</l>
-<l>*             endfor</l>
-<l>*             Communication_String := ''</l>
-<l>*             for idx := 0 to |Communication|-1 by 1</l>
-<l>*                 Communication_String := Communication_String + Communication[idx]</l>
-<l>*             endfor</l>
-<l>*             if (|gFileHandle| != 0)</l>
-<l>*             fwrite_string (gFileHandle, Communication_String + OptionalTupleToSendInPLCCommunicationQueue_String)</l>
-<l>*             fnew_line (gFileHandle)</l>
-<l>*             endif</l>
-<c>            *** End Janine - Debug - Write tcp telegramm to plc</c>
 <l>            send_data (App.Plc.Socket.Client[0], 'C' + |SendTuple|, SendTuple, [])</l>
-<l>        endif   </l>
+<l>        endif</l>
 <l>    endif</l>
 <l>    count_seconds (App.Plc.Status.TimestampLastTelegram)</l>
 <l>endif</l>
