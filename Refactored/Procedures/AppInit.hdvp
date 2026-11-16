@@ -11,6 +11,11 @@
 <c>* Initialize global parameters</c>
 <l>global def tuple App</l>
 <l>App := dict{}</l>
+<c>* OCR-Handle im App-Dictionary ablegen; ein Modelllader registriert den Handle spaeter.</c>
+<l>App.OCR := dict{}</l>
+<l>App.OCR.DeepOCR := dict{}</l>
+<l>App.OCR.DeepOCR.Handle := []</l>
+<l>App.OCR.DeepOCR.HandleRegistered := false</l>
 <c></c>
 <l>global def tuple gQueuePLCResults</l>
 <l>gQueuePLCResults := []</l>
