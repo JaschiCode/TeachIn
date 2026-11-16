@@ -11,7 +11,7 @@
 <body>
 <c>* InspectionSegmentationThreshold</c>
 <c>* -----------------------------------------------------------------------</c>
-<c>* Segment tablets with usual threshold operation</c>
+<c>* Segment tablet ROIs using a smoothed fixed threshold.</c>
 <c></c>
 <l>global tuple App</l>
 <c></c>
@@ -30,7 +30,7 @@
 <l>get_dict_param (App.Inspection.Threads.[ProcessingThreadID].Segmentation, 'key_exists', 'TabletsAvailable', TabletsAvailableExists)</l>
 <l>gen_empty_obj (Reg)</l>
 <c></c>
-<c>* Ohne gefundene Tablets keine Bildoperatoren aufrufen.</c>
+<c>* If no tablets are found, return an empty region without running image operators.</c>
 <l>if (TabletsAvailableExists)</l>
 <l>    TabletsAvailable := App.Inspection.Threads.[ProcessingThreadID].Segmentation.TabletsAvailable</l>
 <l>else</l>
@@ -59,7 +59,7 @@
 <l>    threshold (ImageMean, Reg, ThresholdRedMin, ThresholdRedMax)</l>
 <l>endif</l>
 <c></c>
-<c>* In case there is a wrong or too excessive segmentation aviod that. Protect from oversegmentation in spot step</c>
+<c>* Cap component area at 50% of the lane area to reject over-segmented regions.</c>
 <l>area_center (LanesROIsUnion, Area, _, _)</l>
 <l>SegmentationMaxSelection := round(Area * 0.5 )       </l>
 <c></c>
@@ -72,6 +72,7 @@
 <c></c>
 <l>count_seconds(TimeEnd)</l>
 <l>TimeNeeded := (TimeEnd - TimeStart) * 1000.0</l>
+<c></c>
 <c></c>
 <l>return ()</l>
 </body>
