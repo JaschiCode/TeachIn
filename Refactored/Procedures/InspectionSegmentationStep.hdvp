@@ -37,12 +37,9 @@
 <l>        break</l>
 <l>    endswitch</l>
 <c>    </c>
-<c>    * TODO: Read the opening radius from the format configuration.</c>
-<l>    ToDoParametrize := 1</l>
-<l>    if(ToDoParametrize = 1)</l>
-<c>        * Used on the 360 line to compensate for debris on the rolls.</c>
-<l>        opening_circle (RegionTablets, RegionTablets, 15.5) </l>
-<l>    endif</l>
+<c>    * TODO: Replace the fixed opening radius with a format value when its key is defined.</c>
+<c>    * This opening is used on the 360 line to compensate for debris on the rolls.</c>
+<l>    opening_circle (RegionTablets, RegionTablets, 15.5)</l>
 <l>    select_shape (RegionTablets, RegionTablets, 'area', 'and', 1, 1e6)</l>
 <l>    shape_trans (RegionTablets, RegionTablets, 'convex')</l>
 <l>else</l>
