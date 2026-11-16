@@ -2,12 +2,8 @@
 <hdevelop file_version="1.2" halcon_version="25.11.0.0">
 <procedure name="InspectionSplitIntoSingleTabletsDifferentModes">
 <interface>
-<io>
-<par name="RegionTablet" base_type="iconic" dimension="0"/>
-</io>
-<oo>
-<par name="RegionTabletIndividual" base_type="iconic" dimension="0"/>
-</oo>
+<io><par name="RegionTablet" base_type="iconic" dimension="0"/></io>
+<oo><par name="RegionTabletIndividual" base_type="iconic" dimension="0"/></oo>
 <ic>
 <par name="ProcessingThreadID" base_type="ctrl" dimension="0"/>
 <par name="IndexLane" base_type="ctrl" dimension="0"/>
@@ -16,14 +12,14 @@
 <body>
 <c>* InspectionSplitIntoSingleTabletsDifferentModes</c>
 <c>* -----------------------------------------------------</c>
-<c>* Verarbeitet je Aufruf eine Lane-Region und liefert die getrennten Tablets zurueck.</c>
+<c>* Split tablet regions for one lane using the configured product mode.</c>
 <c></c>
 <l>global tuple App</l>
 <l>ImageHSV := App.Inspection.Threads.[ProcessingThreadID].Images.TopLight.HSV.AllChannel</l>
 <l>LanesROIs := App.Inspection.Threads.[ProcessingThreadID].Regions.Lanes.ROIs</l>
 <l>select_obj (LanesROIs, LaneROI, IndexLane+1)</l>
 <c></c>
-<c>* Gemeinsame Segmentierungsparameter aus dem Format lesen.</c>
+<c>* Read shared segmentation parameters from the format dictionary.</c>
 <l>TabletSegmentationSettings := App.Format.TabletInspection.Segmentation</l>
 <l>TabletLength := App.Format.TabletInspection.TeachIn.V_ProductLength_InMovementDirection.Value</l>
 <l>PreprocessingOpeningWidth := TabletSegmentationSettings.V_PreprocessingOpeningWidth.Value</l>
@@ -33,11 +29,120 @@
 <l>ProductSplittingMode1SeparationThreshold := TabletSegmentationSettings.V_ProductSplittingMode1_SeperationThreshold.Value</l>
 <c></c>
 <l>TransportDirectionHorizontalOrVertical := 'horizontal'</l>
-<l>RemoveObjectsOnBorderAggregated := 1</l>
-<l>gen_empty_obj (TabletIndividualSeed)</l>
+<l>gen_empty_obj (RegionTabletIndividual)</l>
+<l>TabletSegmentationWork := RegionTablet</l>
 <c></c>
-<c>* Randobjekte werden nach dem Zusammenfuehren aller Lane-Ergebnisse entfernt.</c>
-<l>gSplitSegmentedObjectsIntoSingleTablets (RegionTablet, ImageHSV, TabletIndividualSeed, LaneROI, RegionTabletIndividual, ObjectsCrossingROIBorder, TransportDirectionHorizontalOrVertical, TabletLength, ProductSplittingMode, PreprocessingOpeningWidth, PreprocessingOpeningHeight, PreprocessingMinAreaFilter, ProductSplittingMode1SeparationThreshold, RemoveObjectsOnBorderAggregated, TimeNeeded)</l>
+<c>* Apply the preprocessing used by the legacy splitter.</c>
+<l>if ((PreprocessingOpeningWidth &gt; 0) and (PreprocessingOpeningHeight # 0))</l>
+<l>    opening_rectangle1 (TabletSegmentationWork, TabletSegmentationWork, PreprocessingOpeningWidth, PreprocessingOpeningHeight)</l>
+<l>endif</l>
+<l>closing_circle (TabletSegmentationWork, TabletSegmentationWork, 4)</l>
+<l>fill_up_shape (TabletSegmentationWork, TabletSegmentationWork, 'area', 1, 600)</l>
+<l>connection (TabletSegmentationWork, TabletSegmentationWork)</l>
+<l>select_shape (TabletSegmentationWork, TabletSegmentationWork, 'area', 'and', PreprocessingMinAreaFilter, 99999999)</l>
+<c></c>
+<l>if (ProductSplittingMode = -1)</l>
+<c>    * Keep connected regions without partitioning.</c>
+<l>    RegionTabletIndividual := TabletSegmentationWork</l>
+<l>elseif (ProductSplittingMode &gt;= 1)</l>
+<c>    * Split regions with the distance-transform watershed path.</c>
+<l>    ScaleFactor := 0.5</l>
+<l>    gen_empty_obj (WatershedSegmentedObjects)</l>
+<l>    copy_obj (TabletSegmentationWork, TabletRegionProcessed, 1, -1)</l>
+<l>    erosion_rectangle1 (TabletRegionProcessed, TabletRegionProcessed, 1, 2)</l>
+<l>    zoom_region (TabletRegionProcessed, TabletRegionProcessed, ScaleFactor, ScaleFactor)</l>
+<l>    union1 (TabletRegionProcessed, TabletRegionUnion)</l>
+<l>    area_center (TabletRegionUnion, ProcessedArea, _, _)</l>
+<l>    if ((ProcessedArea # []) and (ProcessedArea &gt; 0))</l>
+<l>        smallest_rectangle1 (TabletRegionUnion, Row1, Column1, Row2, Column2)</l>
+<l>        move_region (TabletRegionUnion, TabletRegionLocal, -Row1[0]+5, -Column1[0]+5)</l>
+<l>        copy_obj (TabletRegionLocal, RegionWithoutFillUp, 1, -1)</l>
+<l>        fill_up (TabletRegionLocal, TabletRegionLocal)</l>
+<l>        HeightRegion := Row2[0]-Row1[0]</l>
+<l>        WidthRegion := Column2[0]-Column1[0]</l>
+<l>        distance_transform (TabletRegionLocal, DistanceImage, 'octagonal', 'true', WidthRegion+10, HeightRegion+10)</l>
+<l>        convert_image_type (DistanceImage, DistanceImageByte, 'byte')</l>
+<l>        invert_image (DistanceImageByte, DistanceImageInverted)</l>
+<l>        scale_image_max (DistanceImageInverted, DistanceImageScaled)</l>
+<l>        watersheds_threshold (DistanceImageScaled, Basins, ProductSplittingMode1SeparationThreshold)</l>
+<l>        intersection (Basins, RegionWithoutFillUp, WatershedSegmentedObjects)</l>
+<l>        move_region (WatershedSegmentedObjects, WatershedSegmentedObjects, Row1[0]-5, Column1[0]-5)</l>
+<l>        zoom_region (WatershedSegmentedObjects, WatershedSegmentedObjects, 1/ScaleFactor, 1/ScaleFactor)</l>
+<l>        erosion_circle (WatershedSegmentedObjects, WatershedSegmentedObjects, 1.5)</l>
+<l>        connection (WatershedSegmentedObjects, WatershedSegmentedObjects)</l>
+<l>        select_shape (WatershedSegmentedObjects, WatershedSegmentedObjects, 'area', 'and', 10, 99999999)</l>
+<l>        select_shape (WatershedSegmentedObjects, WatershedSegmentedObjects, 'area', 'and', PreprocessingMinAreaFilter, 99999999)</l>
+<l>        area_center (WatershedSegmentedObjects, WatershedAreas, _, _)</l>
+<l>        if ((WatershedAreas # []) and (WatershedAreas # 0))</l>
+<l>            tuple_sort_index (-WatershedAreas, WatershedIndices)</l>
+<l>            tuple_length (WatershedIndices, NumberWatershedRegions)</l>
+<l>            tuple_gen_const (NumberWatershedRegions, 1, TupleOnes)</l>
+<l>            tuple_add (TupleOnes, WatershedIndices, WatershedSelectionIndices)</l>
+<l>            select_obj (WatershedSegmentedObjects, WatershedSegmentedObjectsSorted, WatershedSelectionIndices)</l>
+<l>            RegionTabletIndividual := WatershedSegmentedObjectsSorted</l>
+<l>        endif</l>
+<l>    endif</l>
+<l>else</l>
+<c>    * Partition regions after rotating the horizontal product stream.</c>
+<l>    if (TransportDirectionHorizontalOrVertical = 'horizontal')</l>
+<l>        set_system ('clip_region', 'false')</l>
+<l>        get_image_size (ImageHSV, ImageWidth, ImageHeight)</l>
+<l>        hom_mat2d_identity (HomMat2DIdentity)</l>
+<l>        hom_mat2d_rotate (HomMat2DIdentity, rad(90), ImageHeight/2, ImageWidth/2, HomMat2DRotate)</l>
+<l>        affine_trans_region (TabletSegmentationWork, TabletSegmentationRotated, HomMat2DRotate, 'nearest_neighbor')</l>
+<l>    else</l>
+<l>        TabletSegmentationRotated := TabletSegmentationWork</l>
+<l>    endif</l>
+<l>    partition_dynamic (TabletSegmentationRotated, TabletIndividualPartitioned, TabletLength, 30)</l>
+<l>    if (TransportDirectionHorizontalOrVertical = 'horizontal')</l>
+<l>        hom_mat2d_identity (HomMat2DIdentity)</l>
+<l>        hom_mat2d_rotate (HomMat2DIdentity, rad(-90), ImageHeight/2, ImageWidth/2, HomMat2DRotate)</l>
+<l>        affine_trans_region (TabletIndividualPartitioned, TabletIndividualPartitioned, HomMat2DRotate, 'nearest_neighbor')</l>
+<l>        set_system ('clip_region', 'true')</l>
+<l>    endif</l>
+<l>    fill_up (TabletIndividualPartitioned, TabletIndividualPartitioned)</l>
+<c></c>
+<c>    * Reunite fragments whose eroded bounding boxes overlap horizontally.</c>
+<l>    erosion_rectangle1 (TabletIndividualPartitioned, TabletIndividualEroded, 1, 9)</l>
+<l>    smallest_rectangle1 (TabletIndividualEroded, Row1, Column1, Row2, Column2)</l>
+<l>    count_obj (TabletIndividualEroded, NumberErodedRegions)</l>
+<l>    if (NumberErodedRegions &gt; 0)</l>
+<l>        gen_rectangle1 (ReunionRectangles, Row1, Column1-15, Row2, Column2+15)</l>
+<l>        gen_empty_obj (RegionsToRemove)</l>
+<l>        gen_empty_obj (RegionsReunitedToAdd)</l>
+<l>        IndexesAlreadyReunited := []</l>
+<l>        for IndexRegion := 1 to NumberErodedRegions by 1</l>
+<l>            tuple_equal_elem (IndexesAlreadyReunited, IndexRegion, IsAlreadyReunited)</l>
+<l>            tuple_sum (IsAlreadyReunited, NumberAlreadyReunited)</l>
+<l>            if (NumberAlreadyReunited &gt; 0)</l>
+<l>                continue</l>
+<l>            endif</l>
+<l>            select_obj (ReunionRectangles, ReunionRectangleSelected, IndexRegion)</l>
+<l>            intersection (ReunionRectangles, ReunionRectangleSelected, RegionIntersection)</l>
+<l>            select_shape (RegionIntersection, SelectedReunionRegions, 'area', 'and', 2, 99999999)</l>
+<l>            count_obj (SelectedReunionRegions, NumberSelectedReunionRegions)</l>
+<l>            if (NumberSelectedReunionRegions &gt; 1)</l>
+<l>                area_center (SelectedReunionRegions, _, IntersectedRows, IntersectedColumns)</l>
+<l>                tuple_round (IntersectedRows, IntersectedRows)</l>
+<l>                tuple_round (IntersectedColumns, IntersectedColumns)</l>
+<l>                for IndexSelectedRegion := 1 to NumberSelectedReunionRegions-1 by 1</l>
+<l>                    get_region_index (ReunionRectangles, IntersectedRows[IndexSelectedRegion], IntersectedColumns[IndexSelectedRegion], IndicesForReunion)</l>
+<l>                    tuple_concat (IndexesAlreadyReunited, IndicesForReunion, IndexesAlreadyReunited)</l>
+<l>                    select_obj (TabletIndividualPartitioned, RegionsForReunion, IndicesForReunion)</l>
+<l>                    concat_obj (RegionsToRemove, RegionsForReunion, RegionsToRemove)</l>
+<l>                    union1 (RegionsForReunion, RegionReunited)</l>
+<l>                    concat_obj (RegionsReunitedToAdd, RegionReunited, RegionsReunitedToAdd)</l>
+<l>                endfor</l>
+<l>            endif</l>
+<l>        endfor</l>
+<l>        select_obj (TabletIndividualPartitioned, RegionsToRemove, IndexesAlreadyReunited)</l>
+<l>        difference (TabletIndividualPartitioned, RegionsToRemove, TabletIndividualRemaining)</l>
+<l>        concat_obj (TabletIndividualRemaining, RegionsReunitedToAdd, TabletIndividualWithReunitedFragments)</l>
+<l>        select_shape (TabletIndividualWithReunitedFragments, RegionTabletIndividual, 'area', 'and', 1, 99999999)</l>
+<l>    else</l>
+<l>        RegionTabletIndividual := TabletIndividualPartitioned</l>
+<l>    endif</l>
+<l>endif</l>
 <c></c>
 <l>return ()</l>
 </body>
