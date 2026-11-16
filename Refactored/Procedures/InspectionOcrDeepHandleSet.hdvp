@@ -8,7 +8,7 @@
 </interface>
 <body>
 <c>* Registriert den geladenen Deep-OCR-Handle vor dem Start der parallelen Inspektion.</c>
-<c>* Der globale Handle bleibt voruebergehend als Kompatibilitaetsbruecke erhalten.</c>
+<c>* Der globale Handle bleibt vorübergehend als Kompatibilitätsbrücke erhalten.</c>
 <l>global tuple App</l>
 <l>global tuple DeepOcrHandle</l>
 <l>App.OCR.DeepOCR.Handle := OCRHandle</l>
