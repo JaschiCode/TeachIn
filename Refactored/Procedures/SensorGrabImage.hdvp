@@ -22,12 +22,11 @@
 <c></c>
 <l>global tuple App</l>
 <c></c>
-<c></c>
-<c>* Initialize output variables</c>
 <l>NoImageFound := 0</l>
 <l>gen_empty_obj (Image)</l>
+<l>gen_empty_obj (ImageCap)</l>
 <l>Framegrabber_ChunkData := []</l>
-<l>Camera_DeviceNumberUsedForGrabbing := [] // is used for e.g. measure system analyses</l>
+<l>Camera_DeviceNumberUsedForGrabbing := []</l>
 <l>TimeNeeded := []</l>
 <c></c>
 <l>count_seconds (TimeStart)</l>
@@ -37,55 +36,51 @@
 <l>    grab_image_async (Image, App.Sensor.AcqHandle[0], -1)</l>
 <l>    Error := ErrorVar</l>
 <l>    dev_set_check ('give_error')</l>
-<c> </c>
-<l>    if (Error == 2 and App.Sensor.FramegrabberFirstImageToInitTaken == 0) // remove first image for as starting condition</l>
-<l>        gFramegrabberFirstImageToInitTaken := 1       </l>
+<c></c>
+<l>    if (Error == 2 and App.Sensor.FramegrabberFirstImageToInitTaken == 0)</l>
+<l>        App.Sensor.FramegrabberFirstImageToInitTaken := 1</l>
 <l>        gen_empty_obj (Image)</l>
 <l>        Error := 5322</l>
 <l>    endif</l>
-<c>    </c>
+<c></c>
 <l>    if (Error != 2 or App.Sensor.FramegrabberFirstImageToInitTaken == 0)</l>
 <l>        NoImageFound := 1</l>
-<l>    else  </l>
+<l>    else</l>
 <l>        Camera_DeviceNumberUsedForGrabbing := App.Status.Camera.ID</l>
-<c></c>
 <l>        SensorGrabImageConvertLongToMultiChannelImage (Image, Image)</l>
-<l>        if(|App.Sensor.AcqHandle| == 2)            </l>
+<l>        if (|App.Sensor.AcqHandle| == 2)</l>
 <l>            count_seconds (TimeStart_1)</l>
 <l>            grab_image_async (ImageSide, App.Sensor.AcqHandle[1], -1)</l>
 <l>            SensorGrabImageConvertLongToMultiChannelImageAndCapImages (ImageSide, ImageSide, ImageCapSide)</l>
 <l>            concat_obj (Image, ImageSide, Image)</l>
+<l>            ImageCap := ImageCapSide</l>
 <l>            count_seconds (TimeEnd_1)</l>
 <l>            TimeNeeded_SecondGrab := (TimeEnd_1 - TimeStart_1) * 1000.0</l>
 <l>        endif</l>
 <l>    endif</l>
-<c></c>
 <l>else</l>
-<c>    </c>
 <c>    * List image files from format</c>
-<l>    list_files (App.Filesystem.Format.Images_ProductTeachIn.Path, 'files', Files)    </l>
+<l>    list_files (App.Filesystem.Format.Images_ProductTeachIn.Path, 'files', Files)</l>
 <c></c>
-<c>    * Get chunk data from file </c>
+<c>    * Get chunk data from file</c>
 <l>    FilenameToCheck := (App.Filesystem.Format.Images_ProductTeachIn.Path + 'Z_Framegrabber_Chunkdata_IOState_Current_Tpl.tpl')</l>
 <l>    file_exists (FilenameToCheck, FileExists)</l>
-<l>    if(FileExists)</l>
+<l>    if (FileExists)</l>
 <l>        read_tuple (FilenameToCheck, Framegrabber_Chunkdata_IOState_Current_Tpl)</l>
-<l>        if(|Framegrabber_Chunkdata_IOState_Current_Tpl| &gt; App.Status.Counter.ProductionLoopCounter)</l>
+<l>        if (|Framegrabber_Chunkdata_IOState_Current_Tpl| &gt; App.Status.Counter.ProductionLoopCounter)</l>
 <l>            Framegrabber_ChunkData := Framegrabber_Chunkdata_IOState_Current_Tpl[App.Status.Counter.ProductionLoopCounter]</l>
 <l>        endif</l>
 <l>    endif</l>
-<c>    </c>
+<c></c>
 <l>    if (App.Status.Counter.ProductionLoopCounter &gt;= |Files|)</l>
 <l>        NoImageFound := 1</l>
 <l>    else</l>
-<c>        </c>
 <l>        Filename := Files[App.Status.Counter.ProductionLoopCounter]</l>
 <l>        dev_error_var (ErrorVar, 1)</l>
 <l>        dev_set_check ('~give_error')</l>
 <l>        read_image (Image, Filename)</l>
 <l>        Error := ErrorVar</l>
-<l>        dev_set_check ('give_error')   </l>
-<c>        </c>
+<l>        dev_set_check ('give_error')</l>
 <l>        if (Error != 2)</l>
 <l>            Filename := App.Filesystem.Format.Images_ProductTeachIn.Path + (App.Status.Counter.ProductionLoopCounter+1)$'.4d'</l>
 <l>            dev_error_var (ErrorVar, 1)</l>
@@ -96,24 +91,18 @@
 <l>            if (Error != 2)</l>
 <l>                NoImageFound := 1</l>
 <l>            endif</l>
-<l>        else </l>
-<c></c>
-<c>            * Filter list of files by regular expressions</c>
-<l>*             ShortNames := regexp_match (Filename, '[^/\\\\]*.tif')   </l>
-<l>*             IsProductImage := regexp_test(ShortNames, 'ProductImageCam')</l>
-<c>            **************</c>
+<l>        else</l>
 <l>            if (IsTeachIn)</l>
 <l>                gen_empty_obj (ImageCap)</l>
 <l>            else</l>
 <l>                SensorGrabImageConvertLongToMultiChannelImageAndCapImage (Image, Image, ImageCap)</l>
 <l>            endif</l>
-<c>            </c>
 <l>        endif</l>
 <l>    endif</l>
 <l>endif</l>
 <c></c>
 <l>count_seconds (TimeEnd)</l>
-<l>Time_Needed := (TimeEnd - TimeStart ) * 1000.0</l>
+<l>Time_Needed := (TimeEnd - TimeStart) * 1000.0</l>
 <c></c>
 <l>return ()</l>
 </body>
