@@ -31,12 +31,12 @@
 <l>    InspectionSegmentationReduceToLaneROIs (ProcessingThreadID, TimeNeeded)</l>
 <l>    InspectionSegmentationRollsShift (ProcessingThreadID, TimeNeeded)</l>
 <c>    </c>
-<c>    * todo: nochmal nachvollziehen, ob ROI_Height und ROI_Pos wirklich hier auf 0 gesetzt werden können</c>
+<c>    * TODO: Confirm whether ROI_Height and ROI_Pos can safely remain unset in this path.</c>
 <l>*     ROI_Height := 0</l>
 <l>*     ROI_Pos := 0</l>
 <l>    InspectionSegmentationStep (ProcessingThreadID, ChannelSelector)</l>
 <l>else</l>
-<c>    * Bereits berechnete Segmentierung im App-Dictionary weiterverwenden.</c>
+<c>    * Reuse the segmentation already stored in the App dictionary.</c>
 <l>    RegionTablets := App.Inspection.Threads.[ProcessingThreadID].Regions.Tablets.Segmented</l>
 <l>endif</l>
 <c></c>
@@ -45,20 +45,20 @@
 <c></c>
 <c></c>
 <c></c>
-<c>* Remove objects in eject box while teach in</c>
-<c>* Can be necessary due to tracks may have holes there, this results in poor measurements</c>
+<c>* During Teach-In, optionally remove objects from eject regions.</c>
+<c>* Track openings can cause inaccurate measurements if objects remain in the eject regions.</c>
 <l>if (App.Format.TabletInspection.TeachIn.V_IgnoreObjectsInEjectboxesForTeachIn.Value)</l>
 <l>    TeachInSegmentationFilterRegionsCuttingROI (ProcessingThreadID)</l>
 <l>endif</l>
 <c></c>
-<c>* Remove tablets that touch the upper and lower ROI border</c>
+<c>* Exclude tablets that touch the upper or lower ROI boundary.</c>
 <l>RegionTablets := App.Inspection.Threads.[ProcessingThreadID].Regions.Tablets.Segmented</l>
 <l>SegmentationFilterRegionsCuttingROI (RegionTablets, RegionTablets, ProcessingThreadID, 1)</l>
 <l>App.Inspection.Threads.[ProcessingThreadID].Regions.Tablets.Segmented := RegionTablets</l>
 <l>union1 (RegionTablets, RegionTabletsUnion)</l>
 <l>App.Inspection.Threads.[ProcessingThreadID].Regions.Tablets.SegmentedUnion := RegionTabletsUnion</l>
 <c></c>
-<c>* Sequencer shift offset calculation inbetween images</c>
+<c>* Calculate the sequencer shift between images.</c>
 <l>if (UseColorClassification)</l>
 <l>    SegmentationRollsShiftCalculateBetweenImages (ProcessingThreadID, ChannelSelector)</l>
 <l>endif</l>
