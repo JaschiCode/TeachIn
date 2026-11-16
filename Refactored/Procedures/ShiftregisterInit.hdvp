@@ -30,13 +30,13 @@
 <l>    App.Shiftregister.Cameras.[App.Status.Camera.ID].Threads.[Threads[IdxThread]] := dict{}</l>
 <l>    App.Shiftregister.Cameras.[App.Status.Camera.ID].Threads.[Threads[IdxThread]].Lanes := dict{}</l>
 <c>    </c>
-<l>    Lanes := App.ThreadManagement.Threads.[IdxThread]</l>
+<l>    Lanes := App.ThreadManagement.Threads.[Threads[IdxThread]]</l>
 <l>    for IdxLane := 0 to |Lanes|-1 by 1</l>
 <l>        App.Shiftregister.Cameras.[App.Status.Camera.ID].Threads.[Threads[IdxThread]].Lanes.[Lanes[IdxLane]] := dict{}</l>
 <l>        App.Shiftregister.Cameras.[App.Status.Camera.ID].Threads.[Threads[IdxThread]].Lanes.[Lanes[IdxLane]].Results := dict{}</l>
 <l>        for IdxGoodBad := 0 to 1 by 1</l>
 <l>            App.Shiftregister.Cameras.[App.Status.Camera.ID].Threads.[Threads[IdxThread]].Lanes.[Lanes[IdxLane]].Results.[IdxGoodBad] := dict{}</l>
-<l>            App.Shiftregister.Cameras.[App.Status.Camera.ID].Threads.[Threads[IdxThread]].Lanes.[Lanes[IdxLane]].Results.[IdxGoodBad].GoodBadValue  := []</l>
+<l>            App.Shiftregister.Cameras.[App.Status.Camera.ID].Threads.[Threads[IdxThread]].Lanes.[Lanes[IdxIdxGoodBad]].Results.[IdxGoodBad].GoodBadValue  := []</l>
 <l>            App.Shiftregister.Cameras.[App.Status.Camera.ID].Threads.[Threads[IdxThread]].Lanes.[Lanes[IdxLane]].Results.[IdxGoodBad].GoodBadObject := EmptyObject</l>
 <l>        endfor</l>
 <l>    endfor</l>
@@ -45,7 +45,7 @@
 <c>* Shiftregister_VThread_VLane_VMeasureFeature_TResult_TValue</c>
 <l>for IdxThread := 0 to |Threads|-1 by 1</l>
 <c>    </c>
-<l>    Lanes := App.ThreadManagement.Threads.[IdxThread]</l>
+<l>    Lanes := App.ThreadManagement.Threads.[Threads[IdxThread]]</l>
 <c></c>
 <l>    for IdxLane := 0 to |Lanes|-1 by 1</l>
 <c></c>
