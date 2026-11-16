@@ -6,7 +6,6 @@
 <c>* SensorInit</c>
 <c>* Initialisiert den Framegrabber und speichert den Zustand in App.Sensor.</c>
 <l>global tuple App</l>
-<l>global tuple gStopAtCameraStart</l>
 <c></c>
 <l>App.Sensor := dict{}</l>
 <l>App.Sensor.AcqHandle := []</l>
@@ -25,8 +24,8 @@
 <l>ImageGrabOffset_X          := App.Format.Camera.Cameras.['Camera_' + App.Status.Camera.ID].V_ImageGrabOffset_X.Value</l>
 <l>ImageGrabOffset_Y          := App.Format.Camera.Cameras.['Camera_' + App.Status.Camera.ID].V_ImageGrabOffset_Y.Value</l>
 <c></c>
-<l>if (gStopAtCameraStart)</l>
-<l>    gStopAtCameraStart := 0</l>
+<l>if (App.Status.StopAtCameraStart)</l>
+<l>    App.Status.StopAtCameraStart := 0</l>
 <l>    stop()</l>
 <l>endif</l>
 <c></c>
