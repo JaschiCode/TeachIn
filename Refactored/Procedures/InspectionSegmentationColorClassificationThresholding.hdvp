@@ -36,10 +36,8 @@
 <l>*     ROI_Pos := 0</l>
 <l>    InspectionSegmentationStep (ProcessingThreadID, ChannelSelector)</l>
 <l>else</l>
-<l>    ++++ todo: JH</l>
-<l>*     SegmentedTablets := Preprocessed_SegmentedTablets</l>
-<l>*     Sequencer_MovedDistanceInBetweenGrabbedImages := GrabImageMetaData.Sequencer_MovedDistanceInBetweenGrabbedImages</l>
-<l>    * ShiftMean      := App.Sensor.GrabImageMetaData.Sequencer_MovedDistanceInBetweenGrabbedImages</l>
+<c>    * Bereits berechnete Segmentierung im App-Dictionary weiterverwenden.</c>
+<l>    RegionTablets := App.Inspection.Threads.[ProcessingThreadID].Regions.Tablets.Segmented</l>
 <l>endif</l>
 <c></c>
 <c></c>
@@ -57,6 +55,8 @@
 <l>RegionTablets := App.Inspection.Threads.[ProcessingThreadID].Regions.Tablets.Segmented</l>
 <l>SegmentationFilterRegionsCuttingROI (RegionTablets, RegionTablets, ProcessingThreadID, 1)</l>
 <l>App.Inspection.Threads.[ProcessingThreadID].Regions.Tablets.Segmented := RegionTablets</l>
+<l>union1 (RegionTablets, RegionTabletsUnion)</l>
+<l>App.Inspection.Threads.[ProcessingThreadID].Regions.Tablets.SegmentedUnion := RegionTabletsUnion</l>
 <c></c>
 <c>* Sequencer shift offset calculation inbetween images</c>
 <l>if (UseColorClassification)</l>
