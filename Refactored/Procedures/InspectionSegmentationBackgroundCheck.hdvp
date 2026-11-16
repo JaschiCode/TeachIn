@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="25.11.0.0">
+<procedure name="InspectionSegmentationBackgroundCheck">
+<interface>
+<ic><par name="ProcessingThreadID" base_type="ctrl" dimension="0"/></ic>
+<oc><par name="TimeNeeded" base_type="ctrl" dimension="0"/></oc>
+</interface>
+<body>
+<c>* InspectionSegmentationBackgroundCheck</c>
+<c>* ------------------------------------------------</c>
+<c>* Add background detections as lane-wide regions while excluding known tablets.</c>
+<c></c>
+<l>global tuple App</l>
+<l>count_seconds (TimeStart)</l>
+<l>BackgroundcheckSettings := App.Format.TabletInspection.Backgroundcheck</l>
+<l>BackgroundcheckActive := BackgroundcheckSettings.V_FeatureActive.Value</l>
+<l>HueMin := BackgroundcheckSettings.V_Segmentation_HueMin.Value</l>
+<l>HueMax := BackgroundcheckSettings.V_Segmentation_HueMax.Value</l>
+<l>SaturationMin := BackgroundcheckSettings.V_Segmentation_SaturationMin.Value</l>
+<l>SaturationMax := BackgroundcheckSettings.V_Segmentation_SaturationMax.Value</l>
+<l>ImageHSV := App.Inspection.Threads.[ProcessingThreadID].Images.TopLight.HSV.AllChannel</l>
+<l>LanesROIs := App.Inspection.Threads.[ProcessingThreadID].Regions.Lanes.ROIs</l>
+<l>AlreadyFoundProducts := App.Inspection.Threads.[ProcessingThreadID].Regions.Tablets.Individual</l>
+<l>ObjectsCrossingROIBorder := App.Inspection.Threads.[ProcessingThreadID].Regions.Tablets.OnBorder</l>
+<l>gen_empty_obj (BackgroundObjects)</l>
+<l>IndividualWithBackgroundObjects := AlreadyFoundProducts</l>
+<c></c>
+<l>if (BackgroundcheckActive = 1)</l>
+<l>    get_image_size (ImageHSV, ImageWidth, _)</l>
+<l>    if (|ImageWidth| &gt; 0)</l>
+<c>        * Exclude known products and border objects with a margin of 20 rows.</c>
+<l>        union1 (LanesROIs, LanesROIsUnion)</l>
+<l>        smallest_rectangle1 (LanesROIs, _, LaneColumn1, _, LaneColumn2)</l>
+<l>        gen_empty_obj (BackgroundExclusionArea)</l>
+<l>        concat_obj (AlreadyFoundProducts, ObjectsCrossingROIBorder, ProductsAndBorderObjects)</l>
+<l>        count_obj (LanesROIs, NumberOfLanes)</l>
+<l>        for IndexLane := 1 to NumberOfLanes by 1</l>
+<l>            select_obj (LanesROIs, LaneROI, IndexLane)</l>
+<l>            intersection (LaneROI, ProductsAndBorderObjects, ExistingProductsInLane)</l>
+<l>            connection (ExistingProductsInLane, ExistingProductsInLane)</l>
+<l>            smallest_rectangle1 (ExistingProductsInLane, DetectedRow1, _, DetectedRow2, _)</l>
+<l>            if (DetectedRow1 # [])</l>
+<l>                tuple_gen_const (|DetectedRow2|, LaneColumn1[IndexLane-1], LaneColumn1Const)</l>
+<l>                tuple_gen_const (|DetectedRow2|, LaneColumn2[IndexLane-1], LaneColumn2Const)</l>
+<l>                gen_rectangle1 (ProductExclusionRects, DetectedRow1-20, LaneColumn1Const, DetectedRow2+20, LaneColumn2Const)</l>
+<l>                concat_obj (BackgroundExclusionArea, ProductExclusionRects, BackgroundExclusionArea)</l>
+<l>            endif</l>
+<l>        endfor</l>
+<l>        union1 (BackgroundExclusionArea, BackgroundExclusionArea)</l>
+<l>        difference (LanesROIsUnion, BackgroundExclusionArea, BackgroundSearchDomain)</l>
+<c></c>
+<c>        * Exclude the top and bottom 30 rows of the lane group.</c>
+<l>        smallest_rectangle1 (LanesROIsUnion, LaneRow1, LaneGroupColumn1, LaneRow2, LaneGroupColumn2)</l>
+<l>        if (LaneRow1 # [])</l>
+<l>            gen_rectangle1 (UpperExclusion, LaneRow1, LaneGroupColumn1, LaneRow1+30, LaneGroupColumn2)</l>
+<l>            gen_rectangle1 (LowerExclusion, LaneRow2-30, LaneGroupColumn1, LaneRow2, LaneGroupColumn2)</l>
+<l>            union2 (UpperExclusion, LowerExclusion, UpperLowerExclusion)</l>
+<l>            difference (BackgroundSearchDomain, UpperLowerExclusion, BackgroundSearchDomain)</l>
+<l>        endif</l>
+<c></c>
+<l>        decompose3 (ImageHSV, ImageHue, ImageSaturation, ImageValue)</l>
+<l>        reduce_domain (ImageHue, BackgroundSearchDomain, ImageHueReduced)</l>
+<l>        threshold (ImageHueReduced, HueCandidates, HueMin, HueMax)</l>
+<l>        reduce_domain (ImageSaturation, BackgroundSearchDomain, ImageSaturationReduced)</l>
+<l>        threshold (ImageSaturationReduced, SaturationCandidates, SaturationMin, SaturationMax)</l>
+<l>        union2 (HueCandidates, SaturationCandidates, BackgroundCandidates)</l>
+<l>        erosion_rectangle1 (BackgroundCandidates, BackgroundEroded, 24, 24)</l>
+<l>        closing_rectangle1 (BackgroundEroded, BackgroundSegmented, 25, 15)</l>
+<c></c>
+<c>        * Convert detected background components to lane-wide rectangular regions.</c>
+<l>        for IndexLane := 1 to NumberOfLanes by 1</l>
+<l>            select_obj (LanesROIs, LaneROI, IndexLane)</l>
+<l>            intersection (LaneROI, BackgroundSegmented, BackgroundInLane)</l>
+<l>            connection (BackgroundInLane, BackgroundInLane)</l>
+<l>            smallest_rectangle1 (BackgroundInLane, BackgroundRow1, _, BackgroundRow2, _)</l>
+<l>            if (BackgroundRow1 = [] or (BackgroundRow1 = 0 and BackgroundRow2 = 0))</l>
+<l>                continue</l>
+<l>            endif</l>
+<l>            tuple_gen_const (|BackgroundRow2|, LaneColumn1[IndexLane-1], BackgroundColumn1)</l>
+<l>            tuple_gen_const (|BackgroundRow2|, LaneColumn2[IndexLane-1], BackgroundColumn2)</l>
+<l>            gen_rectangle1 (BackgroundObjectsInLane, BackgroundRow1, BackgroundColumn1, BackgroundRow2, BackgroundColumn2)</l>
+<l>            concat_obj (BackgroundObjects, BackgroundObjectsInLane, BackgroundObjects)</l>
+<l>        endfor</l>
+<l>        concat_obj (AlreadyFoundProducts, BackgroundObjects, IndividualWithBackgroundObjects)</l>
+<l>    endif</l>
+<l>endif</l>
+<c></c>
+<c>* Store background objects and the updated tablet collection in App.</c>
+<l>App.Inspection.Threads.[ProcessingThreadID].Regions.Tablets.BackgroundCheck := BackgroundObjects</l>
+<l>App.Inspection.Threads.[ProcessingThreadID].Regions.Tablets.Individual := IndividualWithBackgroundObjects</l>
+<l>union1 (IndividualWithBackgroundObjects, IndividualWithBackgroundObjectsUnion)</l>
+<l>App.Inspection.Threads.[ProcessingThreadID].Regions.Tablets.IndividualUnion := IndividualWithBackgroundObjectsUnion</l>
+<l>count_seconds (TimeEnd)</l>
+<l>TimeNeeded := (TimeEnd-TimeStart) * 1000.0</l>
+<l>return ()</l>
+</body>
+<docu id="InspectionSegmentationBackgroundCheck">
+<parameters>
+<parameter id="ProcessingThreadID"/>
+<parameter id="TimeNeeded"/>
+</parameters>
+</docu>
+</procedure>
+</hdevelop>
