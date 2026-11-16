@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="25.11.0.0"><procedure name="DeleteInterfaceFromGuiFile">
+<interface/>
+<body>
+<c>*DeleteInterfaceFromGuiFile</c>
+<c>* -------------------------------------------------------</c>
+<c>* Delet a pressed button from GUI if it exists</c>
+<c></c>
+<l>global tuple App</l>
+<c></c>
+<l>file_exists (App.Filesystem.Temp.Files.ButtonInterfaceFromGUI, FileExists)</l>
+<l>if (FileExists)</l>
+<l>    delete_file (App.Filesystem.Temp.Files.ButtonInterfaceFromGUI)</l>
+<l>endif</l>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="DeleteInterfaceFromGuiFile">
+<parameters/>
+</docu>
+</procedure>
+</hdevelop>
