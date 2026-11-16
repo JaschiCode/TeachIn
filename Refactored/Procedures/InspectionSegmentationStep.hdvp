@@ -18,6 +18,7 @@
 <c>* Get variables from dictionary</c>
 <l>UseRGBThreshold := App.Inspection.Threads.[ProcessingThreadID].Segmentation.Parameters.UseRGBThreshold</l>
 <l>ShiftMean       := App.Sensor.GrabImageMetaData.Sequencer_MovedDistanceInBetweenGrabbedImages</l>
+<l>App.Inspection.Threads.[ProcessingThreadID].Segmentation.Parameters.ChannelSelector := ChannelSelector</l>
 <c></c>
 <l>if (UseRGBThreshold)</l>
 <l>    InspectionSegmentationThresholdRGB (ProcessingThreadID, ChannelSelector)</l>
