@@ -45,10 +45,8 @@
 <l>    select_shape (RegionTablets, RegionTablets, 'area', 'and', 1, 1e6)</l>
 <l>    shape_trans (RegionTablets, RegionTablets, 'convex')</l>
 <l>else</l>
-<c>    * Gray threshold based product segmentation</c>
-<l>    +++ todo: JH</l>
-<l>*     rgb1_to_gray (ImageOrig_RGB, ImageOrig_Monochrome)</l>
-<l>*     threshold (ImageOrig_Monochrome, RegionTablets, SegmentationThreshold, 255)</l>
+<c>    * Grauwertpfad noch nicht migriert; den vorhandenen Dictionary-Stand beibehalten.</c>
+<l>    RegionTablets := App.Inspection.Threads.[ProcessingThreadID].Regions.Tablets.Segmented</l>
 <l>endif</l>
 <c></c>
 <c></c>
