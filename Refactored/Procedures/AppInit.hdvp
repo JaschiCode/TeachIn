@@ -11,7 +11,7 @@
 <c>* Initialize global parameters</c>
 <l>global def tuple App</l>
 <l>App := dict{}</l>
-<c>* OCR-Handle im App-Dictionary ablegen; ein Modelllader registriert den Handle spaeter.</c>
+<c>* OCR-Handle im App-Dictionary ablegen; ein Modelllader registriert den Handle später.</c>
 <l>App.OCR := dict{}</l>
 <l>App.OCR.DeepOCR := dict{}</l>
 <l>App.OCR.DeepOCR.Handle := []</l>
