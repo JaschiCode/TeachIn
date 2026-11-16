@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="25.11.0.0">
+<procedure name="InspectionMeasurementResultsCorrectForTracking">
+<interface>
+<ic><par name="ProcessingThreadID" base_type="ctrl" dimension="0"/></ic>
+<oc><par name="TimeNeeded" base_type="ctrl" dimension="0"/></oc>
+</interface>
+<body>
+<c>* InspectionMeasurementResultsCorrectForTracking</c>
+<c>* --------------------------------------------------------------</c>
+<c>* Korrigiert Tracking-Indizes über alle gespeicherten Merkmale hinweg.</c>
+<c></c>
+<l>global tuple App</l>
+<l>count_seconds (TimeStart)</l>
+<l>get_dict_param (App.Inspection.Threads.[ProcessingThreadID], 'key_exists', 'Results', ResultsExists)</l>
+<l>if (not ResultsExists)</l>
+<l>    count_seconds (TimeEnd)</l>
+<l>    TimeNeeded := (TimeEnd-TimeStart) * 1000.0</l>
+<l>    return ()</l>
+<l>endif</l>
+<l>get_dict_param (App.Inspection.Threads.[ProcessingThreadID].Results, 'key_exists', 'MeasureValues', MeasureValuesExists)</l>
+<l>if (not MeasureValuesExists)</l>
+<l>    count_seconds (TimeEnd)</l>
+<l>    TimeNeeded := (TimeEnd-TimeStart) * 1000.0</l>
+<l>    return ()</l>
+<l>endif</l>
+<l>MeasureValues := App.Inspection.Threads.[ProcessingThreadID].Results.MeasureValues</l>
+<l>MeasureValuesCorrected := MeasureValues</l>
+<l>ProductsMeasured := 0</l>
+<l>VectorLength := MeasureValues.length()</l>
+<l>if (VectorLength # [])</l>
+<l>    ProductsMeasured := |MeasureValues.at(0).at(0)|</l>
+<l>endif</l>
+<l>for IndexProduct := 0 to ProductsMeasured-1 by 1</l>
+<l>    AccumulatedResults := []</l>
+<l>    for IndexFeature := 0 to VectorLength-1 by 1</l>
+<l>        AccumulatedResults := [AccumulatedResults, MeasureValues.at(IndexFeature).at(0)[IndexProduct]]</l>
+<l>    endfor</l>
+<l>    tuple_find (AccumulatedResults, -1, Indices)</l>
+<l>    if (Indices # -1 and Indices # [])</l>
+<l>        for IndexFeature := 0 to VectorLength-1 by 1</l>
+<l>            MeasureValuesCorrected.at(IndexFeature).at(0)[IndexProduct] := -1</l>
+<l>        endfor</l>
+<l>    endif</l>
+<l>endfor</l>
+<l>App.Inspection.Threads.[ProcessingThreadID].Results.MeasureValues := MeasureValuesCorrected</l>
+<l>count_seconds (TimeEnd)</l>
+<l>TimeNeeded := (TimeEnd-TimeStart) * 1000.0</l>
+<l>return ()</l>
+</body>
+<docu id="InspectionMeasurementResultsCorrectForTracking">
+<parameters>
+<parameter id="ProcessingThreadID"/>
+<parameter id="TimeNeeded"/>
+</parameters>
+</docu>
+</procedure>
+</hdevelop>
