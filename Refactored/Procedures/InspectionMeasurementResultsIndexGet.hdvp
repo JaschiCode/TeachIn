@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="25.11.0.0">
+<procedure name="InspectionMeasurementResultsIndexGet">
+<interface>
+<ic><par name="ProcessingThreadID" base_type="ctrl" dimension="0"/></ic>
+<oc><par name="CurrentVectorLength" base_type="ctrl" dimension="0"/></oc>
+</interface>
+<body>
+<c>* InspectionMeasurementResultsIndexGet</c>
+<c>* ----------------------------------------------------------</c>
+<c>* Ermittelt den nächsten Index für gespeicherte Messwertvektoren.</c>
+<c></c>
+<l>global tuple App</l>
+<c></c>
+<c>* Thread-Ergebnis-Dictionary und Tupel bei Bedarf initialisieren.</c>
+<l>get_dict_param (App.Inspection.Threads.[ProcessingThreadID], 'key_exists', 'Results', ResultsExists)</l>
+<l>if (not ResultsExists)</l>
+<l>    App.Inspection.Threads.[ProcessingThreadID].Results := dict{}</l>
+<l>endif</l>
+<l>get_dict_param (App.Inspection.Threads.[ProcessingThreadID].Results, 'key_exists', 'MeasureValues', MeasureValuesExists)</l>
+<l>if (not MeasureValuesExists)</l>
+<l>    App.Inspection.Threads.[ProcessingThreadID].Results.MeasureValues := {{[]}}</l>
+<l>endif</l>
+<l>MeasureValues := App.Inspection.Threads.[ProcessingThreadID].Results.MeasureValues</l>
+<c></c>
+<c>* Den Legacy-Sonderfall des initialen Platzhalters {{[]}} beibehalten.</c>
+<l>CurrentVectorLength := MeasureValues.length()</l>
+<l>if (CurrentVectorLength = 1)</l>
+<l>    TestIfEmpty := MeasureValues.at(0)</l>
+<l>    LengthEmptyTestVector := TestIfEmpty.length()</l>
+<l>    if (LengthEmptyTestVector &gt; 0)</l>
+<l>        if (TestIfEmpty.at(LengthEmptyTestVector-1) = [])</l>
+<l>            CurrentVectorLength := 0</l>
+<l>        endif</l>
+<l>    endif</l>
+<l>endif</l>
+<l>App.Inspection.Threads.[ProcessingThreadID].Results.CurrentVectorLength := CurrentVectorLength</l>
+<l>return ()</l>
+</body>
+<docu id="InspectionMeasurementResultsIndexGet">
+<parameters>
+<parameter id="CurrentVectorLength"/>
+<parameter id="ProcessingThreadID"/>
+</parameters>
+</docu>
+</procedure>
+</hdevelop>
