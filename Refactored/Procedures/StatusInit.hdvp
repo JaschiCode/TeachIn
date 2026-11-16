@@ -8,10 +8,13 @@
 <c>* Initialize some general parameters</c>
 <c></c>
 <l>global tuple App</l>
+<l>global tuple gStopAtCameraStart</l>
 <c></c>
 <l>App.Status := dict{}</l>
 <c></c>
 <l>App.Status.StopProcessingExit    := 0</l>
+<c>* Übergangswert aus dem Einstieg; die Sensorprozedur verwendet App.Status.</c>
+<l>App.Status.StopAtCameraStart := gStopAtCameraStart</l>
 <c></c>
 <l>App.Status.Counter := dict{}</l>
 <l>App.Status.Counter.ProductionLoopCounter := 0</l>
