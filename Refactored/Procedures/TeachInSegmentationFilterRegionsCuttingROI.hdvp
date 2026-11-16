@@ -12,6 +12,8 @@
 <c>* Remove objects in eject box for TeachIn process</c>
 <c>* Can be necessary due to tracks may have holes there, this results in poor measurements</c>
 <c></c>
+<l>global tuple App</l>
+<c></c>
 <c></c>
 <c>* Get variables from dictionary</c>
 <l>ImageMultiChannel := App.Inspection.Threads.[ProcessingThreadID].Images.MultiChannel</l>
