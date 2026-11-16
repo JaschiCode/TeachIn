@@ -26,6 +26,8 @@
 <l>ShiftMean                      := App.Sensor.GrabImageMetaData.Sequencer_MovedDistanceInBetweenGrabbedImages</l>
 <l>SegmentationDynThresholdActive := App.Inspection.Threads.[ProcessingThreadID].Segmentation.Parameters.DynThresholdActive</l>
 <l>AreaMin                        := App.Format.TabletInspection.Segmentation.V_Segmentation_SmallestSingleObjectFilter_Area_Min.Value</l>
+<l>gen_empty_obj (RegionSegmentedUnion)</l>
+<l>gen_empty_obj (RegionSegmented)</l>
 <c></c>
 <l>get_image_size (ImageValue, ImageWidth, _)</l>
 <l>if (|ImageWidth| &gt; 0)</l>
@@ -90,28 +92,7 @@
 <c>       </c>
 <c>    </c>
 <l>else</l>
-<c>    * RGB threshold based product segmentation</c>
-<l>    ++++ todo: JH</l>
-<l>*     decompose3 (ImageOrig, Red, Green, Blue)</l>
-<c></c>
-<l>*     if (Threaded1Serial0 = 1)</l>
-<l>*         par_start&lt;ThreadID1&gt; : gThresholdForThreading (Red, Lanes_ROIsUnion, Red_Region, Threshold_RedMin)</l>
-<l>*         par_start&lt;ThreadID2&gt; : gThresholdForThreading (Green, Lanes_ROIsUnion, Green_Region, Threshold_GreenMin)</l>
-<l>*         par_start&lt;ThreadID3&gt; : gThresholdForThreading (Blue, Lanes_ROIsUnion, Blue_Region, Threshold_BlueMin)</l>
-<l>*         par_join ([ThreadID1,ThreadID2,ThreadID3])</l>
-<l>*     else</l>
-<l>*         reduce_domain (Red, Lanes_ROIsUnion, Red_Reduced)</l>
-<l>*         threshold (Red_Reduced, Red_Region, Threshold_RedMin, Threshold_RedMax)</l>
-<c></c>
-<l>*         reduce_domain (Green, Lanes_ROIsUnion, Green_Reduced)</l>
-<l>*         threshold (Green_Reduced, Green_Region, Threshold_GreenMin, Threshold_GreenMax)</l>
-<c></c>
-<l>*         reduce_domain (Blue, Lanes_ROIsUnion, Blue_Reduced)</l>
-<l>*         threshold (Blue_Reduced, Blue_Region, Threshold_BlueMin, Threshold_BlueMax)</l>
-<l>*     endif</l>
-<c></c>
-<l>*     union2 (Red_Region, Green_Region, RegionUnion)</l>
-<l>*     union2 (RegionUnion, Blue_Region, SegmentedRegion)</l>
+<c>    * Ohne gueltiges TopLight-Bild bleibt die Segmentierung leer.</c>
 <l>endif</l>
 <c></c>
 <l>connection (RegionSegmentedUnion, RegionSegmented)</l>
